@@ -21,7 +21,7 @@ console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей/долларов/гривен/юани');
 
 
-console.log(addExpenses.toLowerCase());
+console.log(addExpenses.toLowerCase().split(', '));
 
 
 let budgetDay = money / 30; //дневной бюджет
