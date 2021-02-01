@@ -27,3 +27,15 @@ console.log(addExpenses.toLowerCase().split(', '));
 let budgetDay = Math.floor(money / 30); //дневной бюджет
 
 console.log(budgetDay);
+
+
+
+if (budgetDay < 0) {
+    console.log('Что-то пошло не так');
+} else if (budgetDay < 600) {
+    console.log('У вас средний уровень дохода');
+} else if (budgetDay < 1200) {
+    console.log('К сожалению у вас уровень дохода ниже среднего');
+} else if (budgetDay >= 1200) {
+    console.log('У вас высокий уровень дохода');
+}
