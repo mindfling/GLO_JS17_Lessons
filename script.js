@@ -16,6 +16,7 @@ let money = parseInt(prompt('Ваш месячный доход', 67000)),      
     budgetMonth,        //бюджет на месяц
     budgetDay;          //бюджет на день
 
+
 console.log(typeof money);
 console.log(typeof income);
 console.log(typeof deposit);
@@ -25,20 +26,20 @@ console.log(addExpenses.length);
 console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей/долларов/гривен/юани');
 
-
 console.log(addExpenses.toLowerCase().split(', '));
 
 
-
 budgetMonth = money - (amount1 + amount2);  //вычисляем бюджет на месяц = доходы -минус- расходы
-console.log('Бюджет на месяц budgetMonth: ',  budgetMonth);
+console.log('Бюджет на месяц',  budgetMonth);
+
+period = Math.ceil(mission / budgetMonth);  //вычисляем период достижения цели
+console.log('Период достижения цели', period, 'месяца');
 
 budgetDay = Math.floor(money / 30); //вычисляем дневной бюджет
-
-console.log(budgetDay);
-
+console.log('Бюджет на день', budgetDay);
 
 
+//условия уровня дохода
 if (budgetDay < 0) {
     console.log('Что-то пошло не так');
 } else if (budgetDay < 600) {
