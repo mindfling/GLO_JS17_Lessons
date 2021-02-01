@@ -3,13 +3,18 @@
  * Lesson02
  */
 
-let money = 67000,      //доход за месяц
+let money = parseInt(prompt('Ваш месячный доход', 67000)),      //доход за месяц
     income = 'фриланс', //строка с доп доходом
-    addExpenses = 'такси, комуналка',   //строка через ,запятую, доп расходы
-    deposit = true,     //есть ли депозит
+    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'такси, комуналка'),   //доп расходы
+    deposit = confirm('Есть ли у вас депозит в банке?', true),     //есть ли депозит
     mission = 100000,   //цель накопить сумму
-    period = 12;        //за какой период
-
+    period = 12,        //за какой период
+    expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик'),
+    amount1 = parseInt(prompt('Во сколько это обойдется?', 5500)),
+    expenses2 = prompt('Введите обязательную статью расходов', 'Курсы повышения'),
+    amount2 = parseInt(prompt('Во сколько это обойдется?', 3000)),
+    budgetMonth,        //бюджет на месяц
+    budgetDay;          //бюджет на день
 
 console.log(typeof money);
 console.log(typeof income);
@@ -24,7 +29,11 @@ console.log('Цель заработать ' + mission + ' рублей/долл
 console.log(addExpenses.toLowerCase().split(', '));
 
 
-let budgetDay = Math.floor(money / 30); //дневной бюджет
+
+budgetMonth = money - (amount1 + amount2);  //вычисляем бюджет на месяц = доходы -минус- расходы
+console.log('Бюджет на месяц budgetMonth: ',  budgetMonth);
+
+budgetDay = Math.floor(money / 30); //вычисляем дневной бюджет
 
 console.log(budgetDay);
 
@@ -39,3 +48,4 @@ if (budgetDay < 0) {
 } else if (budgetDay >= 1200) {
     console.log('У вас высокий уровень дохода');
 }
+
