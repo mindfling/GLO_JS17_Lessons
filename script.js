@@ -22,20 +22,17 @@ console.log(typeof income); //string
 console.log(typeof deposit);//boolean
 
 console.log(addExpenses.length);
-
 console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей/долларов/гривен/юани');
-
 console.log(addExpenses.toLowerCase().split(', '));
 
-
-budgetMonth = money - (amount1 + amount2);  //вычисляем бюджет на месяц = доходы -минус- расходы
+let budgetMonth = money - (amount1 + amount2);  //вычисляем бюджет на месяц = доходы -минус- расходы
 console.log('Бюджет на месяц',  budgetMonth);
 
 period = Math.ceil(mission / budgetMonth);  //вычисляем период достижения цели
 console.log('Период достижения цели', period, 'месяца');
 
-budgetDay = Math.floor(money / 30); //вычисляем дневной бюджет
+let budgetDay = Math.floor(budgetMonth); //вычисляем дневной бюджет
 console.log('Бюджет на день', budgetDay);
 
 
