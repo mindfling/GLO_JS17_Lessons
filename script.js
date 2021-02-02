@@ -1,25 +1,25 @@
 'use strict';
 /**
- * Lesson02
+ * Lesson03
  */
 
-let money = parseInt(prompt('Ваш месячный доход', 67000)),      //доход за месяц
+let money = parseInt(prompt('Ваш месячный доход', 67000)),//доход за месяц
     income = 'фриланс', //строка с доп доходом
-    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'такси, комуналка'),   //доп расходы
-    deposit = confirm('Есть ли у вас депозит в банке?', true),     //есть ли депозит
+    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы
+    deposit = confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
     mission = 100000,   //цель накопить сумму
     period = 12,        //за какой период
     expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик'),
-    amount1 = parseInt(prompt('Во сколько это обойдется?', 5500)),
+    amount1 = +prompt('Во сколько это обойдется?', 5500),
     expenses2 = prompt('Введите обязательную статью расходов', 'Курсы повышения'),
-    amount2 = parseInt(prompt('Во сколько это обойдется?', 3000)),
-    budgetMonth,        //бюджет на месяц
-    budgetDay;          //бюджет на день
+    amount2 = +prompt('Во сколько это обойдется?', 3000);
+    // budgetMonth,        //бюджет на месяц
+    // budgetDay;          //бюджет на день
 
 
-console.log(typeof money);
-console.log(typeof income);
-console.log(typeof deposit);
+console.log(typeof money);  //number
+console.log(typeof income); //string
+console.log(typeof deposit);//boolean
 
 console.log(addExpenses.length);
 
