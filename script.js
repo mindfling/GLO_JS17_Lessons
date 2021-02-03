@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Lesson03
+ * Lesson04
  */
 
 let money = +prompt('Ваш месячный доход', 67000),//доход за месяц
@@ -15,9 +15,17 @@ let money = +prompt('Ваш месячный доход', 67000),//доход з
     amount2 = +prompt('Во сколько это обойдется?', 3000);
 
 
-console.log(typeof money);  //number
-console.log(typeof income); //string
-console.log(typeof deposit);//boolean
+const showTypeOf = function(data) {
+    console.log(data, typeof data);
+};
+
+showTypeOf(money);
+showTypeOf(income);
+showTypeOf(deposit);
+
+// console.log(typeof money);  //number
+// console.log(typeof income); //string
+// console.log(typeof deposit);//boolean
 
 console.log(addExpenses.length);
 console.log('Период равен ' + period + ' месяцев');
