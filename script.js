@@ -33,14 +33,6 @@ const getAccumulatedMonth = function() {
 };
 
 
-//4 Объявить функцию getTargetMonth
-//Подсчитывает за какой период будет достигнута цель, зная результат месячного накопления (accumulatedMonth)
-// и возвращает результат
-const getTargetMonth = function() {
-    return Math.ceil(mission / accumulatedMonth);
-};
-
-
 showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
@@ -49,11 +41,13 @@ showTypeOf(deposit);
 // console.log(typeof income); //string
 // console.log(typeof deposit);//boolean
 
-console.log(addExpenses.length);
-console.log('Период равен ' + period + ' месяцев');
-console.log('Цель заработать ' + mission + ' рублей/долларов/гривен/юани');
+// console.log(addExpenses.length);
+// console.log('Период равен ' + period + ' месяцев');
+// console.log('Цель заработать ' + mission + ' рублей/долларов/гривен/юани');
 
-console.log(addExpenses);
+console.log('Расходы за месяц', getExpensesMonth());
+
+// console.log(addExpenses);
 console.log(addExpenses.toLowerCase().split(', '));
 
 
@@ -63,19 +57,24 @@ console.log(addExpenses.toLowerCase().split(', '));
 
 //3) Объявить переменную accumulatedMonth и присвоить ей результат вызова функции getAccumulatedMonth 
 let accumulatedMonth = getAccumulatedMonth();
-console.log('Бюджет на месяц',  accumulatedMonth);
+// console.log('Бюджет на месяц',  accumulatedMonth);
 
+
+//4 Объявить функцию getTargetMonth
+//Подсчитывает за какой период будет достигнута цель, 
+//зная результат месячного накопления (accumulatedMonth)
+//и возвращает результат
+const getTargetMonth = function() {
+    return Math.ceil(mission / accumulatedMonth);
+};
 
 
 //вычисляем период достижения цели
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
-let periodMission = Math.ceil(mission / accumulatedMonth);
-console.log('Период достижения цели', periodMission, 'месяцев(-а)');
+// let periodMission = Math.ceil(mission / accumulatedMonth);
+// console.log('Период достижения цели', periodMission, 'месяцев(-а)');
 console.log('Период достижения цели', getTargetMonth(), 'месяцев(-а)');
-
-
-
 
 
 //вычисляем дневной бюджет
