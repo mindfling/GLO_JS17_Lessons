@@ -36,7 +36,7 @@ console.log('Бюджет на месяц',  budgetMonth);
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
 let periodMission = Math.ceil(mission / budgetMonth);
-console.log('Период достижения цели', period, 'месяцев(-а)');
+console.log('Период достижения цели', periodMission, 'месяцев(-а)');
 
 
 //вычисляем дневной бюджет
