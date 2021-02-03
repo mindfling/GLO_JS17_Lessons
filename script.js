@@ -52,30 +52,21 @@ let budgetDay = Math.floor(budgetMonth / 30);
 console.log('Бюджет на день', budgetDay);
 
 
-//условия уровня дохода
-//идем от меньшего к большему
-/*
-if (budgetDay <= 0) {
-    //отрицательные числа
-    console.log('Что-то пошло не так');
-} else if (budgetDay < 600) {
-    console.log('К сожалению у вас уровень дохода ниже среднего');
-} else if (budgetDay < 1200) {
-    console.log('У вас средний уровень дохода');
-} else {
-    console.log('У вас высокий уровень дохода');
-}
-*/
 
+const getStatusIncome = function() {
+    
+    //условия уровня дохода
+    //идем от большего в меньшему
+    if (budgetDay >= 1200) {
+        console.log('У вас высокий уровень дохода');
+    } else if (budgetDay >= 600) {
+        console.log('У вас средний уровень дохода');
+    } else if (budgetDay > 0) {
+        console.log('К сожалению у вас уровень дохода ниже среднего');
+    } else {
+        console.log('Что-то пошло не так');
+    }
+    
+};
 
-//условия уровня дохода
-//идем от большего в меньшему
-if (budgetDay >= 1200) {
-    console.log('У вас высокий уровень дохода');
-} else if (budgetDay >= 600) {
-    console.log('У вас средний уровень дохода');
-} else if (budgetDay > 0) {
-    console.log('К сожалению у вас уровень дохода ниже среднего');
-} else {
-    console.log('Что-то пошло не так');
-}
+getStatusIncome();
