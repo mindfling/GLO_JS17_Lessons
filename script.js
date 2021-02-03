@@ -3,6 +3,11 @@
  * Lesson04
  */
 
+const showTypeOf = function(data) {
+    console.log(data, typeof data);
+};
+
+
 let money = +prompt('Ваш месячный доход', 67000),//доход за месяц
     income = 'фриланс', //строка с доп доходом
     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы
@@ -27,9 +32,14 @@ const getAccumulatedMonth = function() {
     return money - (amount1 + amount2);
 };
 
-const showTypeOf = function(data) {
-    console.log(data, typeof data);
+
+//4 Объявить функцию getTargetMonth
+//Подсчитывает за какой период будет достигнута цель, зная результат месячного накопления (accumulatedMonth)
+// и возвращает результат
+const getTargetMonth = function() {
+    return Math.ceil(mission / accumulatedMonth);
 };
+
 
 showTypeOf(money);
 showTypeOf(income);
@@ -50,6 +60,7 @@ console.log(addExpenses.toLowerCase().split(', '));
 //вычисляем бюджет на месяц = доходы -минус- расходы
 // let budgetMonth = money - (amount1 + amount2);
 // console.log('Бюджет на месяц',  budgetMonth);
+
 //3) Объявить переменную accumulatedMonth и присвоить ей результат вызова функции getAccumulatedMonth 
 let accumulatedMonth = getAccumulatedMonth();
 console.log('Бюджет на месяц',  accumulatedMonth);
@@ -61,6 +72,10 @@ console.log('Бюджет на месяц',  accumulatedMonth);
 //на нашу цель из остатка за месяц
 let periodMission = Math.ceil(mission / accumulatedMonth);
 console.log('Период достижения цели', periodMission, 'месяцев(-а)');
+console.log('Период достижения цели', getTargetMonth(), 'месяцев(-а)');
+
+
+
 
 
 //вычисляем дневной бюджет
