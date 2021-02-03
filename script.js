@@ -9,10 +9,18 @@ let money = +prompt('Ваш месячный доход', 67000),//доход з
     deposit = confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
     mission = 100000,   //цель накопить сумму
     period = 12,        //за какой период
+
     expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик'),
     amount1 = +prompt('Во сколько это обойдется?', 5500),
     expenses2 = prompt('Введите обязательную статью расходов', 'Курсы повышения'),
     amount2 = +prompt('Во сколько это обойдется?', 3000);
+
+
+//1 Объявить функцию getExpensesMonth. Функция возвращает сумму всех обязательных расходов за месяц
+const getExpensesMonth = function() {
+    return amount1 + amount2;
+};
+
 
 
 const showTypeOf = function(data) {
