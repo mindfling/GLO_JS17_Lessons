@@ -48,19 +48,23 @@ console.log(addExpenses.toLowerCase().split(', '));
 
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
-let budgetMonth = money - (amount1 + amount2);
-console.log('Бюджет на месяц',  budgetMonth);
+// let budgetMonth = money - (amount1 + amount2);
+// console.log('Бюджет на месяц',  budgetMonth);
+//3) Объявить переменную accumulatedMonth и присвоить ей результат вызова функции getAccumulatedMonth 
+let accumulatedMonth = getAccumulatedMonth();
+console.log('Бюджет на месяц',  accumulatedMonth);
+
 
 
 //вычисляем период достижения цели
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
-let periodMission = Math.ceil(mission / budgetMonth);
+let periodMission = Math.ceil(mission / accumulatedMonth);
 console.log('Период достижения цели', periodMission, 'месяцев(-а)');
 
 
 //вычисляем дневной бюджет
-let budgetDay = Math.floor(budgetMonth / 30);
+let budgetDay = Math.floor(accumulatedMonth / 30);
 console.log('Бюджет на день', budgetDay);
 
 
