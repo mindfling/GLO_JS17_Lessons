@@ -13,14 +13,11 @@ let money = +prompt('Ваш месячный доход', 67000),//доход з
     amount1 = +prompt('Во сколько это обойдется?', 5500),
     expenses2 = prompt('Введите обязательную статью расходов', 'Курсы повышения'),
     amount2 = +prompt('Во сколько это обойдется?', 3000);
-    // budgetMonth,        //бюджет на месяц
-    // budgetDay;          //бюджет на день
 
 
 console.log(typeof money);  //number
 console.log(typeof income); //string
 console.log(typeof deposit);//boolean
-
 
 console.log(addExpenses.length);
 console.log('Период равен ' + period + ' месяцев');
@@ -30,13 +27,20 @@ console.log(addExpenses);
 console.log(addExpenses.toLowerCase().split(', '));
 
 
-let budgetMonth = money - (amount1 + amount2);  //вычисляем бюджет на месяц = доходы -минус- расходы
+//вычисляем бюджет на месяц = доходы -минус- расходы
+let budgetMonth = money - (amount1 + amount2);
 console.log('Бюджет на месяц',  budgetMonth);
 
-period = Math.ceil(mission / budgetMonth);  //вычисляем период достижения цели
+
+//вычисляем период достижения цели
+//за сколько целых месяцев мы сможем накопить
+//на нашу цель из остатка за месяц
+let periodMission = Math.ceil(mission / budgetMonth);
 console.log('Период достижения цели', period, 'месяцев(-а)');
 
-let budgetDay = Math.floor(budgetMonth / 30); //вычисляем дневной бюджет
+
+//вычисляем дневной бюджет
+let budgetDay = Math.floor(budgetMonth / 30);
 console.log('Бюджет на день', budgetDay);
 
 
@@ -56,6 +60,7 @@ if (budgetDay <= 0) {
 */
 
 
+//условия уровня дохода
 //идем от большего в меньшему
 if (budgetDay >= 1200) {
     console.log('У вас высокий уровень дохода');
