@@ -22,6 +22,10 @@ const getExpensesMonth = function() {
 };
 
 
+//2 Объявить функцию getAccumulatedMonth Функция возвращает Накопления за месяц Доходы минус расходы
+const getAccumulatedMonth = function() {
+    return money - (amount1 + amount2);
+};
 
 const showTypeOf = function(data) {
     console.log(data, typeof data);
