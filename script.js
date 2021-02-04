@@ -9,14 +9,30 @@ const showTypeOf = function(data) {
 };
 
 
+const isNumber = function name(number) {
+    return !isNaN(parseInt(number)) && isFinite(number);
+};
+
 //основные данные приложения
-let money = +prompt('Ваш месячный доход', 50000),//доход за месяц
+let money = 0,//доход за месяц
     income = 'фриланс', //строка с доп доходом
-    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы
+    addExpenses = '',//доп расходы
     deposit = confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
     mission = 100000,   //цель накопить сумму
     period = 12;        //за какой период мы планируем накопить
 
+
+//создадим функцию старт
+let start = function () {
+    money = prompt('Ваш месячный доход', 50000);
+
+    while (isNaN(money) || money.trim() === '' || money === null) {
+        money = prompt('Введите ваш месячный доход в цифрах');
+    }
+
+    // addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ');
+};
+start();
 
 
     // expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик'),
@@ -36,12 +52,6 @@ let money = +prompt('Ваш месячный доход', 50000),//доход з
 const getExpensesMonth = function() {
     let sum = 0;
     let expenses = [];
-
-// let expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик');
-//     sum += +prompt('Во сколько это обойдется?', 1000);
-    
-// let expenses2 = prompt('Введите обязательную статью расходов', 'Курсы повышения');
-//     sum += +prompt('Во сколько это обойдется?', 1000);
 
     for (let i = 0; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
