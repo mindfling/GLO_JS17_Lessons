@@ -96,9 +96,13 @@ const getTargetMonth = function(aim, accum) {
 //вычисляем период достижения цели
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
-// let periodMission = Math.ceil(mission / accumulatedMonth);
-let periodMission = getTargetMonth(mission, accumulatedMonth)
-console.log('Период достижения цели', periodMission, 'месяцев(-а)');
+let periodMission = getTargetMonth(mission, accumulatedMonth);
+//проверяем сможем накопить или нет
+if (periodMission > 0) {
+    console.log('Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)');
+} else {
+    console.log('Цель не будет достигнута');
+}
 
 
 //вычисляем дневной бюджет
