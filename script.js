@@ -27,7 +27,7 @@ let start = function () {
     do {
         money = prompt('Введите ваш месячный доход в цифрах');
     }
-    while (isNaN(money) || money.trim() === '' || money === null);
+    while (isNumber(money));
 };
 start();
 
