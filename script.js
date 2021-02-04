@@ -10,7 +10,7 @@ const showTypeOf = function(data) {
 
 
 //основные данные приложения
-let money = +prompt('Ваш месячный доход', 67000),//доход за месяц
+let money = +prompt('Ваш месячный доход', 50000),//доход за месяц
     income = 'фриланс', //строка с доп доходом
     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы
     deposit = confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
@@ -33,18 +33,25 @@ let money = +prompt('Ваш месячный доход', 67000),//доход з
 //     return exp1 + exp2;
 // };
 //перепишем с циклом
-const getExpensesMonth = function(exp1, exp2) {
+const getExpensesMonth = function() {
     let sum = 0;
+    let expenses = [];
 
-let expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик');
-    sum += +prompt('Во сколько это обойдется?', 1000);
+// let expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик');
+//     sum += +prompt('Во сколько это обойдется?', 1000);
     
-let expenses2 = prompt('Введите обязательную статью расходов', 'Курсы повышения');
-    sum += +prompt('Во сколько это обойдется?', 1000);
+// let expenses2 = prompt('Введите обязательную статью расходов', 'Курсы повышения');
+//     sum += +prompt('Во сколько это обойдется?', 1000);
+
+    for (let i = 0; i < 2; i++) {
+        expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
+        sum += +prompt('Во сколько это обойдется, введите число', 1000);
+    }
 
     return sum;
 };
 
+let expensesAmount = getExpensesMonth();
 
 
 //2 Объявить функцию getAccumulatedMonth Функция возвращает Накопления за месяц Доходы минус расходы
@@ -60,14 +67,15 @@ showTypeOf(income);
 showTypeOf(deposit);
 
 
-console.log('Расходы за месяц', getExpensesMonth(amount1, amount2));
+// console.log('Расходы за месяц', getExpensesMonth(amount1, amount2));
+console.log('Расходы за месяц', expensesAmount);
 
 console.log(addExpenses.toLowerCase().split(', ')); //вывод массив с доп расходами
 
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
 //3) Объявить переменную accumulatedMonth и присвоить ей результат вызова функции getAccumulatedMonth 
-let accumulatedMonth = getAccumulatedMonth(money, getExpensesMonth(amount1, amount2));
+let accumulatedMonth = getAccumulatedMonth(money, expensesAmount);
 
 
 //4 Объявить функцию getTargetMonth
