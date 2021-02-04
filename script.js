@@ -3,17 +3,19 @@
  * Lesson04
  */
 
+//функция для вывода в консоль типа данных аргумента
 const showTypeOf = function(data) {
     console.log(data, typeof data);
 };
 
 
+//основные данные приложения
 let money = +prompt('Ваш месячный доход', 67000),//доход за месяц
     income = 'фриланс', //строка с доп доходом
     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы
     deposit = confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
     mission = 100000,   //цель накопить сумму
-    period = 12,        //за какой период
+    period = 12,        //за какой период мы планируем накопить
 
     expenses1 = prompt('Введите обязательную статью расходов', 'Детский садик'),
     amount1 = +prompt('Во сколько это обойдется?', 5500),
@@ -42,21 +44,14 @@ showTypeOf(income);
 showTypeOf(deposit);
 
 
-// console.log(addExpenses.length);
-// console.log('Период равен ' + period + ' месяцев');
-// console.log('Цель заработать ' + mission + ' рублей/долларов/гривен/юани');
-
 console.log('Расходы за месяц', getExpensesMonth(amount1, amount2));
 
-// console.log(addExpenses);
-console.log(addExpenses.toLowerCase().split(', '));
+console.log(addExpenses.toLowerCase().split(', ')); //вывод массив с доп расходами
 
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
-// let budgetMonth = money - (amount1 + amount2);
-
 //3) Объявить переменную accumulatedMonth и присвоить ей результат вызова функции getAccumulatedMonth 
-let accumulatedMonth = getAccumulatedMonth();
+let accumulatedMonth = getAccumulatedMonth(money, getExpensesMonth(amount1, amount2));
 
 
 //4 Объявить функцию getTargetMonth
