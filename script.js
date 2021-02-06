@@ -3,6 +3,7 @@
  * Lesson07
  */
 
+
 //функция для вывода в консоль типа данных аргумента
 const showTypeOf = function(data) {
     console.log(data, typeof data);
@@ -14,24 +15,34 @@ const isNumber = function name(number) {
     return !isNaN(parseInt(number)) && isFinite(number);
 };
 
+let money = 0,//доход за месяц
+    start = function () {//создадим функцию старт
+        do {
+            money = prompt('Введите ваш месячный доход в цифрах');
+        }
+        while (!isNumber(money));
+    };
+
+start();
+
 
 //основные данные приложения перенесем это в обкт appData
-let money = 0,//доход за месяц
-    income = 'фриланс', //строка с доп доходом
-    addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы
-    deposit = confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
-    mission = 100000,   //цель накопить сумму
-    period = 12;        //за какой период мы планируем накопить
-
-
-//создадим функцию старт
-let start = function () {
-    do {
-        money = prompt('Введите ваш месячный доход в цифрах');
-    }
-    while (!isNumber(money));
+let appData = {
+    income: {}, // основноей доход
+    addIncome: [], // доп доход
+    expenses: {}, // обязательные расходы
+    addExpenses: [], // доп расходы
+    deposit: false, //есть ли депозит
+    mission: 50000, //цель накопить сумму
+    period: 12  //за какой период мы планируем накопить
 };
-start();
+
+
+//addExpenses: prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы/
+//deposit: confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
+
+
+
 
 
 //getExpensesMonth Функция возвращает сумму всех обязательных расходов за месяц
