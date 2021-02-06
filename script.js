@@ -22,12 +22,12 @@ let money = 0,
 start();
 
 
-//основные данные приложения перенесем это в обкт appData
+//основные данные приложения в объекте
 let appData = {
-    budget: money, //2) В объект appData добавить свойство budget которое будет принимать значение money
-    income: {}, // основноей доход
+    budget: money, //свойство budget которое будет принимать значение money
+    income: {},    // основноей доход
     addIncome: [], // доп доход
-    expenses: {}, // обязательные расходы
+    expenses: {},    // обязательные расходы
     addExpenses: [], // доп расходы
     deposit: false, //есть ли депозит
     mission: 50000, //цель накопить сумму
@@ -37,34 +37,45 @@ let appData = {
         //доп расходы/
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ');
         appData.addExpenses = addExpenses.toLowerCase().split(', '); //вывод массив с доп расходами
-        
         appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
-    },
 
-    //3) В объект appData добавить свойства budgetDay, budgetMonth, expensesMonth, изначально равные нулю
-    budgetDay: 0,
-    budgetMonth: 0,
-    expensesMonth: 0,
-
-    //4) Функции getExpensesMonth,  getAccumulatedMonth,  getTargetMonth,  getStatusIncome - сделать методами объекта AppData
-    getExpensesMonth: function() {
-        let sum = 0;
-        let expenses = [];
-        
+        //Перенести цикл из метода  getExpensesMonth  в метод asking, 
+        //и переписать цикл таким образом чтобы результат записывался в объект  appData.expenses
         for (let i = 0; i < 2; i++) {
-            expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
+            let expenseKey = prompt('Введите обязательную статью расходов');
+
             let answer = 0;
             do {
                 answer = prompt('Во сколько это обойдется, введите число', 1000);
             } while (!isNumber(answer));
-            sum += +answer;
+            appData.expenses[expenseKey] = answer;
         }
+    },
+
+    budgetDay: 0,
+    budgetMonth: 0,
+    expensesMonth: 0,
+
+    getExpensesMonth: function() {
+        let sum = 0;
+        let expenses = [];
+        
+        // for (let i = 0; i < 2; i++) {
+        //     expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
+        //     let answer = 0;
+        //     do {
+        //         answer = prompt('Во сколько это обойдется, введите число', 1000);
+        //     } while (!isNumber(answer));
+        //     sum += +answer;
+        // }
         return sum;
     },
-    getAccumulatedMonth: function(mon, exp) {
-        return mon - exp;
+    getAccumulatedMonth: function(moneyMonth, expensesMonth) {
+        //сколько накопили за месяц
+        return moneyMonth - expensesMonth;
     },
     getTargetMonth: function(aim, accum) {
+        //за сколько месяцев будет достигнута цель
         return Math.ceil(aim / accum);
     },
     getStatusIncome: function(moneyOnDay) {
@@ -79,13 +90,10 @@ let appData = {
             return 'Что-то пошло не так';
         }
     }
-    
 }; //appData
 
 appData.asking();
 
-
-//1) Функцию showTypeof и вызов функции удаляем 
 
 appData.expensesMonth = appData.getExpensesMonth();
 
@@ -95,6 +103,7 @@ console.log(appData.addExpenses); //вывод массив с доп расхо
 
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
+// let accumulatedMonth = appData.getAccumulatedMonth(money, appData.expensesMonth);
 let accumulatedMonth = appData.getAccumulatedMonth(money, appData.expensesMonth);
 
 
