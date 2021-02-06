@@ -4,12 +4,6 @@
  */
 
 
-//функция для вывода в консоль типа данных аргумента
-const showTypeOf = function(data) {
-    console.log(data, typeof data);
-};
-
-
 //функция проверки на цисло
 const isNumber = function name(number) {
     return !isNaN(parseInt(number)) && isFinite(number);
@@ -25,7 +19,6 @@ let money = 0,
         }
         while (!isNumber(money));
     };
-
 start();
 
 
