@@ -28,6 +28,7 @@ start();
 
 //основные данные приложения перенесем это в обкт appData
 let appData = {
+    budget: money, //2) В объект appData добавить свойство budget которое будет принимать значение money
     income: {}, // основноей доход
     addIncome: [], // доп доход
     expenses: {}, // обязательные расходы
@@ -39,42 +40,82 @@ let appData = {
     asking: function() {
         //доп расходы/
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ');
-        
         appData.addExpenses = addExpenses.toLowerCase().split(', '); //вывод массив с доп расходами
+        
         appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
+    },
+
+    //3) В объект appData добавить свойства budgetDay, budgetMonth, expensesMonth, изначально равные нулю
+    budgetDay: 0,
+    budgetMonth: 0,
+    expensesMonth: 0,
+
+    //4) Функции getExpensesMonth,  getAccumulatedMonth,  getTargetMonth,  getStatusIncome - сделать методами объекта AppData
+    getExpensesMonth: function() {
+        let sum = 0;
+        let expenses = [];
+        
+        for (let i = 0; i < 2; i++) {
+            expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
+            let answer = 0;
+            do {
+                answer = prompt('Во сколько это обойдется, введите число', 1000);
+            } while (!isNumber(answer));
+            sum += +answer;
+        }
+        return sum;
+    },
+    getAccumulatedMonth: function(mon, exp) {
+        return mon - exp;
+    },
+    getTargetMonth: function(aim, accum) {
+        return Math.ceil(aim / accum);
+    },
+    getStatusIncome: function(moneyOnDay) {
+        //условия уровня дохода
+        if (moneyOnDay >= 1200) {
+            return 'У вас высокий уровень дохода';
+        } else if (moneyOnDay >= 600) {
+            return 'У вас средний уровень дохода';
+        } else if (moneyOnDay > 0) {
+            return 'К сожалению у вас уровень дохода ниже среднего';
+        } else {
+            return 'Что-то пошло не так';
+        }
     }
+    
 };
 
 
 
 
 
+//1) Функцию showTypeof и вызов функции удаляем 
 
 //getExpensesMonth Функция возвращает сумму всех обязательных расходов за месяц
 //amount1 + amount2
-//перепишем с циклом
-const getExpensesMonth = function() {
-    let sum = 0;
-    let expenses = [];
+// const getExpensesMonth = function() {
+//     let sum = 0;
+//     let expenses = [];
     
-    for (let i = 0; i < 2; i++) {
-        expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
-        let answer = 0;
-        do {
-            answer = prompt('Во сколько это обойдется, введите число', 1000);
-        } while (!isNumber(answer));
-        sum += +answer;
-    }
-    return sum;
-};
-let expensesAmount = getExpensesMonth();
+//     for (let i = 0; i < 2; i++) {
+//         expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
+//         let answer = 0;
+//         do {
+//             answer = prompt('Во сколько это обойдется, введите число', 1000);
+//         } while (!isNumber(answer));
+//         sum += +answer;
+//     }
+//     return sum;
+// };
+appData.expensesMonth = appData.getExpensesMonth();
 
 
 //2 Объявить функцию getAccumulatedMonth Функция возвращает Накопления за месяц Доходы минус расходы
 //money - expenses
-const getAccumulatedMonth = function(mon, exp) {
-    return mon - exp;
-};
+// const getAccumulatedMonth = function(mon, exp) {
+//     return mon - exp;
+// };
 
 
 //вывести типы переменных
@@ -83,25 +124,25 @@ const getAccumulatedMonth = function(mon, exp) {
 // showTypeOf(deposit);
 
 
-console.log('Расходы за месяц', expensesAmount); //вывод расходов замесяц
+console.log('Расходы за месяц', appData.expensesMonth); //вывод расходов замесяц
 
 // console.log(addExpenses.toLowerCase().split(', ')); //вывод массив с доп расходами
 
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
-let accumulatedMonth = getAccumulatedMonth(money, expensesAmount);
+let accumulatedMonth = appData.getAccumulatedMonth(money, appData.expensesMonth);
 
 
 //функция getTargetMonth подсчитывает за какой период будет достигнута цель, 
 //и возвращает результат mission / accumulatedMonth
-const getTargetMonth = function(aim, accum) {
-    return Math.ceil(aim / accum);
-};
+// const getTargetMonth = function(aim, accum) {
+//     return Math.ceil(aim / accum);
+// };
 
 
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
-let periodMission = getTargetMonth(appData.mission, accumulatedMonth);
+let periodMission = appData.getTargetMonth(appData.mission, accumulatedMonth);
 //проверяем сможем накопить или нет
 if (periodMission > 0) {
     console.log('Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)');
@@ -111,22 +152,23 @@ if (periodMission > 0) {
 
 
 //вычисляем дневной бюджет
-let budgetDay = Math.floor(accumulatedMonth / 30);
-console.log('Бюджет на день', budgetDay);
+appData.budgetDay = Math.floor(accumulatedMonth / 30);
+console.log('Бюджет на день', appData.budgetDay);
 
 
 //сделаем функцию вычесления уровня доходов исходя из budgetDay
-const getStatusIncome = function(moneyOnDay) {
-    //условия уровня дохода
-    if (moneyOnDay >= 1200) {
-        return 'У вас высокий уровень дохода';
-    } else if (moneyOnDay >= 600) {
-        return 'У вас средний уровень дохода';
-    } else if (moneyOnDay > 0) {
-        return 'К сожалению у вас уровень дохода ниже среднего';
-    } else {
-        return 'Что-то пошло не так';
-    }
+
+// const getStatusIncome = function(moneyOnDay) {
+//     //условия уровня дохода
+//     if (moneyOnDay >= 1200) {
+//         return 'У вас высокий уровень дохода';
+//     } else if (moneyOnDay >= 600) {
+//         return 'У вас средний уровень дохода';
+//     } else if (moneyOnDay > 0) {
+//         return 'К сожалению у вас уровень дохода ниже среднего';
+//     } else {
+//         return 'Что-то пошло не так';
+//     }
     
-};
-console.log(getStatusIncome(budgetDay));
+// };
+console.log(appData.getStatusIncome(appData.budgetDay));
