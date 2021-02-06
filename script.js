@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Lesson04
+ * Lesson07
  */
 
 //функция для вывода в консоль типа данных аргумента
@@ -9,11 +9,13 @@ const showTypeOf = function(data) {
 };
 
 
+//функция проверки на цисло
 const isNumber = function name(number) {
     return !isNaN(parseInt(number)) && isFinite(number);
 };
 
-//основные данные приложения
+
+//основные данные приложения перенесем это в обкт appData
 let money = 0,//доход за месяц
     income = 'фриланс', //строка с доп доходом
     addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы
@@ -33,11 +35,7 @@ start();
 
 
 //getExpensesMonth Функция возвращает сумму всех обязательных расходов за месяц
-//сделать чистый расчет суммы обязательных расходов
 //amount1 + amount2
-// const getExpensesMonth = function(exp1, exp2) {
-//     return exp1 + exp2;
-// };
 //перепишем с циклом
 const getExpensesMonth = function() {
     let sum = 0;
@@ -45,55 +43,46 @@ const getExpensesMonth = function() {
 
     for (let i = 0; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
-
         let answer = 0;
         do {
             answer = prompt('Во сколько это обойдется, введите число', 1000);
-
         } while (!isNumber(answer));
         sum += +answer;
     }
-
     return sum;
 };
-
 let expensesAmount = getExpensesMonth();
 
 
 //2 Объявить функцию getAccumulatedMonth Функция возвращает Накопления за месяц Доходы минус расходы
-//сделать чистый расчет накопленных средств
 //money - expenses
 const getAccumulatedMonth = function(mon, exp) {
     return mon - exp;
 };
 
 
+//вывести типы переменных
 showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
 
-// console.log('Расходы за месяц', getExpensesMonth(amount1, amount2));
-console.log('Расходы за месяц', expensesAmount);
+console.log('Расходы за месяц', expensesAmount); //вывод расходов замесяц
 
 console.log(addExpenses.toLowerCase().split(', ')); //вывод массив с доп расходами
 
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
-//3) Объявить переменную accumulatedMonth и присвоить ей результат вызова функции getAccumulatedMonth 
 let accumulatedMonth = getAccumulatedMonth(money, expensesAmount);
 
 
-//4 Объявить функцию getTargetMonth
-//Подсчитывает за какой период будет достигнута цель, 
-//зная результат месячного накопления (accumulatedMonth)
+//функция getTargetMonth подсчитывает за какой период будет достигнута цель, 
 //и возвращает результат mission / accumulatedMonth
 const getTargetMonth = function(aim, accum) {
     return Math.ceil(aim / accum);
 };
 
 
-//вычисляем период достижения цели
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
 let periodMission = getTargetMonth(mission, accumulatedMonth);
@@ -110,8 +99,7 @@ let budgetDay = Math.floor(accumulatedMonth / 30);
 console.log('Бюджет на день', budgetDay);
 
 
-//сделаем чистую функцию
-// budgetDay
+//сделаем функцию вычесления уровня доходов исходя из budgetDay
 const getStatusIncome = function(moneyOnDay) {
     //условия уровня дохода
     if (moneyOnDay >= 1200) {
@@ -125,5 +113,4 @@ const getStatusIncome = function(moneyOnDay) {
     }
     
 };
-
 console.log(getStatusIncome(budgetDay));
