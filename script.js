@@ -34,12 +34,17 @@ let appData = {
     addExpenses: [], // доп расходы
     deposit: false, //есть ли депозит
     mission: 50000, //цель накопить сумму
-    period: 12  //за какой период мы планируем накопить
+    period: 12,  //за какой период мы планируем накопить
+    
+    asking: function() {
+        //доп расходы/
+        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ');
+        
+        appData.addExpenses = addExpenses.toLowerCase().split(', '); //вывод массив с доп расходами
+        appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
+    }
 };
 
-
-//addExpenses: prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ'),//доп расходы/
-//deposit: confirm('Есть ли у вас депозит в банке?', true),//есть ли депозит
 
 
 
@@ -51,7 +56,7 @@ let appData = {
 const getExpensesMonth = function() {
     let sum = 0;
     let expenses = [];
-
+    
     for (let i = 0; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
         let answer = 0;
@@ -73,14 +78,14 @@ const getAccumulatedMonth = function(mon, exp) {
 
 
 //вывести типы переменных
-showTypeOf(money);
-showTypeOf(income);
-showTypeOf(deposit);
+// showTypeOf(money);
+// showTypeOf(income);
+// showTypeOf(deposit);
 
 
 console.log('Расходы за месяц', expensesAmount); //вывод расходов замесяц
 
-console.log(addExpenses.toLowerCase().split(', ')); //вывод массив с доп расходами
+// console.log(addExpenses.toLowerCase().split(', ')); //вывод массив с доп расходами
 
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
@@ -96,7 +101,7 @@ const getTargetMonth = function(aim, accum) {
 
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
-let periodMission = getTargetMonth(mission, accumulatedMonth);
+let periodMission = getTargetMonth(appData.mission, accumulatedMonth);
 //проверяем сможем накопить или нет
 if (periodMission > 0) {
     console.log('Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)');
