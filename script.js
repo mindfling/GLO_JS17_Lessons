@@ -41,13 +41,14 @@ let appData = {
 
         //Перенести цикл из метода  getExpensesMonth  в метод asking, 
         //и переписать цикл таким образом чтобы результат записывался в объект  appData.expenses
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 3; i++) {
             let expenseKey = prompt('Введите обязательную статью расходов');
 
             let answer = 0;
             do {
                 answer = prompt('Во сколько это обойдется, введите число', 1000);
-            } while (!isNumber(answer));
+            } while (!isNumber(answer)); //спрашивает пока не ввели число
+            // записываем обязательные расходы по ключам в обкт expenses
             appData.expenses[expenseKey] = answer;
         }
     },
@@ -58,8 +59,21 @@ let appData = {
 
     getExpensesMonth: function() {
         let sum = 0;
-        let expenses = [];
+        // let expenses = [];
+        //8) Переписать метод getExpensesMonth: 
+        //с помощью цикла считаем сумму всех обязательных расходов и сохраняем результат в свойство expensesMonth нашего объекта
+        //для того, чтобы посчитать сумму используйте цикл for in
         
+        // суммируем по expenses
+        for (let key in appData.expenses) {
+            //проверка на собственное свойство
+            if (appData.expenses.hasOwnProperty(key)) {
+                console.log('appData.expenses[key]:', key, appData.expenses[key]);
+                sum += +appData.expenses[key];
+            }
+        }
+
+
         // for (let i = 0; i < 2; i++) {
         //     expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
         //     let answer = 0;
