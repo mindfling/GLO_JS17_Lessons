@@ -146,6 +146,14 @@ console.log(appData.getTargetMonth());
 console.log(appData.getStatusIncome());
 
 
+//2) Возможные расходы (addExpenses) вывести строкой в консоль 
+//каждое слово с большой буквы слова разделены запятой и пробелом
+let resultStr = '';
+for (const elem of appData.addExpenses) {
+    resultStr += elem.toString()[0].toUpperCase() + elem.toString().slice(1) + ', ';
+}
+console.log(resultStr);
+
 
 ///////////////////////////////////////////////////////////
 
