@@ -46,8 +46,18 @@ let appData = {
 
         //вводим дополнительный источник заработка
         if (confirm('Есть ли у вас дополнительный заработок?')) {
-            let itemIncome = prompt('Какой у вас источник дополнительного заработка?', 'таксую');
-            let cashIncome = prompt('Сколько в месяц зарабатываете на этом?', 10000);
+
+            //проверка строки дополнительного заработка
+            let itemIncome = '';
+            do {
+                itemIncome = prompt('Какой у вас источник дополнительного заработка? Введите строку', 'таксую');
+            } while (isNumber(itemIncome));
+            
+            //проверка ввода дополнительного источника заработка
+            let cashIncome = 0;
+            do {
+                cashIncome = prompt('Сколько в месяц зарабатываете на этом? Введите число', 10000);
+            } while (!isNumber(cashIncome));
 
             appData.income[itemIncome] = cashIncome;
         }
