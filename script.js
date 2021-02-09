@@ -101,23 +101,25 @@ let appData = {
         return moneyMonth_ - expensesMonth_;
     },
 
-    //10) В методах getTargetMonth и getStatusIncome исправить переменные, все значения получаем от нашего объекта appData
+    //10) В методах getTargetMonth и getStatusIncome исправить переменные, 
+    // все значения получаем от нашего объекта appData
     getTargetMonth: function() {
         //за сколько месяцев будет достигнута цель
         //перенесли сюда
         // let periodMission = appData.getTargetMonth(appData.mission, appData.budgetMonth);
         let periodMission = Math.ceil(appData.mission / appData.budgetMonth);
         
-        //проверяем сможем накопить или нет
+        //проверяем сможем накопить или нет и возвращаем результат
         if (periodMission > 0) {
-            console.log('Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)');
+            return 'Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)';
         } else {
-            console.log('Цель не будет достигнута');
+            return 'Цель не будет достигнута';
         }
-        return periodMission;
+        // return periodMission;
     },
         
-    //10) В методах getTargetMonth и getStatusIncome исправить переменные, все значения получаем от нашего объекта appData
+    //10) В методах getTargetMonth и getStatusIncome исправить переменные, 
+    // все значения получаем от нашего объекта appData
     getStatusIncome: function() {
         //условия уровня дохода
         //возвращает результат вычислений уровня средних доходов на день
@@ -138,8 +140,9 @@ let appData = {
 appData.asking();
 
 
-
-appData.expensesMonth = appData.getBudget();
+//исправить вызов
+// appData.expensesMonth = appData.getBudget();
+appData.getBudget();
 
 console.log('Расходы за месяц', appData.expensesMonth); //вывод расходов за месяц
 
@@ -157,7 +160,8 @@ console.log(appData.addExpenses); //вывод массив с доп расхо
 //на нашу цель из остатка за месяц
 //10) В методах getTargetMonth и getStatusIncome исправить переменные, 
 //это действия внутри метода все значения получаем от нашего объекта appData
-let periodMission = appData.getTargetMonth(appData.mission, appData.budgetMonth);
+// let periodMission = appData.getTargetMonth(appData.mission, appData.budgetMonth);
+console.log(appData.getTargetMonth());
 
 // //проверяем сможем накопить или нет
 // if (periodMission > 0) {
