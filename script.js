@@ -48,10 +48,11 @@ let appData = {
         if (confirm('Есть ли у вас дополнительный заработок?')) {
 
             //проверка строки дополнительного заработка
+            //отсекаем строки с цифрами в начале
             let itemIncome = '';
             do {
                 itemIncome = prompt('Какой у вас источник дополнительного заработка? Введите строку', 'таксую');
-            } while (isNumber(itemIncome));
+            } while (isNaN(parseInt(itemIncome)));
             
             //проверка ввода дополнительного источника заработка
             let cashIncome = 0;
@@ -64,7 +65,7 @@ let appData = {
 
         //спрашиваем доп расходы
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 
-                                    'еда, вода, газ');
+                                    'еда, вода, интернет');
         appData.addExpenses = addExpenses.toLowerCase().split(', '); //вывод массив с доп расходами
         appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
 
@@ -72,7 +73,11 @@ let appData = {
             let expenseKey = '';
             //проверка на существование ключа строки расходов
             do {
-                expenseKey = prompt('Введите обязательную статью расходов');
+                //проверка если введена НЕ строка
+                do {
+                    expenseKey = prompt('Введите обязательную статью расходов');
+                } while (isNaN(parseInt(expenseKey)));
+
             } while (appData.expenses.hasOwnProperty(expenseKey));
 
             let answerValue = 0;
