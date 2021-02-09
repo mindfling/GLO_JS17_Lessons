@@ -34,6 +34,8 @@ let appData = {
     expenses: {},    // обязательные расходы
     addExpenses: [], // доп расходы
     deposit: false, //есть ли депозит
+    percentDeposit: 0,
+    moneyDeposit: 0,
     mission: 50000, //цель накопить сумму
     period: 12,  //за какой период мы планируем накопить
     budgetDay: 0, //бюджет на день
@@ -41,6 +43,15 @@ let appData = {
     expensesMonth: 0, // расходы на месяц
 
     asking: function() {
+
+        //вводим дополнительный источник заработка
+        if (confirm('Есть ли у вас дополнительный заработок?')) {
+            let itemIncome = prompt('Какой у вас источник дополнительного заработка?', 'таксую');
+            let cashIncome = prompt('Сколько в месяц зарабатываете на этом?', 10000);
+
+            appData.income[itemIncome] = cashIncome;
+        }
+
         //спрашиваем доп расходы
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 
                                     'еда, вода, газ');
@@ -102,7 +113,22 @@ let appData = {
         } else {
             return 'Что-то пошло не так';
         }
+    },
+
+    getInfoDeposit: function() {
+        //спрашиваем и вычисляем информацию о депозите 
+        //а также в методе asking
+        if(appData.deposit) {
+            appData.percentDeposit = prompt('Какой годовой процент?', '10');
+            appData.moneyDeposit = prompt('Какая сумма заложена в депосит?', 10000);
+        }
+    },
+
+    calcSavedMoney: function () {
+        //возвращает значения накопленных средств
+        return appData.budgetMonth * appData.period;
     }
+
 }; //appData
 
 
