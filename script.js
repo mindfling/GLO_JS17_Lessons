@@ -127,10 +127,19 @@ let appData = {
 
     getInfoDeposit: function() {
         //спрашиваем и вычисляем информацию о депозите 
-        //а также в методе asking
+        //а также в методе asking спрашиваем appData.deposit
         if(appData.deposit) {
-            appData.percentDeposit = prompt('Какой годовой процент?', '10');
-            appData.moneyDeposit = prompt('Какая сумма заложена в депосит?', 10000);
+            //проверка ввода процента депозита
+            do {
+                appData.percentDeposit = prompt('Какой годовой процент? Введите число', '10');
+            } while (!isNumber(appData.percentDeposit));
+            appData.percentDeposit = +appData.percentDeposit;
+
+            //проверка ввода суммы депозита
+            do {
+                appData.moneyDeposit = prompt('Какая сумма заложена в депосит? Введите число', 10000);
+            } while (!isNumber(appData.moneyDeposit));
+            appData.moneyDeposit = +appData.moneyDeposit;
         }
     },
 
@@ -147,6 +156,9 @@ appData.asking(); //спрашиваем пользователя
 appData.getExpensesMonth(); //расчет обязательных расходов
 appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
 
+appData.getInfoDeposit();
+
+
 
 //расходы за месяц
 console.log('Расходы за месяц', appData.expensesMonth);
@@ -154,6 +166,8 @@ console.log('Расходы за месяц', appData.expensesMonth);
 console.log(appData.getTargetMonth());
 //уровень дохода
 console.log(appData.getStatusIncome());
+
+console.log('Накопленные средства', appData.calcSavedMoney());
 
 
 //2) Возможные расходы (addExpenses) вывести строкой в консоль 
