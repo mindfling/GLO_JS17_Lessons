@@ -4,17 +4,24 @@
  */
 
 
-//функция проверки на цисло
+//функция проверки ввода числа на цисле
+/**
+ * @param {строка} number 
+ * возвращает true если строку number можно полностью перевести в число
+ */
 const isNumber = function name(number) {
     return !isNaN(parseInt(number)) && isFinite(number);
 };
+//!isNaN(parseInt()) // проверяет парсинг строки в число
+//isFinite() // отсеивает вообще символьные строки
+
 
 
 //вот так вводим наш доход за месяц
 //создадим функцию старт
-let money = 0,
-    start = function () {
-        do {
+let money = 0;
+const start = function () {
+    do {
             money = prompt('Введите ваш месячный доход в цифрах');
         }
         while (!isNumber(money));
@@ -34,36 +41,44 @@ let appData = {
     period: 12,  //за какой период мы планируем накопить
     
     asking: function() {
-        //доп расходы/
+        //спрашиваем доп расходы
         let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'еда, вода, газ');
         appData.addExpenses = addExpenses.toLowerCase().split(', '); //вывод массив с доп расходами
         appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
 
-        //Перенести цикл из метода  getExpensesMonth  в метод asking, 
+        //7 Перенести цикл из метода  getExpensesMonth  в метод asking, 
         //и переписать цикл таким образом чтобы результат записывался в объект  appData.expenses
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             let expenseKey = prompt('Введите обязательную статью расходов');
-
             let answer = 0;
+            /**
+             * проверка на ввод числа
+             */
             do {
                 answer = prompt('Во сколько это обойдется, введите число', 1000);
             } while (!isNumber(answer)); //спрашивает пока не ввели число
+            /**
+             * TODO возможно проверить на наличие такого же ключа
+             */
             // записываем обязательные расходы по ключам в обкт expenses
             appData.expenses[expenseKey] = answer;
-        }
+        }//for
     },
 
     budgetDay: 0,
     budgetMonth: 0,
     expensesMonth: 0,
 
-    getExpensesMonth: function() {
+
+    //9) getAccumulatedMonth переименовать в getBudget. 
+    //Этот метод будет высчитывать значения свойств budgetMonth и budgetDay, 
+    //чтобы вычислить значения используем только свойства объекта (никаких внешних переменных)
+    getBudget: function() {
         let sum = 0;
         // let expenses = [];
         //8) Переписать метод getExpensesMonth: 
-        //с помощью цикла считаем сумму всех обязательных расходов и сохраняем результат в свойство expensesMonth нашего объекта
+        //с помощью цикла считаем сумму всех обязательных расходов и 
         //для того, чтобы посчитать сумму используйте цикл for in
-        
         // суммируем по expenses
         for (let key in appData.expenses) {
             //проверка на собственное свойство
@@ -72,18 +87,10 @@ let appData = {
                 sum += +appData.expenses[key];
             }
         }
-
-
-        // for (let i = 0; i < 2; i++) {
-        //     expenses[i] = prompt('Введите обязательную статью расходов', 'комуналка');
-        //     let answer = 0;
-        //     do {
-        //         answer = prompt('Во сколько это обойдется, введите число', 1000);
-        //     } while (!isNumber(answer));
-        //     sum += +answer;
-        // }
+        appData.expensesMonth = sum; //сохраняем результат в свойство expensesMonth нашего объекта
         return sum;
     },
+
     getAccumulatedMonth: function(moneyMonth, expensesMonth) {
         //сколько накопили за месяц
         return moneyMonth - expensesMonth;
@@ -106,10 +113,12 @@ let appData = {
     }
 }; //appData
 
+//6) Сразу после объекта выполните вызов appData.asking()
 appData.asking();
 
 
-appData.expensesMonth = appData.getExpensesMonth();
+
+appData.expensesMonth = appData.getBudget();
 
 console.log('Расходы за месяц', appData.expensesMonth); //вывод расходов за месяц
 
