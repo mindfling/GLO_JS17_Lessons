@@ -88,12 +88,17 @@ let appData = {
             }
         }
         appData.expensesMonth = sum; //сохраняем результат в свойство expensesMonth нашего объекта
-        return sum;
+
+        //Этот метод будет высчитывать значения свойств budgetMonth и budgetDay
+        //чтобы вычислить значения используем только свойства объекта (никаких внешних переменных)
+        // appData.budgetMonth = appData.getAccumulatedMonth(money, appData.expensesMonth);
+        appData.budgetMonth = appData.getAccumulatedMonth(appData.budget, appData.expensesMonth);
+        appData.budgetDay = Math.floor(appData.budgetMonth / 30);
     },
 
-    getAccumulatedMonth: function(moneyMonth, expensesMonth) {
+    getAccumulatedMonth: function(moneyMonth_, expensesMonth_) {
         //сколько накопили за месяц
-        return moneyMonth - expensesMonth;
+        return moneyMonth_ - expensesMonth_;
     },
     getTargetMonth: function(aim, accum) {
         //за сколько месяцев будет достигнута цель
@@ -127,12 +132,14 @@ console.log(appData.addExpenses); //вывод массив с доп расхо
 
 //вычисляем бюджет на месяц = доходы -минус- расходы
 // let accumulatedMonth = appData.getAccumulatedMonth(money, appData.expensesMonth);
-let accumulatedMonth = appData.getAccumulatedMonth(money, appData.expensesMonth);
+// перемещаем в appData.getBudget()
+// let accumulatedMonth = appData.getAccumulatedMonth(money, appData.expensesMonth);
+
 
 
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
-let periodMission = appData.getTargetMonth(appData.mission, accumulatedMonth);
+let periodMission = appData.getTargetMonth(appData.mission, appData.budgetMonth);
 
 //проверяем сможем накопить или нет
 if (periodMission > 0) {
@@ -144,7 +151,8 @@ if (periodMission > 0) {
 
 //вычисляем дневной бюджет
 //из средств накопленных за день
-appData.budgetDay = Math.floor(accumulatedMonth / 30);
+//// перемещаем в appData.getBudget()
+//appData.budgetDay = Math.floor(accumulatedMonth / 30);
 console.log('Бюджет на день', appData.budgetDay);
 
 
