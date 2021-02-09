@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Lesson07
+ * Lesson08
  */
 
 
@@ -23,7 +23,6 @@ const start = function () {
         while (!isNumber(money));
         return money;
     };
-//start();
 
 
 //основные данные приложения в объекте
