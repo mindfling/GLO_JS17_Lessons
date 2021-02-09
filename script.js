@@ -118,13 +118,15 @@ let appData = {
     },
         
     //10) В методах getTargetMonth и getStatusIncome исправить переменные, все значения получаем от нашего объекта appData
-    getStatusIncome: function(moneyOnDay) {
+    getStatusIncome: function() {
         //условия уровня дохода
-        if (moneyOnDay >= 1200) {
+        //возвращает результат вычислений уровня средних доходов на день
+        // moneyOnDay -> appData.budgetDay
+        if (appData.budgetDay >= 1200) {
             return 'У вас высокий уровень дохода';
-        } else if (moneyOnDay >= 600) {
+        } else if (appData.budgetDay >= 600) {
             return 'У вас средний уровень дохода';
-        } else if (moneyOnDay > 0) {
+        } else if (appData.budgetDay > 0) {
             return 'К сожалению у вас уровень дохода ниже среднего';
         } else {
             return 'Что-то пошло не так';
@@ -173,4 +175,5 @@ console.log('Бюджет на день', appData.budgetDay);
 
 
 //сделаем функцию вычесления уровня доходов исходя из budgetDay
-console.log(appData.getStatusIncome(appData.budgetDay));
+// console.log(appData.getStatusIncome(appData.budgetDay));
+console.log(appData.getStatusIncome());
