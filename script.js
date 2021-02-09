@@ -100,10 +100,24 @@ let appData = {
         //сколько накопили за месяц
         return moneyMonth_ - expensesMonth_;
     },
-    getTargetMonth: function(aim, accum) {
+
+    //10) В методах getTargetMonth и getStatusIncome исправить переменные, все значения получаем от нашего объекта appData
+    getTargetMonth: function() {
         //за сколько месяцев будет достигнута цель
-        return Math.ceil(aim / accum);
+        //перенесли сюда
+        // let periodMission = appData.getTargetMonth(appData.mission, appData.budgetMonth);
+        let periodMission = Math.ceil(appData.mission / appData.budgetMonth);
+        
+        //проверяем сможем накопить или нет
+        if (periodMission > 0) {
+            console.log('Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)');
+        } else {
+            console.log('Цель не будет достигнута');
+        }
+        return periodMission;
     },
+        
+    //10) В методах getTargetMonth и getStatusIncome исправить переменные, все значения получаем от нашего объекта appData
     getStatusIncome: function(moneyOnDay) {
         //условия уровня дохода
         if (moneyOnDay >= 1200) {
@@ -139,14 +153,16 @@ console.log(appData.addExpenses); //вывод массив с доп расхо
 
 //за сколько целых месяцев мы сможем накопить
 //на нашу цель из остатка за месяц
+//10) В методах getTargetMonth и getStatusIncome исправить переменные, 
+//это действия внутри метода все значения получаем от нашего объекта appData
 let periodMission = appData.getTargetMonth(appData.mission, appData.budgetMonth);
 
-//проверяем сможем накопить или нет
-if (periodMission > 0) {
-    console.log('Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)');
-} else {
-    console.log('Цель не будет достигнута');
-}
+// //проверяем сможем накопить или нет
+// if (periodMission > 0) {
+//     console.log('Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)');
+// } else {
+//     console.log('Цель не будет достигнута');
+// }
 
 
 //вычисляем дневной бюджет
