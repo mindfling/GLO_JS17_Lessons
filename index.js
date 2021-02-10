@@ -3,12 +3,122 @@
  * Lesson09
  */
 
+ //buttons
+const startBtn = document.getElementById('start');
+const cancelBtn = document.getElementById('cancel');
+console.log('startBtn: ', startBtn);
+console.log('cancelBtn: ', cancelBtn);
 
+//other buttons
+const button = document.getElementsByTagName('button'); //HTMLCollection buttons
+const incomeAddBtn = button[0]; //
+const expensesAddBtn = button[1]; //
+console.log('button: ', button);
+console.log('incomeAddBtn: ', incomeAddBtn);
+console.log('expensesAddBtn: ', expensesAddBtn);
+
+
+
+
+//! то что слева data
+//*
+//Месячный доход salary
+const inputSalaryAmount = document.querySelector('.salary-amount');
+console.log('inputSalaryAmount: ', inputSalaryAmount);
+
+//*
+//Дополнительный доход income
+const inputIncomeTitle = document.querySelector('input.income-title');
+const inputIncomeAmount = document.querySelector('input.income-amount');
+console.log('inputIncomeTitle: ', inputIncomeTitle);
+console.log('inputIncomeAmount: ', inputIncomeAmount);
+
+//* const incomeAddBtn = button[0]; //
+
+
+//*
+// Возможный доход через запятую
+const additionalIncomeItem = document.querySelectorAll('.additional_income-item');
+console.log('additionalIncomeItem: ', additionalIncomeItem);
+
+//*
+// Обязательные расходы
+const inputExpensesTitle = document.querySelector('input.expenses-title');
+const inputExpensesAmount = document.querySelector('input.expenses-amount');
+console.log('inputExpensesTitle: ', inputExpensesTitle);
+console.log('inputExpensesAmount: ', inputExpensesAmount);
+
+
+//* const expensesAddBtn = button[1]; //
+
+//*
+// Возможные расходы <span>(перечислите через запятую)</span>
+const inputAdditionalExpensesItem = document.querySelector('input.additional_expenses-item');
+console.log('inputAdditionalExpensesItem: ', inputAdditionalExpensesItem);
+
+//*
+//check
+const depositCheck = document.querySelector('#deposit-check');
+console.log('depositCheck: ', depositCheck);
+
+//*
+const selectDepositBank = document.querySelector('.deposit-bank');
+console.log('selectDepositBank: ', selectDepositBank);
+
+
+//* .deposit-calc
+const inputDepositAmount = document.querySelector('.input.deposit-amount'); //сумма депозита
+const inputDepositPercent = document.querySelector('.input.deposit-percent'); //процент депозита
+console.log('inputDepositAmount: ', inputDepositAmount);
+console.log('inputDepositPercent: ', inputDepositPercent);
+
+
+//*
+//цель сумма
+const inputTargetAmount = document.querySelector('.target-amount');
+console.log('inputTargetAmount: ', inputTargetAmount);
+
+//*
+//Период расчета
+const inputPeriodSelect = document.querySelector('input.period-select');
+const periodAmount = document.querySelector('.period-amount');
+console.log('inputPeriodSelect: ', inputPeriodSelect);
+console.log('periodAmount: ', periodAmount);
+
+
+
+
+// ! result результаты справа
+
+console.log('справа result');
+
+// Доход за месяц
+const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0];
+// Дневной бюджет
+const budgetDayValue = document.getElementsByClassName('budget_day-value')[0];
+// Расход за месяц
+const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0];
+// Возможные доходы
+const additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0];
+// Возможные расходы
+const additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0];
+// Накопления за период
+const incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
+// Срок достижения цели в месяцах
+const targetMonthValue = document.getElementsByClassName('target_month-value')[0];
+console.log('budgetMonthValue: ', budgetMonthValue);
+console.log('budgetDayValue: ', budgetDayValue);
+console.log('expensesMonthValue: ', expensesMonthValue);
+console.log('additionalIncomeValue: ', additionalIncomeValue);
+console.log('additionalExpensesValue: ', additionalExpensesValue);
+console.log('incomePeriodValue: ', incomePeriodValue);
+console.log('targetMonthValue: ', targetMonthValue);
+
+
+
+/*
+ЗАКОМЕНТИРОВАЛИ ДО СЛЕДУЮЩЕГО УРОКА
 //функция проверки ввода числа на цисле
-/**
- * @param {строка} number 
- * возвращает true если строку number можно полностью перевести в число
- */
 const isNumber = function name(number) {
     return !isNaN(parseInt(number)) && isFinite(number);
 };
@@ -197,3 +307,4 @@ for (let key in appData) {
         console.log(key, '->', appData[key]);
     }
 }
+*/
