@@ -4,7 +4,7 @@
  */
 
 //buttons
-const startBtn = document.getElementById('start');
+const startBtn = document.getElementById('start');   //? start
 const cancelBtn = document.getElementById('cancel');
 //другие кнопки buttons plus
 const buttons = document.getElementsByTagName('button'); //NodeList buttons 0, 1, ..
@@ -76,29 +76,39 @@ console.log('startBtn: ', startBtn);
 console.log('cancelBtn: ', cancelBtn);
 
 
-/*
-!ЗАКОМЕНТИРОВАЛИ ДО СЛЕДУЮЩЕГО УРОКА
+
+
+
+
+
+//!ЗАКОМЕНТИРОВАЛИ ДО СЛЕДУЮЩЕГО УРОКА
+
 //функция проверки ввода числа на цисле
 const isNumber = function name(number) {
     return !isNaN(parseInt(number)) && isFinite(number);
 };
 
 
-//вот так вводим наш доход за месяц
-const start = function () {
-    let money = 0;
-    do {
-        money = prompt('Введите ваш месячный доход в цифрах');//
-        }
-        while (!isNumber(money));
-        return +money;
-    };
+// ? вот так вводим наш доход за месяц
+// const start = function () {
+//     let money = 0;
+//     do {
+//         money = prompt('Введите ваш месячный доход в цифрах');//
+//         }
+//         while (!isNumber(money));
+//         return +money;
+//     };
 
 
-//основные данные приложения в объекте
+
+
+
+
+
+// ! основные данные приложения в объекте appData
 let appData = {
 
-    budget: start(), // по сути принимать значение money 
+    budget: 0, // *4 по сути принимать значение money 
     income: {},    // основной доход
     addIncome: [], // доп доход
     expenses: {},    // обязательные расходы
@@ -111,21 +121,43 @@ let appData = {
     budgetDay: 0, //бюджет на день
     budgetMonth: 0, //бюджет на месяц
     expensesMonth: 0, // расходы на месяц
+    
+    start: function () { // *1
+            // *4
+            if (inputSalaryAmount.value === '') {
+                alert('Ошибка, поле Месячный доход должно быть заполнено');
+                return;
+            };
 
+            appData.budget = inputSalaryAmount.value;
+            console.log('inputSalaryAmount.value: ', inputSalaryAmount.value);
+
+            // *2 appData.asking(); //спрашиваем пользователя
+            // *2 appData.getExpensesMonth(); //расчет обязательных расходов
+            // *2 appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
+            // *2 appData.getInfoDeposit(); //расчет информации по депозиту    
+    },
+
+    addExpensesBlock: function () { // *6
+        let expensesItem = document.querySelector('.expenses-items'); //block
+        console.log('expensesItem: ', expensesItem);
+
+        //родитель
+        
+    },
+    
     asking: function() {
-
         //вводим дополнительный источник заработка
         if (confirm('Есть ли у вас дополнительный заработок?')) { //
-
             //проверка строки дополнительного заработка
             //отсекаем строки с цифрами в начале
             let itemIncome = '';
+            let cashIncome = 0;
+
             do {
                 itemIncome = prompt('Какой у вас источник дополнительного заработка? Введите строку', 'таксую'); //str
             } while (isFinite(itemIncome));
-            
             //проверка ввода дополнительного источника заработка
-            let cashIncome = 0;
             do {
                 cashIncome = prompt('Сколько в месяц зарабатываете на этом? Введите число', 10000); //numb
             } while (!isNumber(cashIncome));
@@ -133,8 +165,7 @@ let appData = {
             appData.income[itemIncome] = cashIncome;
         }
 
-        //спрашиваем доп расходы
-        //проверяем на ввод null и ' '
+        //спрашиваем доп расходы ,проверяем на ввод null и ' '
         let addExpenses = '';
         do {
             addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 
@@ -231,36 +262,44 @@ let appData = {
 }; //appData
 
 
-// Вызвать все необходимые методы после объекта (порядок очень важен)
-appData.asking(); //спрашиваем пользователя
-appData.getExpensesMonth(); //расчет обязательных расходов
-appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
+//! привязываем слушатели событий
 
-appData.getInfoDeposit();
+// *00 клик на кнопку start
+startBtn.addEventListener('click', appData.start);
 
-
-
-//расходы за месяц
-console.log('Расходы за месяц', appData.expensesMonth);
-//за сколько целых месяцев мы сможем накопить
-console.log(appData.getTargetMonth());
-//уровень дохода
-console.log(appData.getStatusIncome());
-
-console.log('Накопленные средства', appData.calcSavedMoney());
+// *5 клик на кнопку плюс
+//expensesAddBtn.addEventListener('click', appData.addExpensesBlock);
 
 
-//2) Возможные расходы (addExpenses) вывести строкой в консоль 
+
+
+// * 2 Вызвать все необходимые методы после объекта (порядок очень важен)
+//appData.asking(); //спрашиваем пользователя
+//appData.getExpensesMonth(); //расчет обязательных расходов
+//appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
+//appData.getInfoDeposit(); //расчет информации по депозиту
+
+
+// *3 почистить выводы в консоль
+// *3 console.log('Расходы за месяц', appData.expensesMonth); //расходы за месяц
+// *3 console.log(appData.getTargetMonth()); //за сколько целых месяцев мы сможем накопить
+// *3 console.log(appData.getStatusIncome()); //уровень дохода
+// *3 console.log('Накопленные средства', appData.calcSavedMoney());
+
+
+// вывести Возможные расходы строкой в консоль 
 //каждое слово с большой буквы слова разделены запятой и пробелом
+// TODO 
+/*
 let resultStr = '';
 for (const elem of appData.addExpenses) {
     resultStr += elem[0].toUpperCase() + elem.slice(1) + ', ';
 }
 console.log(resultStr);
+*/
 
-
-///////////////////////////////////////////////////////////
-
+// TODO /*** */
+/*
 console.log('\nНаша программа включает в себя данные: ');
 for (let key in appData) {
     if (appData.hasOwnProperty(key)) {
