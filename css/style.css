@@ -112,8 +112,8 @@ h1 {
 }
 
 .data .btn_plus:hover {
-	-webkit-box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
-	box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
+	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
+	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 }
 
 .data .additional_expenses-item,.data .salary-amount {
@@ -166,8 +166,8 @@ h1 {
 
 .data .deposit-label:hover input~.deposit-checkmark {
 	background-color: #ff7f63;
-	-webkit-box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
-	box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
+	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
+	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 }
 
 .data .deposit-label input:checked~.deposit-checkmark:after {
@@ -188,8 +188,8 @@ h1 {
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	margin: 0;
-	-webkit-box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
-	box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
+	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
+	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 	border: 1px solid #ff7f63;
 	background-color: #ff7f63;
 	cursor: pointer;
@@ -343,8 +343,8 @@ h1 {
 
 .result div {
 	width: 100%;
-	-webkit-box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
-	box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
+	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
+	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 	background-color: rgba(255,127,99,.26);
 	color: #353a43;
 	padding: 15px 0 1px 20px;
@@ -418,11 +418,12 @@ h1 {
 	display: none;
 }
 
-.result #cancel,.result #start {
+.result #cancel,
+.result #start {
 	width: 262px;
 	height: 67px;
-	-webkit-box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
-	box-shadow: inset 2px 3px 7px rgba(0,0,0,.35);
+	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
+	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 	background-color: #353a43;
 	color: #fff;
 	font-size: 20px;
@@ -434,7 +435,8 @@ h1 {
 	outline: transparent;
 }
 
-.result #cancel:hover,.result #start:hover {
+.result #cancel:hover,
+.result #start:hover {
 	opacity: .7;
 }
 

@@ -1,9 +1,9 @@
 'use strict';
 /**
- * Lesson09
+ * Lesson11
  */
 
- //buttons
+//buttons
 const startBtn = document.getElementById('start');
 const cancelBtn = document.getElementById('cancel');
 
@@ -12,8 +12,7 @@ const buttons = document.getElementsByTagName('button'); //HTMLCollection button
 const incomeAddBtn = buttons[0]; //
 const expensesAddBtn = buttons[1]; //
 
-
-//!инпуты слева data
+//! data весь блок с inputs слева
 
 //Месячный доход salary
 const inputSalaryAmount = document.querySelector('.salary-amount');
@@ -25,7 +24,9 @@ const inputIncomeAmount = document.querySelector('input.income-amount');
 //* const incomeAddBtn = button[0]; //
 
 // Возможный доход через запятую
-const additionalIncomeItem = document.querySelectorAll('.additional_income-item');
+const additionalIncomeItem = document.querySelectorAll(
+  '.additional_income-item'
+);
 
 // Обязательные расходы
 const inputExpensesTitle = document.querySelector('input.expenses-title');
@@ -34,7 +35,9 @@ const inputExpensesAmount = document.querySelector('input.expenses-amount');
 //* const expensesAddBtn = button[1]; //
 
 // Возможные расходы <span>(перечислите через запятую)</span>
-const inputAdditionalExpensesItem = document.querySelector('input.additional_expenses-item');
+const inputAdditionalExpensesItem = document.querySelector(
+  'input.additional_expenses-item'
+);
 
 //check галочка наличие депозита
 const depositCheck = document.querySelector('#deposit-check');
@@ -54,22 +57,38 @@ const inputPeriodSelect = document.querySelector('input.period-select');
 const periodAmount = document.querySelector('.period-amount');
 
 
-
-//! вывод справа result
+//! result весь блок с результатами справа 
 // Доход за месяц
-const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0];
+const budgetMonthValue = document.getElementsByClassName(
+  'budget_month-value'
+)[0];
 // Дневной бюджет
 const budgetDayValue = document.getElementsByClassName('budget_day-value')[0];
 // Расход за месяц
-const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0];
+const expensesMonthValue = document.getElementsByClassName(
+  'expenses_month-value'
+)[0];
 // Возможные доходы
-const additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0];
+const additionalIncomeValue = document.getElementsByClassName(
+  'additional_income-value'
+)[0];
 // Возможные расходы
-const additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0];
+const additionalExpensesValue = document.getElementsByClassName(
+  'additional_expenses-value'
+)[0];
 // Накопления за период
-const incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
+const incomePeriodValue = document.getElementsByClassName(
+  'income_period-value'
+)[0];
 // Срок достижения цели в месяцах
-const targetMonthValue = document.getElementsByClassName('target_month-value')[0];
+const targetMonthValue = document.getElementsByClassName(
+  'target_month-value'
+)[0];
+
+
+
+
+
 
 
 
