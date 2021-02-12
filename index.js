@@ -4,75 +4,91 @@
  */
 // ! регулярное выражение
 // ? ^[?!,.а-яА-ЯёЁ0-9\s]+$  кириллица пробелы и знаки
-//? ^[а-я]
 //? /^[?!.,a-zA-Z0-9\s]+$/ english symbols 
-//? ^beginstring
-//? endofstring$
+//? ^beginstring    endofstring$
+
 
 //buttons
-const startBtn = document.getElementById('start');   //? start
-const cancelBtn = document.getElementById('cancel');
-//другие кнопки buttons plus
-const buttons = document.getElementsByTagName('button'); //NodeList buttons 0, 1, ..
-// const incomeAddBtn = buttons[0]; //
-// const expensesAddBtn = buttons[1]; //
+const start = document.getElementById('start');   //? startBtn
+const cancel = document.getElementById('cancel'); //? cancelBtn
 
+
+//другие кнопки buttons plus
+const btnPlus = document.getElementsByTagName('button'); //NodeList buttons 0, 1, ..
 
 //! data весь блок с input слева
 
+const salaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
 
-const inputSalaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
-const inputIncomeTitle = document.querySelector('input.income-title'); //Дополнительный доход income title
-const inputIncomeAmount = document.querySelector('input.income-amount'); //Дополнительный доход income размер
+const incomeTitle = document.querySelector('input.income-title'); //Дополнительный доход income title
+const incomeAmount = document.querySelector('input.income-amount'); //Дополнительный доход income размер
 
-const incomeAddBtn = buttons[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
+const incomePlus = btnPlus[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
 
-const additionalIncomeItem = document.querySelectorAll('.additional_income-item'); // Возможный доход через запятую
-const inputExpensesTitle = document.querySelector('input.expenses-title'); // Обязательные расходы наименование
-const inputExpensesAmount = document.querySelector('input.expenses-amount'); // Обязательные расходы размер
-let expensesItems = document.querySelectorAll('.expenses-items'); // * 08:22 block
+const additionalIncomeItem = document.querySelectorAll('.additional_income-item'); //? Возможный доход через запятую
+const expensesTitle = document.querySelector('input.expenses-title'); // Обязательные расходы наименование
+const expensesAmount = document.querySelector('input.expenses-amount'); // Обязательные расходы размер
+let   expensesItems = document.querySelectorAll('.expenses-items'); // * 08:22 block
 
-const expensesAddBtn = buttons[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
+const expensesPlus = btnPlus[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
 
-const inputAdditionalExpensesItem = document.querySelector('input.additional_expenses-item'); // Возможные расходы <span>(перечислите через запятую)</span>
-const depositCheck = document.querySelector('#deposit-check'); //check галочка наличие депозита
+const additionalExpenses = document.querySelector('additional_expenses');
+
+const additionalExpensesItem = document.querySelector('input.additional_expenses-item'); // Возможные расходы <span>(перечислите через запятую)</span>
+const depositCheck = document.querySelector('#deposit-check'); //? check галочка наличие депозита
 const selectDepositBank = document.querySelector('.deposit-bank'); //* выбор банка скрыто
-const inputDepositAmount = document.querySelector('.input.deposit-amount'); //сумма депозита .deposit-calc скрыто
-const inputDepositPercent = document.querySelector('.input.deposit-percent'); //процент депозита .deposit-calc скрыто
-const inputTargetAmount = document.querySelector('.target-amount'); //цель сумма
-const inputPeriodSelect = document.querySelector('input.period-select'); //Выбор Периода расчета 
+const depositAmount = document.querySelector('.input.deposit-amount'); //сумма депозита .deposit-calc скрыто
+const depositPercent = document.querySelector('.input.deposit-percent'); //процент депозита .deposit-calc скрыто
+const targetAmount = document.querySelector('.target-amount'); //цель сумма
+
+const periodSelect = document.querySelector('input.period-select'); //Выбор Периода расчета 
 const periodAmount = document.querySelector('.period-amount'); //Период расчета отображение
+
+
+periodSelect.addEventListener('input', (event) => {
+        
+    console.log('periodSelect: ', periodSelect);
+    console.log('periodSelect: ', periodSelect.value);
+    
+
+    let value = event.target.value;
+    console.log('value: ', value);
+    periodAmount.textContent = value;
+});
+
 
 
 //! result весь блок с результатами справа //
 
-const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0]; // Доход за месяц
-const budgetDayValue = document.getElementsByClassName('budget_day-value')[0]; // Дневной бюджет
-const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0]; // Расход за месяц
+const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0]; //? Доход за месяц
+const budgetDayValue = document.getElementsByClassName('budget_day-value')[0]; //? Дневной бюджет
+const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0]; //? Расход за месяц
 const additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0]; // Возможные доходы
 const additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0]; // Возможные расходы
-const incomePeriodValue = document.getElementsByClassName('income_period-value')[0]; // Накопления за период
+const accumulatedMonthValue = document.getElementsByClassName('accumulated_month-value'); //? accumulatedMonthValue
+const incomePeriodValue = document.getElementsByClassName('income_period-value')[0]; //? incomePeriodValue Накопления за период 
 const targetMonthValue = document.getElementsByClassName('target_month-value')[0]; // Срок достижения цели в месяцах
 
 
-// * console.log('button: ', buttons);
+// * console.log('button: ', btnPlus);
 
-console.log('inputSalaryAmount: ', inputSalaryAmount);
-console.log('inputIncomeTitle: ', inputIncomeTitle);
-console.log('inputIncomeAmount: ', inputIncomeAmount);
+console.log('salaryAmount: ', salaryAmount);
+console.log('incomeTitle: ', incomeTitle);
+console.log('incomeAmount: ', incomeAmount);
+
+console.log('incomePlus: ', incomePlus);
 console.log('additionalIncomeItem: ', additionalIncomeItem);
-console.log('incomeAddBtn: ', incomeAddBtn);
 console.log('expensesItems: ', expensesItems);
-console.log('inputExpensesTitle: ', inputExpensesTitle);
-console.log('inputExpensesAmount: ', inputExpensesAmount);
-console.log('expensesAddBtn: ', expensesAddBtn);
-console.log('inputAdditionalExpensesItem: ', inputAdditionalExpensesItem);
+console.log('expensesTitle: ', expensesTitle);
+console.log('expensesAmount: ', expensesAmount);
+console.log('expensesPlus: ', expensesPlus);
+console.log('additionalExpensesItem: ', additionalExpensesItem);
 console.log('depositCheck: ', depositCheck);
 console.log('selectDepositBank: ', selectDepositBank);
-console.log('inputDepositAmount: ', inputDepositAmount);
-console.log('inputDepositPercent: ', inputDepositPercent);
-console.log('inputTargetAmount: ', inputTargetAmount);
-console.log('inputPeriodSelect: ', inputPeriodSelect);
+console.log('depositAmount: ', depositAmount);
+console.log('depositPercent: ', depositPercent);
+console.log('targetAmount: ', targetAmount);
+console.log('periodSelect: ', periodSelect);
 console.log('periodAmount: ', periodAmount);
 
 console.log('budgetMonthValue: ', budgetMonthValue);
@@ -80,12 +96,12 @@ console.log('budgetDayValue: ', budgetDayValue);
 console.log('expensesMonthValue: ', expensesMonthValue);
 console.log('additionalIncomeValue: ', additionalIncomeValue);
 console.log('additionalExpensesValue: ', additionalExpensesValue);
+console.log('accumulatedMonthValue: ', accumulatedMonthValue);
 console.log('incomePeriodValue: ', incomePeriodValue);
 console.log('targetMonthValue: ', targetMonthValue);
 
-console.log('startBtn: ', startBtn);
-console.log('cancelBtn: ', cancelBtn);
-
+console.log('start: ', start);
+console.log('cancel: ', cancel);
 
 
 
@@ -115,13 +131,13 @@ let appData = {
     start: function () { // *1
         // * 02:30
         //проверка на пустую строку
-        if (inputSalaryAmount.value === '') {
+        if (salaryAmount.value === '') {
             alert('Ошибка, поле Месячный доход должно быть заполнено');
             return;
         }
         
-        appData.budget = inputSalaryAmount.value;
-        console.log('inputSalaryAmount.value: ', inputSalaryAmount.value);
+        appData.budget = salaryAmount.value;
+        console.log('salaryAmount.value: ', salaryAmount.value);
         
         appData.getExpenses(); // * 09:45
         
@@ -133,24 +149,30 @@ let appData = {
         //?appData.getInfoDeposit(); //расчет информации по депозиту    
         appData.showResult();
     },
-    showResult: function () { // * 14:30
+
+    showResult: function () { // 
         //выводим результаты вычисления в правый блок data
+        let value = salaryAmount.value; //? TEST 
+        value %= 12; //? TEST
+
+        periodSelect.value = value; //? НОВОЕ ЗНАЧЕНИЕ INPUT RANGE
+        periodAmount.textContent = value;
+
         budgetMonthValue.value = appData.budgetMonth;
         budgetDayValue.value = appData.budgetDay;
         expensesMonthValue.value = appData.expensesMonth;
 
-        console.log('appData: ', appData);
     },
     addExpensesBlock: function () { // * 04:05 метод добавления новых полей
        
         expensesItems = document.querySelectorAll('.expenses-items'); // * 06:50 block узнаем текущее состояние блока
         let cloneExpensesItems = expensesItems[0].cloneNode(true); // *7 клонируем блок делаем глубокую копию true
-        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesAddBtn); //вставляем копию блока до кнопки
+        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesPlus); //вставляем копию блока до кнопки
         
         expensesItems = document.querySelectorAll('.expenses-items'); //block обновляем состояние
         
         if (expensesItems.length === 3) {
-            expensesAddBtn.style.display = 'none'; //прячим кнопку после 3го раза
+            expensesPlus.style.display = 'none'; //прячим кнопку после 3го раза
         }
         console.log('expensesItems: ', expensesItems);
     },
@@ -273,10 +295,10 @@ let appData = {
 //! привязываем слушатели событий
 
 // * 01:17 клик на кнопку start
-startBtn.addEventListener('click', appData.start);
+start.addEventListener('click', appData.start);
 
 //  * 04:30 клик на кнопку плюс expensesPlus
-expensesAddBtn.addEventListener('click', appData.addExpensesBlock);
+expensesPlus.addEventListener('click', appData.addExpensesBlock);
 
 
 
