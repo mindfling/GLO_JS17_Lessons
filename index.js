@@ -44,7 +44,6 @@ const inputPeriodSelect = document.querySelector('input.period-select'); //Вы�
 const periodAmount = document.querySelector('.period-amount'); //Период расчета отображение
 
 
-
 //! result весь блок с результатами справа //
 
 const budgetMonthValue = document.getElementsByClassName('budget_month-value')[0]; // Доход за месяц
@@ -57,7 +56,7 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 
 
 // * console.log('button: ', buttons);
-/*
+
 console.log('inputSalaryAmount: ', inputSalaryAmount);
 console.log('inputIncomeTitle: ', inputIncomeTitle);
 console.log('inputIncomeAmount: ', inputIncomeAmount);
@@ -86,7 +85,7 @@ console.log('targetMonthValue: ', targetMonthValue);
 
 console.log('startBtn: ', startBtn);
 console.log('cancelBtn: ', cancelBtn);
-*/
+
 
 
 
@@ -125,15 +124,25 @@ let appData = {
         console.log('inputSalaryAmount.value: ', inputSalaryAmount.value);
         
         appData.getExpenses(); // * 09:45
+        
+        // * 14:00
+        appData.getExpensesMonth(); //расчет обязательных расходов
+        appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
 
-        // * appData.asking(); //спрашиваем пользователя
-        // * appData.getExpensesMonth(); //расчет обязательных расходов
-        // * appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
-        // * appData.getInfoDeposit(); //расчет информации по депозиту    
-
+        //?appData.asking(); //спрашиваем пользователя
+        //?appData.getInfoDeposit(); //расчет информации по депозиту    
+        appData.showResult();
     },
-    
+    showResult: function () { // * 14:30
+        //выводим результаты вычисления в правый блок data
+        budgetMonthValue.value = appData.budgetMonth;
+        budgetDayValue.value = appData.budgetDay;
+        expensesMonthValue.value = appData.expensesMonth;
+
+        console.log('appData: ', appData);
+    },
     addExpensesBlock: function () { // * 04:05 метод добавления новых полей
+       
         expensesItems = document.querySelectorAll('.expenses-items'); // * 06:50 block узнаем текущее состояние блока
         let cloneExpensesItems = expensesItems[0].cloneNode(true); // *7 клонируем блок делаем глубокую копию true
         expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesAddBtn); //вставляем копию блока до кнопки
@@ -145,8 +154,7 @@ let appData = {
         }
         console.log('expensesItems: ', expensesItems);
     },
-    // * 09:00
-    getExpenses: function () {
+    getExpenses: function () { // * 09:00
         expensesItems.forEach(function (item, index, arr) {
             // * 11:00 получаем значения инпутов
             let itemExpenses = item.querySelector('.expenses-title').value;
@@ -193,27 +201,6 @@ let appData = {
         appData.addExpenses = addExpenses.toLowerCase().split(', '); //вывод массив с доп расходами
         appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
         
-        // * 13:40 это цикл и его функционал мы перенесли в getExpenses
-        // for (let i = 0; i < 2; i++) {
-        //     let expenseKey = '';
-        //     //проверка на существование ключа строки расходов
-        //     do {
-        //         //проверка если введена НЕ строка
-        //         do {
-        //             expenseKey = prompt('Введите обязательную статью расходов'); //
-        //         } while (isFinite(expenseKey)); // (!isNaN(parseInt(expenseKey)));
-                
-        //     } while (appData.expenses.hasOwnProperty(expenseKey));
-
-        //     let answerValue = 0;
-        //     //проверка на корректность ввода числа
-        //     do {
-        //         answerValue = prompt('Во сколько это обойдется? Введите число!'); //
-        //     } while (!isNumber(answerValue));
-        //     appData.expenses[expenseKey] = +answerValue;
-        // }//for
-
-
     },
     
     getExpensesMonth: function() {
@@ -295,6 +282,7 @@ expensesAddBtn.addEventListener('click', appData.addExpensesBlock);
 
 
 // * 2 Вызвать все необходимые методы после объекта (порядок очень важен)
+// * перенесли в asking()
 //appData.asking(); //спрашиваем пользователя
 //appData.getExpensesMonth(); //расчет обязательных расходов
 //appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
