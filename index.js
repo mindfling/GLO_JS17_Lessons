@@ -2,6 +2,12 @@
 /**
  * Lesson11
  */
+// ! регулярное выражение
+// ? ^[?!,.а-яА-ЯёЁ0-9\s]+$  кириллица пробелы и знаки
+//? ^[а-я]
+//? /^[?!.,a-zA-Z0-9\s]+$/ english symbols 
+//? ^beginstring
+//? endofstring$
 
 //buttons
 const startBtn = document.getElementById('start');   //? start
@@ -14,17 +20,20 @@ const buttons = document.getElementsByTagName('button'); //NodeList buttons 0, 1
 
 //! data весь блок с input слева
 
+
 const inputSalaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
 const inputIncomeTitle = document.querySelector('input.income-title'); //Дополнительный доход income title
 const inputIncomeAmount = document.querySelector('input.income-amount'); //Дополнительный доход income размер
 
-const incomeAddBtn = buttons[0]; // КНОПКА + добавить поле ввода поля дополнительных доходов
+const incomeAddBtn = buttons[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
 
 const additionalIncomeItem = document.querySelectorAll('.additional_income-item'); // Возможный доход через запятую
 const inputExpensesTitle = document.querySelector('input.expenses-title'); // Обязательные расходы наименование
 const inputExpensesAmount = document.querySelector('input.expenses-amount'); // Обязательные расходы размер
+let expensesItems = document.querySelectorAll('.expenses-items'); // * 08:22 block
+console.log('expensesItems: ', expensesItems);
 
-const expensesAddBtn = buttons[1]; // КНОПКА + добавить поле ввода поля дополнительных расходов
+const expensesAddBtn = buttons[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
 
 const inputAdditionalExpensesItem = document.querySelector('input.additional_expenses-item'); // Возможные расходы <span>(перечислите через запятую)</span>
 const depositCheck = document.querySelector('#deposit-check'); //check галочка наличие депозита
@@ -78,9 +87,6 @@ console.log('cancelBtn: ', cancelBtn);
 
 
 
-
-
-
 //!ЗАКОМЕНТИРОВАЛИ ДО СЛЕДУЮЩЕГО УРОКА
 
 //функция проверки ввода числа на цисле
@@ -91,24 +97,21 @@ const isNumber = function name(number) {
 
 // ? вот так вводим наш доход за месяц
 // const start = function () {
-//     let money = 0;
-//     do {
-//         money = prompt('Введите ваш месячный доход в цифрах');//
-//         }
-//         while (!isNumber(money));
-//         return +money;
-//     };
-
-
-
-
-
-
-
-// ! основные данные приложения в объекте appData
+    //     let money = 0;
+    //     do {
+        //         money = prompt('Введите ваш месячный доход в цифрах');//
+        //         }
+        //         while (!isNumber(money));
+        //         return +money;
+        //     };
+        
+        
+        
+        
+        // ! основные данные приложения в объекте appData
 let appData = {
-
-    budget: 0, // *4 по сути принимать значение money 
+    
+    budget: 0, // * 02:15 money 
     income: {},    // основной доход
     addIncome: [], // доп доход
     expenses: {},    // обязательные расходы
@@ -123,29 +126,37 @@ let appData = {
     expensesMonth: 0, // расходы на месяц
     
     start: function () { // *1
-            // *4
-            if (inputSalaryAmount.value === '') {
-                alert('Ошибка, поле Месячный доход должно быть заполнено');
-                return;
-            };
-
-            appData.budget = inputSalaryAmount.value;
-            console.log('inputSalaryAmount.value: ', inputSalaryAmount.value);
-
-            // *2 appData.asking(); //спрашиваем пользователя
-            // *2 appData.getExpensesMonth(); //расчет обязательных расходов
-            // *2 appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
-            // *2 appData.getInfoDeposit(); //расчет информации по депозиту    
-    },
-
-    addExpensesBlock: function () { // *6
-        let expensesItem = document.querySelector('.expenses-items'); //block
-        console.log('expensesItem: ', expensesItem);
-
-        //родитель
+        // * 02:30
+        //проверка на пустую строку
+        if (inputSalaryAmount.value === '') {
+            alert('Ошибка, поле Месячный доход должно быть заполнено');
+            return;
+        }
         
+        appData.budget = inputSalaryAmount.value;
+        console.log('inputSalaryAmount.value: ', inputSalaryAmount.value);
+        
+        // * appData.asking(); //спрашиваем пользователя
+        // * appData.getExpensesMonth(); //расчет обязательных расходов
+        // * appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
+        // * appData.getInfoDeposit(); //расчет информации по депозиту    
     },
     
+    addExpensesBlock: function () { // * 04:05 метод добавления новых полей
+        //? expensesItem = document.querySelector('.expenses-items'); //block узнаем текущее состояние блока
+        expensesItems = document.querySelectorAll('.expenses-items'); // * 06:50 block узнаем текущее состояние блока
+        
+        let cloneExpensesItems = expensesItems[0].cloneNode(true); // *7 клонируем блок делаем глубокую копию true
+        //? expensesItem.parentNode.insertBefore(cloneExpensesItems, expensesAddBtn); //вставляем копию блока до кнопки
+        expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesAddBtn); //вставляем копию блока до кнопки
+        
+        expensesItems = document.querySelectorAll('.expenses-items'); //block обновляем состояние
+        if (expensesItems.length === 3) {
+            expensesAddBtn.style.display = 'none'; //прячим кнопку после 3го раза
+        }
+        console.log('expensesItems: ', expensesItems);
+    },
+    // * 09:00
     asking: function() {
         //вводим дополнительный источник заработка
         if (confirm('Есть ли у вас дополнительный заработок?')) { //
@@ -153,7 +164,7 @@ let appData = {
             //отсекаем строки с цифрами в начале
             let itemIncome = '';
             let cashIncome = 0;
-
+            
             do {
                 itemIncome = prompt('Какой у вас источник дополнительного заработка? Введите строку', 'таксую'); //str
             } while (isFinite(itemIncome));
@@ -161,20 +172,20 @@ let appData = {
             do {
                 cashIncome = prompt('Сколько в месяц зарабатываете на этом? Введите число', 10000); //numb
             } while (!isNumber(cashIncome));
-
+            
             appData.income[itemIncome] = cashIncome;
         }
-
+        
         //спрашиваем доп расходы ,проверяем на ввод null и ' '
         let addExpenses = '';
         do {
             addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 
-                                'еда, вода, интернет'); ///
+            'еда, вода, интернет'); ///
         } while (isFinite(addExpenses));
-
+        
         appData.addExpenses = addExpenses.toLowerCase().split(', '); //вывод массив с доп расходами
         appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
-
+        
         for (let i = 0; i < 2; i++) {
             let expenseKey = '';
             //проверка на существование ключа строки расходов
@@ -183,7 +194,7 @@ let appData = {
                 do {
                     expenseKey = prompt('Введите обязательную статью расходов'); //
                 } while (isFinite(expenseKey)); // (!isNaN(parseInt(expenseKey)));
-
+                
             } while (appData.expenses.hasOwnProperty(expenseKey));
 
             let answerValue = 0;
@@ -264,11 +275,11 @@ let appData = {
 
 //! привязываем слушатели событий
 
-// *00 клик на кнопку start
+// * 01:17 клик на кнопку start
 startBtn.addEventListener('click', appData.start);
 
-// *5 клик на кнопку плюс
-//expensesAddBtn.addEventListener('click', appData.addExpensesBlock);
+//  * 04:30 клик на кнопку плюс expensesPlus
+expensesAddBtn.addEventListener('click', appData.addExpensesBlock);
 
 
 
