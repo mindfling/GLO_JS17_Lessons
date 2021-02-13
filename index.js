@@ -45,17 +45,6 @@ const periodSelect = document.querySelector('input.period-select'); //Выбор
 const periodAmount = document.querySelector('.period-amount'); //Период расчета отображение
 
 
-periodSelect.addEventListener('input', (event) => {
-        
-    console.log('periodSelect: ', periodSelect);
-    console.log('periodSelect: ', periodSelect.value);
-    
-
-    let value = event.target.value;
-    console.log('value: ', value);
-    periodAmount.textContent = value;
-});
-
 
 
 //! result весь блок с результатами справа //
@@ -136,7 +125,7 @@ let appData = {
             return;
         }
         
-        appData.budget = salaryAmount.value;
+        appData.budget = +salaryAmount.value;
         console.log('salaryAmount.value: ', salaryAmount.value);
         
         appData.getExpenses(); // * 09:45
@@ -146,14 +135,16 @@ let appData = {
         appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
 
         //?appData.asking(); //спрашиваем пользователя
-        //?appData.getInfoDeposit(); //расчет информации по депозиту    
-        appData.showResult();
+        //?appData.getInfoDeposit(); //расчет информации по депозиту   
+        appData.getAddExpenses();
+        appData.showResult(); // * 15:45
     },
 
-    showResult: function () { // 
+    showResult: function () { // * 14:00
         //выводим результаты вычисления в правый блок data
         let value = salaryAmount.value; //? TEST 
         value %= 12; //? TEST
+
 
         periodSelect.value = value; //? НОВОЕ ЗНАЧЕНИЕ INPUT RANGE
         periodAmount.textContent = value;
@@ -161,6 +152,8 @@ let appData = {
         budgetMonthValue.value = appData.budgetMonth;
         budgetDayValue.value = appData.budgetDay;
         expensesMonthValue.value = appData.expensesMonth;
+
+        additionalExpensesValue.value = appData.addExpenses.join(', '); // * 18:35 собираем назад в строку
 
     },
     addExpensesBlock: function () { // * 04:05 метод добавления новых полей
@@ -183,15 +176,23 @@ let appData = {
             let cashExpenses = item.querySelector('.expenses-amount').value;
             // проверка на пустые поля
             if (itemExpenses !== '' && cashExpenses !== '') {
-
-                console.log(itemExpenses, " -> ", cashExpenses);
+                // console.log(itemExpenses, " -> ", cashExpenses);
                 //тогда записываем значения
                 appData.expenses[itemExpenses] = cashExpenses;
             }
-            
-            console.log('appData.expenses: ', appData.expenses);
-            // console.log(index, '->', item);
-            // console.log(item.querySelector('.expenses-title').value, "-> по цене ->", item.querySelector('.expenses-amount').value);
+            // console.log('appData.expenses: ', appData.expenses);
+        });
+    },
+    getAddExpenses: function () {
+        let addExpenses = additionalExpensesItem.value.split(', '); //разбираем строку на массив
+        appData.addExpenses = []; //обнуляем переменную
+        //перебираем массив по элементам
+        addExpenses.forEach(function (item) {
+            item = item.trim();
+            if (item !== '') {
+                appData.addExpenses.push(item);
+
+            }
         });
     },
     asking: function() {
@@ -226,13 +227,16 @@ let appData = {
     },
     
     getExpensesMonth: function() {
+        let sum = 0; //обнуляем переменную перед новым суммированием
         // расчет обязательныз расходов суммируем по полям expenses
         for (let key in appData.expenses) {
             //проверка на собственное свойство
             if (appData.expenses.hasOwnProperty(key)) {
-                appData.expensesMonth += +appData.expenses[key];
+                // appData.expensesMonth += +appData.expenses[key]; //?
+                sum += +appData.expenses[key];
             }
         }
+        appData.expensesMonth = sum;
     },
 
     getBudget: function() {
@@ -299,6 +303,16 @@ start.addEventListener('click', appData.start);
 
 //  * 04:30 клик на кнопку плюс expensesPlus
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
+
+
+periodSelect.addEventListener('input', event => {
+    // console.log('periodSelect: ', periodSelect);
+    // console.log('periodSelect: ', periodSelect.value);
+    let value = event.target.value;
+    console.log('value: ', value);
+    periodAmount.textContent = value;
+});
+
 
 
 
