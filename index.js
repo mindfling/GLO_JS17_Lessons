@@ -137,6 +137,7 @@ let appData = {
         //?appData.asking(); //спрашиваем пользователя
         //?appData.getInfoDeposit(); //расчет информации по депозиту   
         appData.getAddExpenses();
+        appData.getAddIncome();
         appData.showResult(); // * 15:45
     },
 
@@ -154,7 +155,7 @@ let appData = {
         expensesMonthValue.value = appData.expensesMonth;
 
         additionalExpensesValue.value = appData.addExpenses.join(', '); // * 18:35 собираем назад в строку
-
+        additionalIncomeValue.value = appData.addIncome.join(', '); // * 22:34 весь массив для вывода в поле
     },
     addExpensesBlock: function () { // * 04:05 метод добавления новых полей
        
@@ -195,6 +196,16 @@ let appData = {
             }
         });
     },
+    getAddIncome: function () {
+        appData.addIncome = [];
+
+        additionalIncomeItem.forEach(function (item) {
+            let itemValue = item.value.trim();
+            if (itemValue !== '') {
+                appData.addIncome.push(itemValue);
+            }
+        });
+    },
     asking: function() {
         //вводим дополнительный источник заработка
         if (confirm('Есть ли у вас дополнительный заработок?')) { //
@@ -225,8 +236,7 @@ let appData = {
         appData.deposit = confirm('Есть ли у вас депозит в банке?', true); //есть ли депозит
         
     },
-    
-    getExpensesMonth: function() {
+   getExpensesMonth: function() {
         let sum = 0; //обнуляем переменную перед новым суммированием
         // расчет обязательныз расходов суммируем по полям expenses
         for (let key in appData.expenses) {
