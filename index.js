@@ -166,33 +166,26 @@ let appData = {
 
     getIncome: function () {
         //!!!! на ДЗ 11
-        // * 29:20
-        //вводим источник заработка
-            //проверка строки заработка
-            //отсекаем строки с цифрами в начале
+        //* 29:20 вводим источник заработка
             let itemIncome = '';
             let cashIncome = 0;
             
-            // do {
-            //     itemIncome = prompt('Какой у вас источник дополнительного заработка? Введите строку', 'таксую'); //str
-            // } while (isFinite(itemIncome));
-            // //проверка ввода дополнительного источника заработка
-            // do {
-            //     cashIncome = prompt('Сколько в месяц зарабатываете на этом? Введите число', 10000); //numb
-            // } while (!isNumber(cashIncome));
-
-
-
-            // for (let key in appData.income) {  // * 30:00
-            //     appData.incomeMonth += +appData.income[key];
-            // }
-
-
-            
-            // appData.income[itemIncome] = cashIncome;
-
-
+            incomeItems.forEach(function(item) {
+                itemIncome = item.querySelector('.income-title').value.trim();
+                cashIncome = item.querySelector('.income-amount').value.trim();
+                if (itemIncome !== '' && cashIncome !== '') {
+                    appData.income[itemIncome] = cashIncome;
+                } else {
+                    alert('Заполнены не все поля дополнительных доходов');
+                    return; //?
+                }
+            });
+            // * 30:00 сразу же заполняем суммируем доп доходы за месяц
+            for (let key in appData.income) {  
+                appData.incomeMonth += +appData.income[key];
+            }
     },
+
     getAddExpenses: function () {
         let addExpenses = additionalExpensesItem.value.split(', '); //разбираем строку на массив
         appData.addExpenses = []; //обнуляем переменную
