@@ -135,18 +135,19 @@ let appData = {
     addExpensesBlock: function () { // * 04:05 добавление новых полей дополнительных расходов плюсику // expensesPlus
        
         let cloneExpensesItems = expensesItems[0].cloneNode(true); // *7 клонируем блок делаем глубокую копию true
+        cloneExpensesItems.querySelector('.expenses-title').value = '';
+        cloneExpensesItems.querySelector('.expenses-amount').value = '';
         expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesPlus); //вставляем копию блока до кнопки
-        expensesItems = document.querySelectorAll('.expenses-items'); // * 06:50 block узнаем текущее состояние блока
         
+        expensesItems = document.querySelectorAll('.expenses-items'); // * 06:50 block узнаем текущее состояние блока
         if (expensesItems.length === 3) {
             expensesPlus.style.display = 'none'; //прячим кнопку после 3го раза
         }
-        console.log("добавить новый блок расходов");
+        //console.log("добавить новый блок расходов");
     },
 
     addIncomeBlock: function () {
         // ! ДЗ 11
-
         let cloneIncomeBlock = incomeItems[0].cloneNode(true); //? глубоко кловнируем блок
         cloneIncomeBlock.querySelector('.income-title').value = ''; //? очищаем наименование
         cloneIncomeBlock.querySelector('.income-amount').value = ''; //? очищаем доход
@@ -157,13 +158,7 @@ let appData = {
             incomePlus.style.display = 'none'; //прячим кнопку после 3го раза
             console.log("прячем кнопку");
         }
-
-
-        console.log('incomeItems[0]: ', incomeItems[0].parentElement);
-        console.log('incomeItem ', incomeItems[0]);
-        console.log('cloneIncomeBlock: ', cloneIncomeBlock);
-
-        console.log("добавить новый блок доходов");
+        // console.log("добавить новый блок доходов");
     },
 
     getExpenses: function () { // * 09:00
@@ -182,15 +177,11 @@ let appData = {
         });
     },
 
-    getIncome: function () {
+    getIncome: function () { //подсчет дополнительных доходов
         //!!!! на ДЗ 11
-        //* 29:20 вводим источник заработка
-            let itemIncome = '';
-            let cashIncome = 0;
-
             incomeItems.forEach(function(item) {
-                itemIncome = item.querySelector('.income-title').value.trim();
-                cashIncome = item.querySelector('.income-amount').value.trim();
+                let itemIncome = item.querySelector('.income-title').value.trim();
+                let cashIncome = item.querySelector('.income-amount').value.trim();
                 if (itemIncome !== '' && cashIncome !== '') {
                     appData.income[itemIncome] = cashIncome;
                 } else {
@@ -198,9 +189,8 @@ let appData = {
                     return; //?
                 }
             });
-            //* обнуляем в самом начале
+            //* обнуляем в самом начале и суммируем доп доходы за месяц
             appData.incomeMonth = 0;
-            // * 30:00 сразу же заполняем суммируем доп доходы за месяц
             for (let key in appData.income) {  
                 appData.incomeMonth += +appData.income[key];
             }
