@@ -24,16 +24,16 @@ const btnPlus = document.getElementsByTagName('button'); //NodeList buttons 0, 1
 
 //! data весь блок с input слева
 const salaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
-const incomeTitle = document.querySelector('input.income-title'); //Дополнительный доход income title
+// * const incomeTitle = document.querySelector('input.income-title'); //Дополнительный доход income title
 // * 28:19 const incomeAmount = document.querySelector('input.income-amount'); //Дополнительный доход income размер
-const incomeItems = document.querySelectorAll('.income-items'); // * 28:30
+let incomeItems = document.querySelectorAll('.income-items'); // * 28:30
 
 const incomePlus = btnPlus[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
 
 const additionalIncomeItem = document.querySelectorAll('.additional_income-item'); //? Возможный доход через запятую
 const expensesTitle = document.querySelector('input.expenses-title'); // Обязательные расходы наименование
 const expensesAmount = document.querySelector('input.expenses-amount'); // Обязательные расходы размер
-let   expensesItems = document.querySelectorAll('.expenses-items'); // * 08:22 block
+let expensesItems = document.querySelectorAll('.expenses-items'); // * 08:22 block
 
 const expensesPlus = btnPlus[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
 
@@ -131,6 +131,7 @@ let appData = {
             alert('range changed');
         });
     },
+
     addExpensesBlock: function () { // * 04:05 добавление новых полей дополнительных расходов плюсику // expensesPlus
        
         let cloneExpensesItems = expensesItems[0].cloneNode(true); // *7 клонируем блок делаем глубокую копию true
@@ -140,11 +141,28 @@ let appData = {
         if (expensesItems.length === 3) {
             expensesPlus.style.display = 'none'; //прячим кнопку после 3го раза
         }
-        // console.log('expensesItems: ', expensesItems);
+        console.log("добавить новый блок расходов");
     },
 
     addIncomeBlock: function () {
         // ! ДЗ 11
+
+        let cloneIncomeBlock = incomeItems[0].cloneNode(true); //? глубоко кловнируем блок
+        cloneIncomeBlock.querySelector('.income-title').value = ''; //? очищаем наименование
+        cloneIncomeBlock.querySelector('.income-amount').value = ''; //? очищаем доход
+        incomeItems[0].parentElement.insertBefore(cloneIncomeBlock, incomePlus); //? добавляем перед кнопкой
+
+        incomeItems = document.querySelectorAll('.income-items');
+        if (incomeItems.length === 3) {
+            incomePlus.style.display = 'none'; //прячим кнопку после 3го раза
+            console.log("прячем кнопку");
+        }
+
+
+        console.log('incomeItems[0]: ', incomeItems[0].parentElement);
+        console.log('incomeItem ', incomeItems[0]);
+        console.log('cloneIncomeBlock: ', cloneIncomeBlock);
+
         console.log("добавить новый блок доходов");
     },
 
@@ -169,7 +187,7 @@ let appData = {
         //* 29:20 вводим источник заработка
             let itemIncome = '';
             let cashIncome = 0;
-            
+
             incomeItems.forEach(function(item) {
                 itemIncome = item.querySelector('.income-title').value.trim();
                 cashIncome = item.querySelector('.income-amount').value.trim();
@@ -180,6 +198,8 @@ let appData = {
                     return; //?
                 }
             });
+            //* обнуляем в самом начале
+            appData.incomeMonth = 0;
             // * 30:00 сразу же заполняем суммируем доп доходы за месяц
             for (let key in appData.income) {  
                 appData.incomeMonth += +appData.income[key];
@@ -281,13 +301,14 @@ let appData = {
 }; //appData
 
 
-//! привязываем слушатели событий
+//! привязываем слушатели событий !//
 
-// * 01:17 клик на кнопку start
+// * 01:17 клик на кнопку start Расчитать
 start.addEventListener('click', appData.start);
 
 //  * 04:30 клик на кнопку плюс expensesPlus
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
+incomePlus.addEventListener('click', appData.addIncomeBlock);
 
 
 periodSelect.addEventListener('input', event => {
