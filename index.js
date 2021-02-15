@@ -85,16 +85,19 @@ let appData = {
     expensesMonth: 0, // расходы на месяц
     incomeMonth: 0,
     
-    start: function () {
+    start: function () { //? запускает наше приложение при клике на РАСЧИТАТЬ
+/**
+ *  TODO ВРЕМЕННО ОТКЛЮЧИЛ ПРОВЕРКУ ДЛЯ ОТЛАДКИ         
         if (salaryAmount.value === '') {  //проверка на пустую строку
             alert('Ошибка, поле Месячный доход должно быть заполнено');
             return;
         }
+ */
         appData.budget = +salaryAmount.value;
         console.log('salaryAmount.value: ', salaryAmount.value);
         
         appData.getExpenses(); // * 09:45
-        appData.getIncome(); //  //  //
+        appData.getIncome(); // ! ДЗ 11
 
         // * 14:00
         appData.getExpensesMonth(); //расчет обязательных расходов
@@ -102,9 +105,10 @@ let appData = {
         appData.getAddExpenses();
         appData.getAddIncome();
 
-        appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
+        appData.getBudget(); // по смыслу считаем бюджет на месяц и на день
         appData.showResult(); // * 15:45
     },
+
     showResult: function () { // * 14:00
         //выводим результаты вычисления в правый блок data
         //* let value = salaryAmount.value; //? TEST 
@@ -121,6 +125,11 @@ let appData = {
 
         targetMonthValue.value = Math.ceil(appData.getTargetMonth());
         incomePeriodValue.value = appData.calcPeriod();
+
+        // ! добавить addEventListener()
+        periodSelect.addEventListener('change', function (event) {
+            alert('range changed');
+        });
     },
     addExpensesBlock: function () { // * 04:05 добавление новых полей дополнительных расходов плюсику // expensesPlus
        
@@ -134,17 +143,27 @@ let appData = {
         // console.log('expensesItems: ', expensesItems);
     },
 
+    addIncomeBlock: function () {
+        // ! ДЗ 11
+        console.log("добавить новый блок доходов");
+    },
+
     getExpenses: function () { // * 09:00
+        // проходимся по ключ:значению
         expensesItems.forEach(function (item, index, arr) {
             // * 11:00 получаем значения инпутов
-            let itemExpenses = item.querySelector('.expenses-title').value;
-            let cashExpenses = item.querySelector('.expenses-amount').value;
+            let itemExpenses = item.querySelector('.expenses-title').value.trim();
+            let cashExpenses = item.querySelector('.expenses-amount').value.trim();
             // проверка на пустые поля
             if (itemExpenses !== '' && cashExpenses !== '') {
-                appData.expenses[itemExpenses] = cashExpenses;
+                appData.expenses[itemExpenses] = +cashExpenses; //number
+            } else {
+                alert('Необходимо заполнить поля обязательных расходов'); //?
+                return; //?
             }
         });
     },
+
     getIncome: function () {
         //!!!! на ДЗ 11
         // * 29:20
@@ -154,23 +173,23 @@ let appData = {
             let itemIncome = '';
             let cashIncome = 0;
             
-            do {
-                itemIncome = prompt('Какой у вас источник дополнительного заработка? Введите строку', 'таксую'); //str
-            } while (isFinite(itemIncome));
-            //проверка ввода дополнительного источника заработка
-            do {
-                cashIncome = prompt('Сколько в месяц зарабатываете на этом? Введите число', 10000); //numb
-            } while (!isNumber(cashIncome));
+            // do {
+            //     itemIncome = prompt('Какой у вас источник дополнительного заработка? Введите строку', 'таксую'); //str
+            // } while (isFinite(itemIncome));
+            // //проверка ввода дополнительного источника заработка
+            // do {
+            //     cashIncome = prompt('Сколько в месяц зарабатываете на этом? Введите число', 10000); //numb
+            // } while (!isNumber(cashIncome));
 
 
 
-            for (let key in appData.income) {  // * 30:00
-                appData.incomeMonth += +appData.income[key];
-            }
+            // for (let key in appData.income) {  // * 30:00
+            //     appData.incomeMonth += +appData.income[key];
+            // }
 
 
             
-            appData.income[itemIncome] = cashIncome;
+            // appData.income[itemIncome] = cashIncome;
 
 
     },
@@ -198,7 +217,7 @@ let appData = {
     },
 
 
-    
+
    getExpensesMonth: function() {
         let sum = 0; //обнуляем переменную перед новым суммированием
         // расчет обязательныз расходов суммируем по полям expenses
