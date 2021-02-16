@@ -10,6 +10,17 @@
  * ? ^beginstring    endofstring$
  */
 
+const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
+const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
+
+inputNumber.forEach(function(item) {
+    console.log(item);
+    item.addEventListener('click', () => {
+        console.log('click');
+    });
+});
+
+
  //buttons
 const start = document.getElementById('start');   //? startBtn
 const cancel = document.getElementById('cancel'); //? cancelBtn
