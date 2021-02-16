@@ -80,7 +80,8 @@ let appData = {
     
     start: function () { //? запускает наше приложение при клике на РАСЧИТАТЬ
 /**
- *  TODO ВРЕМЕННО ОТКЛЮЧИЛ ПРОВЕРКУ ДЛЯ ОТЛАДКИ */     
+ *  TODO ВРЕМЕННО ОТКЛЮЧИЛ ПРОВЕРКУ ДЛЯ ОТЛАДКИ 
+ *  ! повесить на этот инпут отдельным слушатель */     
         if (salaryAmount.value === '') {  //проверка на пустую строку
             alert('Ошибка, поле Месячный доход должно быть заполнено');
             console.log('Ошибка, поле Месячный доход должно быть заполнено');
@@ -88,7 +89,7 @@ let appData = {
         }
  
         appData.budget = +salaryAmount.value;
-        console.log('salaryAmount.value: ', salaryAmount.value);
+        // console.log('salaryAmount.value: ', salaryAmount.value);
         
         appData.getExpenses(); // * 09:45
         appData.getIncome(); // ! ДЗ 11
@@ -155,7 +156,7 @@ let appData = {
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length === 3) {
             incomePlus.style.display = 'none'; //прячим кнопку после 3го раза
-            console.log("прячем кнопку");
+            // console.log("прячем кнопку");
         }
         // console.log("добавить новый блок доходов");
     },
@@ -281,12 +282,29 @@ let appData = {
     changePeriodAmount: function () {
         // * изменяет значение поля periodAmount под ползунком range periodSelect
         let value = periodSelect.value;
-        console.log('showresult value', value);
+        // console.log('showresult value', value);
         periodAmount.textContent = value;
         // * изменяет значение поля накопления за период при движении ползунка
         incomePeriodValue.value = appData.calcIncomePeriodValue();
     }
 }; //appData
+
+
+const disableAndAnableStart = function () {
+    let salaryAmount = document.querySelector('.salary-amount');
+
+    if (salaryAmount.value.trim() === '') {
+        // start.setAttribute('disabled');
+        start.disabled = 'true';
+        // console.log('start disabled');
+    } else {
+        // start.disabled = 'false';
+        start.removeAttribute('disabled');
+        // console.log('start anabled');
+    }
+};
+// * первый запуск для инициализации состояния кнопки
+disableAndAnableStart();
 
 
 
@@ -299,14 +317,19 @@ start.addEventListener('click', appData.start);
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 
-//! 4) Число под полоской (input type range) должно меняться в зависимости от позиции range, используем событие input
-periodSelect.addEventListener('input', event => {
-    let value = event.target.value;
-    console.log('Global value: ', value);
-    periodAmount.textContent = value;
-});
+//! Число под полоской (input type range) должно меняться в зависимости от позиции range, 
+//! используем событие input
+periodSelect.addEventListener('input', appData.changePeriodAmount);
 
+// periodSelect.addEventListener('input', event => {
+//     let value = event.target.value;
+//     console.log('Global value: ', value);
+//     periodAmount.textContent = value;
+// });
 
+// * изменения ввода в поле salaryAmount
+// ? salaryAmount.addEventListener('change', disableAndAnableStart);
+salaryAmount.addEventListener('input', disableAndAnableStart);
 
 
 
@@ -316,7 +339,6 @@ periodSelect.addEventListener('input', event => {
 //appData.getExpensesMonth(); //расчет обязательных расходов
 //appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
 //appData.getInfoDeposit(); //расчет информации по депозиту
-
 
 
 // *console.log('button: ', btnPlus);

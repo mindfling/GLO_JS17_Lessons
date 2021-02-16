@@ -446,6 +446,11 @@ h1 {
 	opacity: .7;
 }
 
+.result #cancel:disabled,
+.result #start:disabled {
+	opacity: .5;
+}
+
 .result #cancel:active,.result #start:active {
 	background-color: #ff7f63;
 	color: #fff;
