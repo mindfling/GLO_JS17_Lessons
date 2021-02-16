@@ -8,15 +8,9 @@
  * ? ^[?!,.а-яА-ЯёЁ0-9\s]+$  кириллица пробелы и знаки
  * ? /^[?!.,a-zA-Z0-9\s]+$/ english symbols 
  * ? ^beginstring    endofstring$
- * //еще еще еще
- * TODO плагин Better Comments
- * * еще использовать
- * ! важный комментарий
- * ? подвопросом
- * 
  */
 
-//buttons
+ //buttons
 const start = document.getElementById('start');   //? startBtn
 const cancel = document.getElementById('cancel'); //? cancelBtn
 
@@ -25,7 +19,7 @@ const btnPlus = document.getElementsByTagName('button'); //NodeList buttons 0, 1
 //! data весь блок с input слева
 const salaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
 // * const incomeTitle = document.querySelector('input.income-title'); //Дополнительный доход income title
-// * 28:19 const incomeAmount = document.querySelector('input.income-amount'); //Дополнительный доход income размер
+// * const incomeAmount = document.querySelector('input.income-amount'); //Дополнительный доход income размер
 let incomeItems = document.querySelectorAll('.income-items'); // * 28:30
 
 const incomePlus = btnPlus[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
@@ -99,11 +93,10 @@ let appData = {
         appData.getExpenses(); // * 09:45
         appData.getIncome(); // ! ДЗ 11
 
-        // * 14:00
         appData.getExpensesMonth(); //расчет обязательных расходов
-        //?appData.getInfoDeposit(); //расчет информации по депозиту   
         appData.getAddExpenses();
         appData.getAddIncome();
+        //?appData.getInfoDeposit(); //расчет информации по депозиту
 
         appData.getBudget(); // по смыслу считаем бюджет на месяц и на день
         appData.showResult(); // * 15:45
@@ -116,8 +109,8 @@ let appData = {
         //* periodSelect.value = value; //? НОВОЕ ЗНАЧЕНИЕ INPUT RANGE
         //* periodAmount.textContent = value;
 
-        budgetMonthValue.value = appData.budgetMonth;
-        budgetDayValue.value = appData.budgetDay;
+        budgetMonthValue.value = Math.floor(appData.budgetMonth); //! Округлить
+        budgetDayValue.value = Math.floor(appData.budgetDay); //! 3) Округлить вывод дневного бюджета
         expensesMonthValue.value = appData.expensesMonth;
 
         additionalExpensesValue.value = appData.addExpenses.join(', '); // * 18:35 собираем назад в строку
@@ -127,8 +120,16 @@ let appData = {
         incomePeriodValue.value = appData.calcPeriod();
 
         // ! добавить addEventListener()
-        periodSelect.addEventListener('change', function (event) {
-            alert('range changed');
+        //! 5) Добавить обработчик события внутри метода showResult, который будет отслеживать период 
+        //! и сразу менять значение в поле “Накопления за период” (После нажатия кнопки рассчитать, 
+        //! если меняем ползунок в range, “Накопления за период” меняются динамически аналогично 4-ому пункту)
+        periodSelect.addEventListener('input', function (event) {
+
+            let value = periodSelect.value;
+            console.log('showresult value', value);
+            periodAmount.textContent = value;
+
+            incomePeriodValue.value = appData.calcPeriod();
         });
     },
 
@@ -179,21 +180,21 @@ let appData = {
 
     getIncome: function () { //подсчет дополнительных доходов
         //!!!! на ДЗ 11
-            incomeItems.forEach(function(item) {
-                let itemIncome = item.querySelector('.income-title').value.trim();
-                let cashIncome = item.querySelector('.income-amount').value.trim();
-                if (itemIncome !== '' && cashIncome !== '') {
-                    appData.income[itemIncome] = cashIncome;
-                } else {
-                    alert('Заполнены не все поля дополнительных доходов');
-                    return; //?
-                }
-            });
-            //* обнуляем в самом начале и суммируем доп доходы за месяц
-            appData.incomeMonth = 0;
-            for (let key in appData.income) {  
-                appData.incomeMonth += +appData.income[key];
+        incomeItems.forEach(function(item) {
+            let itemIncome = item.querySelector('.income-title').value.trim();
+            let cashIncome = item.querySelector('.income-amount').value.trim();
+            if (itemIncome !== '' && cashIncome !== '') {
+                appData.income[itemIncome] = cashIncome;
+            } else {
+                alert('Заполнены не все поля дополнительных доходов');
+                return; //?
             }
+        });
+        //* обнуляем в самом начале и суммируем доп доходы за месяц
+        appData.incomeMonth = 0;
+        for (let key in appData.income) {  
+            appData.incomeMonth += +appData.income[key];
+        }
     },
 
     getAddExpenses: function () {
@@ -204,10 +205,10 @@ let appData = {
             item = item.trim();
             if (item !== '') {
                 appData.addExpenses.push(item);
-
             }
         });
     },
+
     getAddIncome: function () {
         appData.addIncome = [];
 
@@ -219,9 +220,7 @@ let appData = {
         });
     },
 
-
-
-   getExpensesMonth: function() {
+    getExpensesMonth: function() {
         let sum = 0; //обнуляем переменную перед новым суммированием
         // расчет обязательныз расходов суммируем по полям expenses
         for (let key in appData.expenses) {
@@ -237,7 +236,8 @@ let appData = {
     getBudget: function() {
         //расчет бюджетов
         appData.budgetMonth = appData.budget + appData.incomeMonth - appData.expensesMonth;
-        appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+        // appData.budgetDay = Math.floor(appData.budgetMonth / 30); //? округляем
+        appData.budgetDay = appData.budgetMonth / 30; //? округляем
     },
  
     getTargetMonth: function() {
@@ -300,12 +300,10 @@ start.addEventListener('click', appData.start);
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 
-
+//! 4) Число под полоской (input type range) должно меняться в зависимости от позиции range, используем событие input
 periodSelect.addEventListener('input', event => {
-    // console.log('periodSelect: ', periodSelect);
-    // console.log('periodSelect: ', periodSelect.value);
     let value = event.target.value;
-    console.log('value: ', value);
+    console.log('Global value: ', value);
     periodAmount.textContent = value;
 });
 
@@ -319,35 +317,6 @@ periodSelect.addEventListener('input', event => {
 //appData.getExpensesMonth(); //расчет обязательных расходов
 //appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
 //appData.getInfoDeposit(); //расчет информации по депозиту
-
-
-// *3 почистить выводы в консоль
-// *3 console.log('Расходы за месяц', appData.expensesMonth); //расходы за месяц
-// *3 console.log(appData.getTargetMonth()); //за сколько целых месяцев мы сможем накопить
-// *3 console.log(appData.getStatusIncome()); //уровень дохода
-// *3 console.log('Накопленные средства', appData.calcSavedMoney());
-
-
-// вывести Возможные расходы строкой в консоль 
-//каждое слово с большой буквы слова разделены запятой и пробелом
-// TODO 
-/*
-let resultStr = '';
-for (const elem of appData.addExpenses) {
-    resultStr += elem[0].toUpperCase() + elem.slice(1) + ', ';
-}
-console.log(resultStr);
-*/
-
-// TODO /*** */
-/*
-console.log('\nНаша программа включает в себя данные: ');
-for (let key in appData) {
-    if (appData.hasOwnProperty(key)) {
-        console.log(key, '->', appData[key]);
-    }
-}
-*/
 
 
 
