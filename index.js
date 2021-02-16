@@ -62,8 +62,8 @@ const isNumber = function name(number) {
 // ! основные данные приложения в объекте appData
 let appData = {
     
-    budget: 0, // * 02:15 money 
-    income: {},    // основной доход
+    budget: 0,  // *
+    income: {},   // основной доход
     addIncome: [], // доп доход
 
     expenses: {},    // обязательные расходы
@@ -72,8 +72,7 @@ let appData = {
     deposit: false, //есть ли депозит
     percentDeposit: 0,
     moneyDeposit: 0,
-    // * 24:12 mission: 50000, //цель накопить сумму
-    // * 27:00 period: 12,  //за какой период мы планируем накопить
+
     budgetDay: 0, //бюджет на день
     budgetMonth: 0, //бюджет на месяц
     expensesMonth: 0, // расходы на месяц
@@ -100,7 +99,7 @@ let appData = {
         //? appData.getInfoDeposit(); //расчет информации по депозиту
 
         appData.getBudget(); // по смыслу считаем бюджет на месяц и на день
-        appData.showResult(); // * 15:45
+        appData.showResult(); // заполняем все поля с результатами справа
     },
 
     showResult: function () { // * 14:00
@@ -121,21 +120,18 @@ let appData = {
         incomePeriodValue.value = appData.calcIncomePeriodValue();
 
         periodSelect = document.querySelector('input.period-select');
+        
+        
         // ! добавить addEventListener()
+        // ! и убрать removeEventListener()
         //! 5) Добавить обработчик события внутри метода showResult, который будет отслеживать период 
         //! и сразу менять значение в поле “Накопления за период” (После нажатия кнопки рассчитать, 
         //! если меняем ползунок в range, “Накопления за период” меняются динамически аналогично 4-ому пункту)
-
-
-
-
-        periodSelect.removeEventListener('input', changePeriodAmount, false);
-        periodSelect.removeEventListener('input', changePeriodAmount, true);
-        periodSelect.addEventListener('input', changePeriodAmount);
-
+        periodSelect.removeEventListener('input', appData.changePeriodAmount, false);
+        periodSelect.addEventListener('input', appData.changePeriodAmount);
     },
 
-    addExpensesBlock: function () { // * 04:05 добавление новых полей дополнительных расходов плюсику // expensesPlus
+    addExpensesBlock: function () { // * добавление новых полей дополнительных расходов плюсику // expensesPlus
        
         let cloneExpensesItems = expensesItems[0].cloneNode(true); // *7 клонируем блок делаем глубокую копию true
         cloneExpensesItems.querySelector('.expenses-title').value = '';
@@ -166,7 +162,7 @@ let appData = {
 
     getExpenses: function () { // * 09:00
         // проходимся по ключ:значению
-        expensesItems.forEach(function (item, index, arr) {
+        expensesItems.forEach(function (item) {
             // * 11:00 получаем значения инпутов
             let itemExpenses = item.querySelector('.expenses-title').value.trim();
             let cashExpenses = item.querySelector('.expenses-amount').value.trim();
@@ -244,17 +240,8 @@ let appData = {
  
     getTargetMonth: function() {
         //за сколько месяцев будет достигнута цель
-        // * 25:10 let periodMission = Math.ceil(appData.mission / appData.budgetMonth);
-        // * // let periodMission = Math.ceil(targetAmount.value / appData.budgetMonth);
-        let periodMission = targetAmount.value / appData.budgetMonth;
-        
-        // * проверяем сможем ли накопить или нет и возвращаем результат
-        // * if (periodMission > 0) {
-        // *     return 'Цель будет достигнута в течении ' + periodMission + ' месяцев(-в)';
-        // * } else {
-        // *     return 'Цель не будет достигнута';
-        // * }
-        return periodMission;
+        // let periodMission = targetAmount.value / appData.budgetMonth;
+        return targetAmount.value / appData.budgetMonth;
     },
         
     getStatusIncome: function() {
@@ -290,25 +277,25 @@ let appData = {
         // * возвращает накопления за период расчета
         // console.log('calcIncomePeriodValue:', appData.budgetMonth*periodSelect.value);
         return appData.budgetMonth * periodSelect.value;
+    },
+    changePeriodAmount: function () {
+        // * изменяет значение поля periodAmount под ползунком range periodSelect
+        let value = periodSelect.value;
+        console.log('showresult value', value);
+        periodAmount.textContent = value;
+        // * изменяет значение поля накопления за период при движении ползунка
+        incomePeriodValue.value = appData.calcIncomePeriodValue();
     }
 }; //appData
 
 
-function changePeriodAmount () {
-    let value = periodSelect.value;
-    console.log('showresult value', value);
-    periodAmount.textContent = value;
-
-    incomePeriodValue.value = appData.calcIncomePeriodValue();
-}
-
 
 //! привязываем слушатели событий !//
 
-// * 01:17 клик на кнопку start Расчитать
+// * вешаем клик на кнопку start Расчитать
 start.addEventListener('click', appData.start);
 
-//  * 04:30 клик на кнопку плюс expensesPlus
+// * клик на кнопку плюс expensesPlus и incomePlus
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 
