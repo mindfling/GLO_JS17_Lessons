@@ -101,20 +101,17 @@ let appData = {
     incomeMonth: 0,
     
     start: function () { //? запускает наше приложение при клике на РАСЧИТАТЬ
-/**
- *  TODO ВРЕМЕННО ОТКЛЮЧИЛ ПРОВЕРКУ ДЛЯ ОТЛАДКИ 
- *  ! повесить на этот инпут отдельным слушатель */     
-        if (salaryAmount.value === '') {  //проверка на пустую строку
-            alert('Ошибка, поле Месячный доход должно быть заполнено');
-            console.log('Ошибка, поле Месячный доход должно быть заполнено');
-            return;
-        }
+        console.log('1 start test this: ', this); //* button#start
+        
+        // TODO ВРЕМЕННО ОТКЛЮЧИЛ ПРОВЕРКУ ДЛЯ ОТЛАДКИ 
+        
+        // appData.start.bind(appData);
+        console.log('2 start test this: ', this); //* button#start
  
         appData.budget = +salaryAmount.value;
-        // console.log('salaryAmount.value: ', salaryAmount.value);
         
-        appData.getExpenses(); // * 09:45
-        appData.getIncome(); // ! ДЗ 11
+        appData.getExpenses();// *
+        appData.getIncome(); // *
 
         appData.getExpensesMonth(); //расчет обязательных расходов
         appData.getAddExpenses();
@@ -125,19 +122,17 @@ let appData = {
         appData.showResult(); // заполняем все поля с результатами справа
     },
 
-    showResult: function () { // * 14:00
-        //выводим результаты вычисления в правый блок data
-        //* let value = salaryAmount.value; //? TEST 
-        //* value %= 12; //? TEST
-        //* periodSelect.value = value; //? НОВОЕ ЗНАЧЕНИЕ INPUT RANGE
-        //* periodAmount.textContent = value;
+    showResult: function () { // *
+        //! выводим результаты вычисления в правый блок data
+
+        console.log('showresult test this', this); //* appData
 
         budgetMonthValue.value = Math.floor(appData.budgetMonth); //! Округлить
         budgetDayValue.value = Math.floor(appData.budgetDay); //! Округлить вывод дневного бюджета
         expensesMonthValue.value = appData.expensesMonth;
 
-        additionalExpensesValue.value = appData.addExpenses.join(', '); // * 18:35 собираем назад в строку
-        additionalIncomeValue.value = appData.addIncome.join(', '); // * 22:34 весь массив для вывода в поле
+        additionalExpensesValue.value = appData.addExpenses.join(', '); // * собираем назад весь масиив в строку
+        additionalIncomeValue.value = appData.addIncome.join(', '); // * собираем назад весь массив в строку для вывода в поле
 
         targetMonthValue.value = Math.ceil(appData.getTargetMonth());
         incomePeriodValue.value = appData.calcIncomePeriodValue();
@@ -330,7 +325,11 @@ disableAndAnableStart();
 //! привязываем слушатели событий !//
 
 // * вешаем клик на кнопку start Расчитать
+// обычный без биндинга
 start.addEventListener('click', appData.start);
+// набиндить обкт appData
+start.addEventListener('click', appData.start.bind(appData));
+
 
 // * клик на кнопку плюс expensesPlus и incomePlus
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
