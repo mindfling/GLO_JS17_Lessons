@@ -10,10 +10,11 @@ const isNumber = function name(number) {
 };
 
 
-// todo проверка на ввод символов кириллицы
+// todo проверка на ввод символов кириллицы ?!,. а-я А-Я ёЁ
 const handleCyrChars = function (event) {
     // срабатывает на ввод
-    event.target.value = event.target.value.replace(/[^\?\!,\.а-яА-ЯёЁ\s]/g, '');
+    // event.target.value = event.target.value.replace(/[^\?\!,\.а-яА-ЯёЁ\s]/g, '');
+    event.target.value = event.target.value.replace(/[^\?\!,\.а-яё\s]/ig, '');
 }
 
 // todo проверка на ввод цифр 0123456789 и точка .
@@ -103,29 +104,24 @@ let appData = {
     start: function () { //? запускает наше приложение при клике на РАСЧИТАТЬ
         console.log('1 start test this: ', this); //* button#start
         
-        // TODO ВРЕМЕННО ОТКЛЮЧИЛ ПРОВЕРКУ ДЛЯ ОТЛАДКИ 
+        this.budget = +salaryAmount.value;
         
-        // appData.start.bind(appData);
-        console.log('2 start test this: ', this); //* button#start
- 
-        appData.budget = +salaryAmount.value;
-        
-        appData.getExpenses();// *
-        appData.getIncome(); // *
+        this.getExpenses();// *
+        this.getIncome(); // *
 
-        appData.getExpensesMonth(); //расчет обязательных расходов
-        appData.getAddExpenses();
-        appData.getAddIncome();
-        //? appData.getInfoDeposit(); //расчет информации по депозиту
+        this.getExpensesMonth(); //расчет обязательных расходов
+        this.getAddExpenses();
+        this.getAddIncome();
+        //? this.getInfoDeposit(); //расчет информации по депозиту
 
-        appData.getBudget(); // по смыслу считаем бюджет на месяц и на день
-        appData.showResult(); // заполняем все поля с результатами справа
+        this.getBudget(); // по смыслу считаем бюджет на месяц и на день
+        this.showResult(); // заполняем все поля с результатами справа
     },
 
     showResult: function () { // *
         //! выводим результаты вычисления в правый блок data
 
-        console.log('showresult test this', this); //* appData
+        console.log('showresult test this:', this); //* appData
 
         budgetMonthValue.value = Math.floor(appData.budgetMonth); //! Округлить
         budgetDayValue.value = Math.floor(appData.budgetDay); //! Округлить вывод дневного бюджета
@@ -190,7 +186,7 @@ let appData = {
             if (itemExpenses !== '' && cashExpenses !== '') {
                 appData.expenses[itemExpenses] = +cashExpenses; //number
             } else {
-                console.log('Необходимо заполнить поля обязательных расходов'); //?
+                //? console.log('Необходимо заполнить поля обязательных расходов'); //?
                 return; //?
             }
         });
@@ -203,7 +199,7 @@ let appData = {
             if (itemIncome !== '' && cashIncome !== '') {
                 appData.income[itemIncome] = cashIncome;
             } else {
-                console.log('Заполнены не все поля дополнительных доходов');
+                //? console.log('Заполнены не все поля дополнительных доходов');
                 return; //?
             }
         });
@@ -290,13 +286,11 @@ let appData = {
     },
     calcIncomePeriodValue: function () {
         // * возвращает накопления за период расчета
-        // console.log('calcIncomePeriodValue:', appData.budgetMonth*periodSelect.value);
         return appData.budgetMonth * periodSelect.value;
     },
     changePeriodAmount: function () {
         // * изменяет значение поля periodAmount под ползунком range periodSelect
         let value = periodSelect.value;
-        // console.log('showresult value', value);
         periodAmount.textContent = value;
         // * изменяет значение поля накопления за период при движении ползунка
         incomePeriodValue.value = appData.calcIncomePeriodValue();
@@ -325,9 +319,10 @@ disableAndAnableStart();
 //! привязываем слушатели событий !//
 
 // * вешаем клик на кнопку start Расчитать
-// обычный без биндинга
-start.addEventListener('click', appData.start);
-// набиндить обкт appData
+// * обычный без биндинга
+// start.addEventListener('click', appData.start);
+// * набиндить обкт appData
+//! ДЗ 13 1) Привязать контекст вызова функции start к appData 
 start.addEventListener('click', appData.start.bind(appData));
 
 
@@ -339,42 +334,38 @@ incomePlus.addEventListener('click', appData.addIncomeBlock);
 periodSelect.addEventListener('input', appData.changePeriodAmount);
 
 
-// * изменения ввода в поле salaryAmount
-// ? salaryAmount.addEventListener('change', disableAndAnableStart);
+// * изменения ввода в поле salaryAmount слушатель на input (или на change)
 salaryAmount.addEventListener('input', disableAndAnableStart);
 
 
 
-// * Вызвать все необходимые методы после объекта (порядок очень важен)
-// * перенесли в asking()
-
-
-//*console.log('button: ', btnPlus);
-//*console.log('salaryAmount: ', salaryAmount);
-//*console.log('incomeTitle: ', incomeTitle);
-//*console.log('incomeAmount: ', incomeAmount);
-//*console.log('incomePlus: ', incomePlus);
-//*console.log('additionalIncomeItem: ', additionalIncomeItem);
-//*console.log('expensesItems: ', expensesItems);
-//*console.log('expensesTitle: ', expensesTitle);
-//*console.log('expensesAmount: ', expensesAmount);
-//*console.log('expensesPlus: ', expensesPlus);
-//*console.log('additionalExpensesItem: ', additionalExpensesItem);
-//*console.log('depositCheck: ', depositCheck);
-//*console.log('selectDepositBank: ', selectDepositBank);
-//*console.log('depositAmount: ', depositAmount);
-//*console.log('depositPercent: ', depositPercent);
-//*console.log('targetAmount: ', targetAmount);
-//*console.log('periodSelect: ', periodSelect);
-//*console.log('periodAmount: ', periodAmount);
-//*console.log('budgetMonthValue: ', budgetMonthValue);
-//*console.log('budgetDayValue: ', budgetDayValue);
-//*console.log('expensesMonthValue: ', expensesMonthValue);
-//*console.log('additionalIncomeValue: ', additionalIncomeValue);
-//*console.log('additionalExpensesValue: ', additionalExpensesValue);
-//*console.log('accumulatedMonthValue: ', accumulatedMonthValue);
-//*console.log('incomePeriodValue: ', incomePeriodValue);
-//*console.log('targetMonthValue: ', targetMonthValue);
-//*console.log('start: ', start);
-//*console.log('cancel: ', cancel);
-
+/** 
+console.log('button: ', btnPlus);
+console.log('salaryAmount: ', salaryAmount);
+console.log('incomeTitle: ', incomeTitle);
+console.log('incomeAmount: ', incomeAmount);
+console.log('incomePlus: ', incomePlus);
+console.log('additionalIncomeItem: ', additionalIncomeItem);
+console.log('expensesItems: ', expensesItems);
+console.log('expensesTitle: ', expensesTitle);
+console.log('expensesAmount: ', expensesAmount);
+console.log('expensesPlus: ', expensesPlus);
+console.log('additionalExpensesItem: ', additionalExpensesItem);
+console.log('depositCheck: ', depositCheck);
+console.log('selectDepositBank: ', selectDepositBank);
+console.log('depositAmount: ', depositAmount);
+console.log('depositPercent: ', depositPercent);
+console.log('targetAmount: ', targetAmount);
+console.log('periodSelect: ', periodSelect);
+console.log('periodAmount: ', periodAmount);
+console.log('budgetMonthValue: ', budgetMonthValue);
+console.log('budgetDayValue: ', budgetDayValue);
+console.log('expensesMonthValue: ', expensesMonthValue);
+console.log('additionalIncomeValue: ', additionalIncomeValue);
+console.log('additionalExpensesValue: ', additionalExpensesValue);
+console.log('accumulatedMonthValue: ', accumulatedMonthValue);
+console.log('incomePeriodValue: ', incomePeriodValue);
+console.log('targetMonthValue: ', targetMonthValue);
+console.log('start: ', start);
+console.log('cancel: ', cancel);
+ */
