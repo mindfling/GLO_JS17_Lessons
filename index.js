@@ -10,15 +10,63 @@
  * ? ^beginstring    endofstring$
  */
 
-const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
-const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
+// // * находим поля для заполнения по значению placeholder
+// const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
+// const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
 
-inputNumber.forEach(function(item) {
-    console.log(item);
-    item.addEventListener('click', () => {
-        console.log('click');
+
+// const handleLatChars = function (event) {
+//     // * функция проверки на ввод латинских символов
+
+//     //заменяем все кроме перечисленных символов
+//     event.target.value = event.target.value.replace(/[^?!.,A-Za-z\s]/g, '');
+
+//     // let target = event.target;
+//     // let value = event.target.value.replace(/[^?!.,A-Za-z\s]/g, ''); 
+//     // target.value = value;
+//     // console.log('value: ', value);
+
+//     // if ( newvalue.match(/^[^A-z]+$/) ) {
+//     //     event.target.value = value;
+//     //     return;
+//     // }
+// };
+
+
+// todo проверка на ввод символов кириллицы
+
+const handleCyrChars = function (event) {
+    // срабатывает на ввод
+    event.target.value = event.target.value.replace(/[^?!,.а-яА-ЯёЁ\s]/g, '');
+}
+
+// todo проверка на ввод цифр 0123456789 и точка .
+
+const handleNubmers = function (event) {
+    let value = event.target.value;
+    //срабатывает на замену всех символов которые не подходят под шаблон
+    value = value.replace(/[^0-9.]/g, '');
+    event.target.value = value;
+};
+
+const setListeners = function () {
+
+    // * находим поля для заполнения по значению placeholder
+    const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
+    const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]'); 
+
+    // * цепляем соответствующие слушатели на соответствующие элементы
+    inputString.forEach(function (item) {
+        // item.addEventListener('input', handleLatChars);
+        item.addEventListener('input', handleCyrChars);
     });
-});
+    inputNumber.forEach(function (item) {
+        item.addEventListener('input', handleNubmers);
+    });
+};
+setListeners();
+
+
 
 
  //buttons
@@ -29,8 +77,6 @@ const btnPlus = document.getElementsByTagName('button'); //NodeList buttons 0, 1
 
 //! data весь блок с input слева
 const salaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
-// * const incomeTitle = document.querySelector('input.income-title'); //Дополнительный доход income title
-// * const incomeAmount = document.querySelector('input.income-amount'); //Дополнительный доход income размер
 let incomeItems = document.querySelectorAll('.income-items'); // * 28:30
 
 const incomePlus = btnPlus[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
@@ -143,33 +189,37 @@ let appData = {
         periodSelect.addEventListener('input', appData.changePeriodAmount);
     },
 
-    addExpensesBlock: function () { // * добавление новых полей дополнительных расходов плюсику // expensesPlus
-       
-        let cloneExpensesItems = expensesItems[0].cloneNode(true); // *7 клонируем блок делаем глубокую копию true
+    addExpensesBlock: function () {
+        // * добавление новых полей дополнительных расходов плюсику // expensesPlus
+        let cloneExpensesItems = expensesItems[0].cloneNode(true); // * клонируем блок делаем глубокую копию true
         cloneExpensesItems.querySelector('.expenses-title').value = '';
         cloneExpensesItems.querySelector('.expenses-amount').value = '';
         expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesPlus); //вставляем копию блока до кнопки
         
-        expensesItems = document.querySelectorAll('.expenses-items'); // * 06:50 block узнаем текущее состояние блока
+        expensesItems = document.querySelectorAll('.expenses-items'); // * expenses block узнаем текущее состояние блока
         if (expensesItems.length === 3) {
             expensesPlus.style.display = 'none'; //прячим кнопку после 3го раза
         }
         //console.log("добавить новый блок расходов");
+        // * в конце еще раз вешаем слушатели на наши поля
+        setListeners();
     },
-
+    
     addIncomeBlock: function () {
         // ! ДЗ 11
         let cloneIncomeBlock = incomeItems[0].cloneNode(true); //? глубоко кловнируем блок
         cloneIncomeBlock.querySelector('.income-title').value = ''; //? очищаем наименование
         cloneIncomeBlock.querySelector('.income-amount').value = ''; //? очищаем доход
         incomeItems[0].parentElement.insertBefore(cloneIncomeBlock, incomePlus); //? добавляем перед кнопкой
-
+        
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length === 3) {
             incomePlus.style.display = 'none'; //прячим кнопку после 3го раза
             // console.log("прячем кнопку");
         }
         // console.log("добавить новый блок доходов");
+        // * в конце еще раз вешаем слушатели на наши поля
+        setListeners();
     },
 
     getExpenses: function () { // * 09:00
