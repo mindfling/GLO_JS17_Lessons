@@ -1,47 +1,22 @@
 'use strict';
 /**
- * * Lesson11
- */
-/** 
- * ! регулярное выражение
- * todo сделать это оранжевым
- * ? ^[?!,.а-яА-ЯёЁ0-9\s]+$  кириллица пробелы и знаки
- * ? /^[?!.,a-zA-Z0-9\s]+$/ english symbols 
- * ? ^beginstring    endofstring$
+ * * Lesson13
  */
 
-// // * находим поля для заполнения по значению placeholder
-// const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
-// const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
 
-
-// const handleLatChars = function (event) {
-//     // * функция проверки на ввод латинских символов
-
-//     //заменяем все кроме перечисленных символов
-//     event.target.value = event.target.value.replace(/[^?!.,A-Za-z\s]/g, '');
-
-//     // let target = event.target;
-//     // let value = event.target.value.replace(/[^?!.,A-Za-z\s]/g, ''); 
-//     // target.value = value;
-//     // console.log('value: ', value);
-
-//     // if ( newvalue.match(/^[^A-z]+$/) ) {
-//     //     event.target.value = value;
-//     //     return;
-//     // }
-// };
+//функция проверки ввода числа на цисле
+const isNumber = function name(number) {
+    return !isNaN(parseInt(number)) && isFinite(number);
+};
 
 
 // todo проверка на ввод символов кириллицы
-
 const handleCyrChars = function (event) {
     // срабатывает на ввод
-    event.target.value = event.target.value.replace(/[^?!,.а-яА-ЯёЁ\s]/g, '');
+    event.target.value = event.target.value.replace(/[^\?\!,\.а-яА-ЯёЁ\s]/g, '');
 }
 
 // todo проверка на ввод цифр 0123456789 и точка .
-
 const handleNubmers = function (event) {
     let value = event.target.value;
     //срабатывает на замену всех символов которые не подходят под шаблон
@@ -50,11 +25,9 @@ const handleNubmers = function (event) {
 };
 
 const setListeners = function () {
-
     // * находим поля для заполнения по значению placeholder
     const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
     const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]'); 
-
     // * цепляем соответствующие слушатели на соответствующие элементы
     inputString.forEach(function (item) {
         // item.addEventListener('input', handleLatChars);
@@ -65,8 +38,6 @@ const setListeners = function () {
     });
 };
 setListeners();
-
-
 
 
  //buttons
@@ -108,12 +79,6 @@ const accumulatedMonthValue = document.getElementsByClassName('accumulated_month
 const incomePeriodValue = document.getElementsByClassName('income_period-value')[0]; //? incomePeriodValue Накопления за период 
 const targetMonthValue = document.getElementsByClassName('target_month-value')[0]; // Срок достижения цели в месяцах
 
-
-
-//функция проверки ввода числа на цисле
-const isNumber = function name(number) {
-    return !isNaN(parseInt(number)) && isFinite(number);
-};
 
 
 // ! основные данные приложения в объекте appData
@@ -168,7 +133,7 @@ let appData = {
         //* periodAmount.textContent = value;
 
         budgetMonthValue.value = Math.floor(appData.budgetMonth); //! Округлить
-        budgetDayValue.value = Math.floor(appData.budgetDay); //! 3) Округлить вывод дневного бюджета
+        budgetDayValue.value = Math.floor(appData.budgetDay); //! Округлить вывод дневного бюджета
         expensesMonthValue.value = appData.expensesMonth;
 
         additionalExpensesValue.value = appData.addExpenses.join(', '); // * 18:35 собираем назад в строку
@@ -180,11 +145,10 @@ let appData = {
         periodSelect = document.querySelector('input.period-select');
         
         
-        // ! добавить addEventListener()
-        // ! и убрать removeEventListener()
-        //! 5) Добавить обработчик события внутри метода showResult, который будет отслеживать период 
-        //! и сразу менять значение в поле “Накопления за период” (После нажатия кнопки рассчитать, 
-        //! если меняем ползунок в range, “Накопления за период” меняются динамически аналогично 4-ому пункту)
+        //! добавить addEventListener() и убрать removeEventListener()
+        // 5) Добавить обработчик события внутри метода showResult, который будет отслеживать период 
+        // и сразу менять значение в поле “Накопления за период” (После нажатия кнопки рассчитать, 
+        // если меняем ползунок в range, “Накопления за период” меняются динамически аналогично 4-ому пункту)
         periodSelect.removeEventListener('input', appData.changePeriodAmount, false);
         periodSelect.addEventListener('input', appData.changePeriodAmount);
     },
@@ -206,7 +170,6 @@ let appData = {
     },
     
     addIncomeBlock: function () {
-        // ! ДЗ 11
         let cloneIncomeBlock = incomeItems[0].cloneNode(true); //? глубоко кловнируем блок
         cloneIncomeBlock.querySelector('.income-title').value = ''; //? очищаем наименование
         cloneIncomeBlock.querySelector('.income-amount').value = ''; //? очищаем доход
@@ -239,7 +202,6 @@ let appData = {
     },
 
     getIncome: function () { //подсчет дополнительных доходов
-        //!!!! на ДЗ 11
         incomeItems.forEach(function(item) {
             let itemIncome = item.querySelector('.income-title').value.trim();
             let cashIncome = item.querySelector('.income-amount').value.trim();
@@ -260,7 +222,6 @@ let appData = {
     getAddExpenses: function () {
         let addExpenses = additionalExpensesItem.value.split(', '); //разбираем строку на массив
         appData.addExpenses = []; //обнуляем переменную
-        //перебираем массив по элементам
         addExpenses.forEach(function (item) {
             item = item.trim();
             if (item !== '') {
@@ -271,7 +232,6 @@ let appData = {
 
     getAddIncome: function () {
         appData.addIncome = [];
-
         additionalIncomeItem.forEach(function (item) {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
@@ -286,7 +246,6 @@ let appData = {
         for (let key in appData.expenses) {
             //проверка на собственное свойство
             if (appData.expenses.hasOwnProperty(key)) {
-                // appData.expensesMonth += +appData.expenses[key]; //?
                 sum += +appData.expenses[key];
             }
         }
@@ -320,7 +279,6 @@ let appData = {
     },
     getInfoDeposit: function() {
         //спрашиваем и вычисляем информацию о депозите 
-        //а также в методе asking спрашиваем appData.deposit
         if(appData.deposit) {
             //проверка ввода процента депозита
             do {
@@ -379,14 +337,8 @@ expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 
 //! Число под полоской (input type range) должно меняться в зависимости от позиции range, 
-//! используем событие input
 periodSelect.addEventListener('input', appData.changePeriodAmount);
 
-// periodSelect.addEventListener('input', event => {
-//     let value = event.target.value;
-//     console.log('Global value: ', value);
-//     periodAmount.textContent = value;
-// });
 
 // * изменения ввода в поле salaryAmount
 // ? salaryAmount.addEventListener('change', disableAndAnableStart);
@@ -394,15 +346,11 @@ salaryAmount.addEventListener('input', disableAndAnableStart);
 
 
 
-// * 2 Вызвать все необходимые методы после объекта (порядок очень важен)
+// * Вызвать все необходимые методы после объекта (порядок очень важен)
 // * перенесли в asking()
-//appData.asking(); //спрашиваем пользователя
-//appData.getExpensesMonth(); //расчет обязательных расходов
-//appData.getBudget(); //по смыслу countBudget() считаем бюджет на месяц и на день
-//appData.getInfoDeposit(); //расчет информации по депозиту
 
 
-// *console.log('button: ', btnPlus);
+//*console.log('button: ', btnPlus);
 //*console.log('salaryAmount: ', salaryAmount);
 //*console.log('incomeTitle: ', incomeTitle);
 //*console.log('incomeAmount: ', incomeAmount);
