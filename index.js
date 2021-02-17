@@ -82,7 +82,7 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 
 
 
-// ! основные данные приложения в объекте appData
+// !! основные данные приложения в объекте appData
 let appData = {
     
     budget: 0,  // *
@@ -102,7 +102,7 @@ let appData = {
     incomeMonth: 0,
     
     start: function () { //? запускает наше приложение при клике на РАСЧИТАТЬ
-        console.log('1 start test this: ', this); //* button#start
+        // console.log('start test this: ', this); //* button#start
         
         this.budget = +salaryAmount.value;
         
@@ -119,19 +119,17 @@ let appData = {
     },
 
     showResult: function () { // *
-        //! выводим результаты вычисления в правый блок data
+        //! showResult выводит результаты вычисления в правый блок data
 
-        console.log('showresult test this:', this); //* appData
+        budgetMonthValue.value = Math.floor(this.budgetMonth); // * Округлить
+        budgetDayValue.value = Math.floor(this.budgetDay); // * Округлить вывод дневного бюджета
+        expensesMonthValue.value = this.expensesMonth;
 
-        budgetMonthValue.value = Math.floor(appData.budgetMonth); //! Округлить
-        budgetDayValue.value = Math.floor(appData.budgetDay); //! Округлить вывод дневного бюджета
-        expensesMonthValue.value = appData.expensesMonth;
+        additionalExpensesValue.value = this.addExpenses.join(', '); // * собираем назад весь масиив в строку
+        additionalIncomeValue.value = this.addIncome.join(', '); // * собираем назад весь массив в строку для вывода в поле
 
-        additionalExpensesValue.value = appData.addExpenses.join(', '); // * собираем назад весь масиив в строку
-        additionalIncomeValue.value = appData.addIncome.join(', '); // * собираем назад весь массив в строку для вывода в поле
-
-        targetMonthValue.value = Math.ceil(appData.getTargetMonth());
-        incomePeriodValue.value = appData.calcIncomePeriodValue();
+        targetMonthValue.value = Math.ceil(this.getTargetMonth());
+        incomePeriodValue.value = this.calcIncomePeriodValue();
 
         periodSelect = document.querySelector('input.period-select');
         
@@ -140,8 +138,8 @@ let appData = {
         // 5) Добавить обработчик события внутри метода showResult, который будет отслеживать период 
         // и сразу менять значение в поле “Накопления за период” (После нажатия кнопки рассчитать, 
         // если меняем ползунок в range, “Накопления за период” меняются динамически аналогично 4-ому пункту)
-        periodSelect.removeEventListener('input', appData.changePeriodAmount, false);
-        periodSelect.addEventListener('input', appData.changePeriodAmount);
+        periodSelect.removeEventListener('input', this.changePeriodAmount, false);
+        periodSelect.addEventListener('input', this.changePeriodAmount);
     },
 
     addExpensesBlock: function () {
@@ -172,19 +170,21 @@ let appData = {
             // console.log("прячем кнопку");
         }
         // console.log("добавить новый блок доходов");
-        // * в конце еще раз вешаем слушатели на наши поля
+        // * в конце еще раз вешаем слушатели на новые поля
         setListeners();
     },
 
-    getExpenses: function () { // * 09:00
+    getExpenses: function () { // *
         // проходимся по ключ:значению
+        let _this = this;
         expensesItems.forEach(function (item) {
             // * 11:00 получаем значения инпутов
             let itemExpenses = item.querySelector('.expenses-title').value.trim();
             let cashExpenses = item.querySelector('.expenses-amount').value.trim();
             // проверка на пустые поля
             if (itemExpenses !== '' && cashExpenses !== '') {
-                appData.expenses[itemExpenses] = +cashExpenses; //number
+                // appData.expenses[itemExpenses] = +cashExpenses; //number
+                _this.expenses[itemExpenses] = parseFloat(cashExpenses); //? here _this = appData
             } else {
                 //? console.log('Необходимо заполнить поля обязательных расходов'); //?
                 return; //?
@@ -192,12 +192,17 @@ let appData = {
         });
     },
 
-    getIncome: function () { //подсчет дополнительных доходов
+    getIncome: function () { // *
+        //подсчет дополнительных доходов
+        console.log('income 1 ', this);
+        let _this = this;
         incomeItems.forEach(function(item) {
+            console.log('income 2, ', this);
+            console.log('income _2, ', _this);
             let itemIncome = item.querySelector('.income-title').value.trim();
             let cashIncome = item.querySelector('.income-amount').value.trim();
             if (itemIncome !== '' && cashIncome !== '') {
-                appData.income[itemIncome] = cashIncome;
+                _this.income[itemIncome] = +parseFloat(cashIncome);
             } else {
                 //? console.log('Заполнены не все поля дополнительных доходов');
                 return; //?
