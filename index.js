@@ -238,24 +238,24 @@ let appData = {
     getExpensesMonth: function () {
         let sum = 0; //обнуляем переменную перед новым суммированием
         // расчет обязательныз расходов суммируем по полям expenses
-        for (let key in appData.expenses) {
+        for (let key in this.expenses) {
             //проверка на собственное свойство
-            if (appData.expenses.hasOwnProperty(key)) {
-                sum += +appData.expenses[key];
+            if (this.expenses.hasOwnProperty(key)) {
+                sum += +this.expenses[key];
             }
         }
-        appData.expensesMonth = sum;
+        this.expensesMonth = sum;
     },
 
     getBudget: function () {
         //расчет бюджетов
-        appData.budgetMonth = appData.budget + appData.incomeMonth - appData.expensesMonth;
-        appData.budgetDay = appData.budgetMonth / 30; //? округляем
+        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+        this.budgetDay = this.budgetMonth / 30; //? округляем
     },
 
     getTargetMonth: function () {
         //за сколько месяцев будет достигнута цель
-        return targetAmount.value / appData.budgetMonth;
+        return targetAmount.value / this.budgetMonth;
     },
 
     getStatusIncome: function () {
@@ -270,6 +270,7 @@ let appData = {
             return 'Что-то пошло не так';
         }
     },
+
     getInfoDeposit: function () {
         //спрашиваем и вычисляем информацию о депозите
         if (appData.deposit) {
@@ -292,16 +293,18 @@ let appData = {
             appData.moneyDeposit = +appData.moneyDeposit;
         }
     },
+
     calcIncomePeriodValue: function () {
         // * возвращает накопления за период расчета
-        return appData.budgetMonth * periodSelect.value;
+        return this.budgetMonth * periodSelect.value;
     },
+    
     changePeriodAmount: function () {
         // * изменяет значение поля periodAmount под ползунком range periodSelect
         let value = periodSelect.value;
         periodAmount.textContent = value;
         // * изменяет значение поля накопления за период при движении ползунка
-        incomePeriodValue.value = appData.calcIncomePeriodValue();
+        incomePeriodValue.value = this.calcIncomePeriodValue();
     },
 }; //appData
 
