@@ -126,17 +126,27 @@ let appData = {
             // console.log('inputItem: ', inputItem);
         }, this);
         
-        // salaryAmount.disabled = true;
-        // additionalIncomeItem.disabled = true;
-        // targetAmount.disabled = true;
-
         this.showResult(); // заполняем все поля с результатами справа
 
-        // ! после этого кнопка Рассчитать пропадает и 
-        start.disabled = true;
-        start.style.display = 'none';
-        // ! появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset
-        cancel.style.display = 'block';
+        start.style.display = 'none'; // * после этого кнопка Рассчитать пропадает и 
+        cancel.style.display = 'block'; // * появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset
+    },
+
+    reset: function () {
+        // * очищаем и активируем поля слева
+        let inputText = document.querySelectorAll('.data input[type="text"]');
+        inputText.forEach(function (inputItem) {
+            inputItem.disabled = false; // * активируем поля
+            inputItem.value = '';  // * очищаем поля
+        }, this);
+        // * очищаем поля справа
+        let resultInputs = document.querySelectorAll('.result input');
+        resultInputs.forEach(function (inputItem) {
+            inputItem.value = '';  // * очищаем поля
+        }, this);
+
+        start.style.display = 'block'; //* показываем кнопку Расчитать
+        cancel.style.display = 'none'; //* прячем кнопку Сбросить
     },
 
     showResult: function () {
@@ -200,6 +210,7 @@ let appData = {
         // *
         // проходимся по ключ:значению
         let _this = this;
+
         expensesItems.forEach(function (item) {
             let itemExpenses = item.querySelector('.expenses-title').value.trim();
             let cashExpenses = item.querySelector('.expenses-amount').value.trim();
@@ -208,8 +219,7 @@ let appData = {
 
                 this.expenses[itemExpenses] = parseFloat(cashExpenses);
             } else {
-                //? console.log('Необходимо заполнить поля обязательных расходов'); //?
-                return; //?
+                return;
             }
         }, this); //* пробуем по совету передать this в контекст вызова
     },
@@ -355,14 +365,18 @@ disableAndAnableStart();
 // * вешаем клик на кнопку start Расчитать
 // * обычный без биндинга
 // start.addEventListener('click', appData.start);
+
 // * набиндить обкт appData
 //! ДЗ 13 1) Привязать контекст вызова функции start к appData 
 start.addEventListener('click', appData.start.bind(appData));
 
+//! ДЗ 13 4) ...появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset()
+cancel.addEventListener('click', appData.reset.bind(appData));
+
 
 // * клик на кнопку плюс expensesPlus и incomePlus
-expensesPlus.addEventListener('click', appData.addExpensesBlock);
-incomePlus.addEventListener('click', appData.addIncomeBlock);
+expensesPlus.addEventListener('click', appData.addExpensesBlock.bind(appData));
+incomePlus.addEventListener('click', appData.addIncomeBlock.bind(appData));
 
 //! Число под полоской (input type range) должно меняться в зависимости от позиции range, 
 // periodSelect.addEventListener('input', appData.changePeriodAmount); // без явной привязки контекста //* привязка к инпуту
