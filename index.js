@@ -139,8 +139,8 @@ let appData = {
         // Добавить обработчик события внутри метода showResult, который будет отслеживать период
         // и сразу менять значение в поле “Накопления за период” (После нажатия кнопки рассчитать,
         // если меняем ползунок в range, “Накопления за период” меняются динамически аналогично 4-ому пункту)
-        periodSelect.removeEventListener('input', this.changePeriodAmount, false);
-        periodSelect.addEventListener('input', this.changePeriodAmount);
+        periodSelect.removeEventListener('input', this.changePeriodAmount.bind(appData), false);
+        periodSelect.addEventListener('input', this.changePeriodAmount.bind(appData));
     },
 
     addExpensesBlock: function () {
@@ -260,11 +260,11 @@ let appData = {
 
     getStatusIncome: function () {
         //возвращает результат вычислений уровня средних доходов на день
-        if (appData.budgetDay >= 1200) {
+        if (this.budgetDay >= 1200) {
             return 'Поздравляем!\nУ вас высокий уровень дохода';
-        } else if (appData.budgetDay >= 600) {
+        } else if (this.budgetDay >= 600) {
             return 'У вас средний уровень дохода';
-        } else if (appData.budgetDay > 0) {
+        } else if (this.budgetDay > 0) {
             return 'К сожалению у вас уровень дохода ниже среднего';
         } else {
             return 'Что-то пошло не так';
@@ -273,24 +273,24 @@ let appData = {
 
     getInfoDeposit: function () {
         //спрашиваем и вычисляем информацию о депозите
-        if (appData.deposit) {
+        if (this.deposit) {
             //проверка ввода процента депозита
             do {
-                appData.percentDeposit = prompt(
+                this.percentDeposit = prompt(
                     'Какой годовой процент? Введите число',
                     '10'
                 );
-            } while (!isNumber(appData.percentDeposit));
-            appData.percentDeposit = +appData.percentDeposit;
+            } while (!isNumber(this.percentDeposit));
+            this.percentDeposit = +this.percentDeposit;
 
             //проверка ввода суммы депозита
             do {
-                appData.moneyDeposit = prompt(
+                this.moneyDeposit = prompt(
                     'Какая сумма заложена в депосит? Введите число',
                     10000
                 );
-            } while (!isNumber(appData.moneyDeposit));
-            appData.moneyDeposit = +appData.moneyDeposit;
+            } while (!isNumber(this.moneyDeposit));
+            this.moneyDeposit = +this.moneyDeposit;
         }
     },
 
@@ -298,15 +298,16 @@ let appData = {
         // * возвращает накопления за период расчета
         return this.budgetMonth * periodSelect.value;
     },
-    
+
     changePeriodAmount: function () {
+        console.log('changePeriodAmount', this);
         // * изменяет значение поля periodAmount под ползунком range periodSelect
         let value = periodSelect.value;
         periodAmount.textContent = value;
         // * изменяет значение поля накопления за период при движении ползунка
         incomePeriodValue.value = this.calcIncomePeriodValue();
     },
-}; //appData
+}; //*appData
 
 
 
@@ -343,7 +344,8 @@ expensesPlus.addEventListener('click', appData.addExpensesBlock);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 
 //! Число под полоской (input type range) должно меняться в зависимости от позиции range, 
-periodSelect.addEventListener('input', appData.changePeriodAmount);
+// periodSelect.addEventListener('input', appData.changePeriodAmount); // без явной привязки контекста //* привязка к инпуту
+periodSelect.addEventListener('input', appData.changePeriodAmount.bind(appData)); //с привязкой контекста
 
 
 // * изменения ввода в поле salaryAmount слушатель на input (или на change)
