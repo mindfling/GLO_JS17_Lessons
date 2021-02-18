@@ -196,7 +196,6 @@ let appData = {
     getIncome: function () {
         // *
         //подсчет дополнительных доходов
-        console.log('income 1', this);
         let _this = this;
         incomeItems.forEach(function (item) {
             let itemIncome = item.querySelector('.income-title').value.trim();
@@ -209,31 +208,31 @@ let appData = {
             }
         });
         //* обнуляем доходы в самом начале и суммируем доп доходы за месяц заново
-        appData.incomeMonth = 0;
-        for (let key in appData.income) {
-            appData.incomeMonth += +appData.income[key];
+        this.incomeMonth = 0;
+        for (let key in this.income) {
+            this.incomeMonth += +this.income[key];
         }
     },
 
     getAddExpenses: function () {
         let addExpenses = additionalExpensesItem.value.split(', '); //разбираем строку на массив
-        appData.addExpenses = []; //обнуляем переменную
+        this.addExpenses = []; //обнуляем переменную
         addExpenses.forEach(function (item) {
             item = item.trim();
             if (item !== '') {
-                appData.addExpenses.push(item);
+                this.addExpenses.push(item);
             }
-        }, this);
+        }, this); //forEach context this
     },
 
     getAddIncome: function () {
-        appData.addIncome = [];
+        this.addIncome = [];
         additionalIncomeItem.forEach(function (item) {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
-                appData.addIncome.push(itemValue);
+                this.addIncome.push(itemValue);
             }
-        }, this);
+        }, this); //forEach context this
     },
 
     getExpensesMonth: function () {
