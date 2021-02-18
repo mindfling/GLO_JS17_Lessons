@@ -133,6 +133,20 @@ let appData = {
     },
 
     reset: function () {
+        // * очищаем значения переменных
+        this.budget = 0;
+        this.income = {};
+        this.addIncome = [];
+        this.expenses = {};
+        this.addExpenses = [];
+        this.deposit = false;
+        this.percentDeposit = 0;
+        this.moneyDeposit = 0;
+        this.budgetDay = 0;
+        this.budgetMonth = 0;
+        this.expensesMonth = 0;
+        this.incomeMonth = 0;
+        
         // * очищаем и активируем поля слева
         let inputText = document.querySelectorAll('.data input[type="text"]');
         inputText.forEach(function (inputItem) {
@@ -145,10 +159,16 @@ let appData = {
             inputItem.value = '';  // * очищаем поля
         }, this);
 
+        // * устанавливаем ползунок в начальное положение
+        periodSelect.value = 1;
+        periodAmount.textContent = '1';
+        
         start.style.display = 'block'; //* показываем кнопку Расчитать
         cancel.style.display = 'none'; //* прячем кнопку Сбросить
+        
+        depositCheck.checked = false;
     },
-
+    
     showResult: function () {
         // *
         //! showResult выводит результаты вычисления в правый блок data
