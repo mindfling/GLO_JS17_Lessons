@@ -49,24 +49,20 @@ const btnPlus = document.getElementsByTagName('button'); //NodeList buttons 0, 1
 
 //! data весь блок с input слева
 const salaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
-let incomeItems = document.querySelectorAll('.income-items'); // * 28:30
-
+let incomeItems = document.querySelectorAll('.income-items'); // *
 const incomePlus = btnPlus[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
-
 const additionalIncomeItem = document.querySelectorAll('.additional_income-item'); //? Возможный доход через запятую
 const expensesTitle = document.querySelector('input.expenses-title'); // Обязательные расходы наименование
 const expensesAmount = document.querySelector('input.expenses-amount'); // Обязательные расходы размер
-let expensesItems = document.querySelectorAll('.expenses-items'); // * 08:22 block
-
+let expensesItems = document.querySelectorAll('.expenses-items'); // * block
 const expensesPlus = btnPlus[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
-
 const additionalExpenses = document.querySelector('additional_expenses');
 const additionalExpensesItem = document.querySelector('input.additional_expenses-item'); // Возможные расходы <span>(перечислите через запятую)</span>
 const depositCheck = document.querySelector('#deposit-check'); //? check галочка наличие депозита
 const selectDepositBank = document.querySelector('.deposit-bank'); //* выбор банка скрыто
 const depositAmount = document.querySelector('.input.deposit-amount'); //сумма депозита .deposit-calc скрыто
 const depositPercent = document.querySelector('.input.deposit-percent'); //процент депозита .deposit-calc скрыто
-const targetAmount = document.querySelector('.target-amount'); //* 24:55 цель сумма
+const targetAmount = document.querySelector('.target-amount'); // * цель сумма
 let periodSelect = document.querySelector('input.period-select'); //Выбор Периода расчета 
 const periodAmount = document.querySelector('.period-amount'); //Период расчета отображение
 
@@ -84,7 +80,7 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 
 // !! основные данные приложения в объекте appData
 let appData = {
-    budget: 0, // *
+    budget: 0, // 
     income: {}, // основной доход
     addIncome: [], // доп доход
 
@@ -101,8 +97,8 @@ let appData = {
     incomeMonth: 0,
 
     start: function () {
-        //? запускает наше приложение при клике на РАСЧИТАТЬ
-        console.log('тест start: ', this); //* 
+        //? запускает наше приложение при клике на кнопку РАСЧИТАТЬ
+        // console.log('тест start: ', this); //* 
 
         this.budget = +salaryAmount.value;
 
@@ -112,7 +108,6 @@ let appData = {
         this.getExpensesMonth(); //расчет обязательных расходов
         this.getAddExpenses(); //расчет дополнительных расходов
         this.getAddIncome(); //расчет дополнительных доходов
-        //? this.getInfoDeposit(); //расчет информации по депозиту
 
         this.getBudget(); // по смыслу считаем бюджет на месяц и на день
 
@@ -129,11 +124,23 @@ let appData = {
         this.showResult(); // заполняем все поля с результатами справа
 
         start.style.display = 'none'; // * после этого кнопка Рассчитать пропадает и 
-        cancel.style.display = 'block'; // * появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset
+        cancel.style.display = 'block'; // * появляется кнопка Сбросить навешиваем событие и выполнение метода reset
+
+        // ! УДАЛЯЕМ слушатели с кнопок expensesPlus и incomePlus
+        // expensesPlus.removeEventListener('click', eventAddExpensesBlock);
+        // incomePlus.removeEventListener('click', eventAddIncomeBlock);    
+        // * деактивируем кнопки или одно или другое
+        expensesPlus.disabled = true;
+        incomePlus.disabled = true;
+
+        depositCheck.disabled = true;
+
+        // * отключим ползунок range
+        periodSelect.disabled = true;
     },
 
     reset: function () {
-        // * очищаем значения переменных
+        // * сбрасываем значения переменных
         this.budget = 0;
         this.income = {};
         this.addIncome = [];
@@ -146,7 +153,30 @@ let appData = {
         this.budgetMonth = 0;
         this.expensesMonth = 0;
         this.incomeMonth = 0;
-        
+
+        // * удаляем лишние блоки расходов
+        expensesItems = document.querySelectorAll('.expenses-items'); // * expenses block узнаем текущее состояние блока
+        while (expensesItems.length >= 2) {
+            expensesItems[0].remove();
+            expensesItems = document.querySelectorAll('.expenses-items');
+        }
+        // * удаляем лишние блоки доходов
+        incomeItems = document.querySelectorAll('.income-items'); // * expenses block узнаем текущее состояние блока
+        while (incomeItems.length >= 2) {
+            incomeItems[0].remove();
+            incomeItems = document.querySelectorAll('.income-items');
+        }
+
+        // * возвращаем на страницу кнопки incomePlus и expensesPlus
+        expensesPlus.style.display = 'block';
+        incomePlus.style.display = 'block';
+        // * вешаем обратно слушатели на кнопки
+        // expensesPlus.addEventListener('click', eventAddExpensesBlock);
+        // incomePlus.addEventListener('click', eventAddIncomeBlock);
+        expensesPlus.disabled = false;
+        incomePlus.disabled = false;
+
+
         // * очищаем и активируем поля слева
         let inputText = document.querySelectorAll('.data input[type="text"]');
         inputText.forEach(function (inputItem) {
@@ -160,19 +190,23 @@ let appData = {
         }, this);
 
         // * устанавливаем ползунок в начальное положение
+        periodSelect.disabled = false;
         periodSelect.value = 1;
         periodAmount.textContent = '1';
         
         start.style.display = 'block'; //* показываем кнопку Расчитать
+        start.disabled = true; // * деактивируем кнопку Расчитать
         cancel.style.display = 'none'; //* прячем кнопку Сбросить
         
+        // * ресет для чекбокса
+        depositCheck.disabled = false;
         depositCheck.checked = false;
     },
     
     showResult: function () {
         // *
         //! showResult выводит результаты вычисления в правый блок data
-        console.log('тест showResult', this);
+        // console.log('тест showResult', this);
 
         budgetMonthValue.value = Math.floor(this.budgetMonth); // * Округлить
         budgetDayValue.value = Math.floor(this.budgetDay); // * Округлить вывод дневного бюджета
@@ -202,8 +236,8 @@ let appData = {
         expensesItems[0].parentNode.insertBefore(cloneExpensesItems, expensesPlus); //вставляем копию блока до кнопки
 
         expensesItems = document.querySelectorAll('.expenses-items'); // * expenses block узнаем текущее состояние блока
-        if (expensesItems.length === 3) {
-            expensesPlus.style.display = 'none'; //прячим кнопку после 3го раза
+        if (expensesItems.length >= 3) {
+            expensesPlus.style.display = 'none'; // * прячим кнопку после 3го раза
         }
         //console.log("добавить новый блок расходов");
         // * в конце еще раз вешаем слушатели на наши поля
@@ -217,7 +251,7 @@ let appData = {
         incomeItems[0].parentElement.insertBefore(cloneIncomeBlock, incomePlus); //? добавляем перед кнопкой
 
         incomeItems = document.querySelectorAll('.income-items');
-        if (incomeItems.length === 3) {
+        if (incomeItems.length >= 3) {
             incomePlus.style.display = 'none'; //прячим кнопку после 3го раза
             // console.log("прячем кнопку");
         }
@@ -395,8 +429,14 @@ cancel.addEventListener('click', appData.reset.bind(appData));
 
 
 // * клик на кнопку плюс expensesPlus и incomePlus
-expensesPlus.addEventListener('click', appData.addExpensesBlock.bind(appData));
-incomePlus.addEventListener('click', appData.addIncomeBlock.bind(appData));
+// expensesPlus.addEventListener('click', appData.addExpensesBlock.bind(appData));
+// incomePlus.addEventListener('click', appData.addIncomeBlock.bind(appData));
+
+const eventAddExpensesBlock = appData.addExpensesBlock.bind(appData);
+const eventAddIncomeBlock = appData.addIncomeBlock.bind(appData);
+expensesPlus.addEventListener('click', eventAddExpensesBlock);
+incomePlus.addEventListener('click', eventAddIncomeBlock);
+
 
 //! Число под полоской (input type range) должно меняться в зависимости от позиции range, 
 // periodSelect.addEventListener('input', appData.changePeriodAmount); // без явной привязки контекста //* привязка к инпуту
