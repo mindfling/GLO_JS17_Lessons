@@ -68,6 +68,10 @@ h1 {
 	width: 263px;
 }
 
+.data input[type=text]:disabled {
+	border: 1px solid #808080;
+}
+
 .data input[type=text]::-webkit-input-placeholder {
 	color: #ff7f63;
 	font-size: 14px;

@@ -110,12 +110,33 @@ let appData = {
         this.getIncome(); // *
 
         this.getExpensesMonth(); //расчет обязательных расходов
-        this.getAddExpenses();
-        this.getAddIncome();
+        this.getAddExpenses(); //расчет дополнительных расходов
+        this.getAddIncome(); //расчет дополнительных доходов
         //? this.getInfoDeposit(); //расчет информации по депозиту
 
         this.getBudget(); // по смыслу считаем бюджет на месяц и на день
+
+        // ! 4) Блокировать все input[type=text] с левой стороны после нажатия кнопки рассчитать, 
+        // ! после этого кнопка Рассчитать пропадает и появляется кнопка Сбросить, 
+        // * блокируем все инпуты
+        let inputText = document.querySelectorAll('.data input[type="text"]');
+        // console.log('inputText: ', inputText);
+        inputText.forEach(function (inputItem) {
+            inputItem.disabled = true;
+            // console.log('inputItem: ', inputItem);
+        }, this);
+        
+        // salaryAmount.disabled = true;
+        // additionalIncomeItem.disabled = true;
+        // targetAmount.disabled = true;
+
         this.showResult(); // заполняем все поля с результатами справа
+
+        // ! после этого кнопка Рассчитать пропадает и 
+        start.disabled = true;
+        start.style.display = 'none';
+        // ! появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset
+        cancel.style.display = 'block';
     },
 
     showResult: function () {
