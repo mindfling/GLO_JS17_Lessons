@@ -379,7 +379,7 @@ let appData = {
         }
     },
 
-    calcIncomePeriodValue: function () {
+    calcIncomePeriodValue: function () { ///*calcPeriod()
         // * возвращает накопления за период расчета
         return this.budgetMonth * periodSelect.value;
     },
@@ -396,7 +396,7 @@ let appData = {
 
 
 
-const disableAndAnableStart = function () {
+const disableAndAnableStart = function () { ///* check()
     let salaryAmount = document.querySelector('.salary-amount');
 
     if (salaryAmount.value.trim() === '') {
