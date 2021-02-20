@@ -115,11 +115,11 @@ AppData.prototype.start = function () {
     // * деактивируем кнопки или одно или другое
     expensesPlus.disabled = true;
     incomePlus.disabled = true;
-
+    // * отключим чекбокс
     depositCheck.disabled = true;
 
-    // * отключим ползунок range
-    periodSelect.disabled = true;
+    // ? отключим ползунок range
+    // periodSelect.disabled = true;
 };
 
 
@@ -129,9 +129,9 @@ AppData.prototype.checkStart = function () {
     let start = document.getElementById('start');
 
     if (salaryAmount.value.trim() === '') {
-        start.disabled = 'false';
+        start.disabled = true;
     } else {
-        start.disabled = 'false';
+        start.disabled = false;
         // start.removeAttribute('disabled');
     }
 };
@@ -356,13 +356,13 @@ AppData.prototype.reset = function () {
     this.incomeMonth = 0;
 
     // * удаляем лишние блоки расходов
-    expensesItems = document.querySelectorAll('.expenses-items'); // * expenses block узнаем текущее состояние блока
+    expensesItems = document.querySelectorAll('.expenses-items'); // expenses block узнаем текущее состояние блока
     while (expensesItems.length >= 2) {
         expensesItems[0].remove();
         expensesItems = document.querySelectorAll('.expenses-items');
     }
     // * удаляем лишние блоки доходов
-    incomeItems = document.querySelectorAll('.income-items'); // * expenses block узнаем текущее состояние блока
+    incomeItems = document.querySelectorAll('.income-items'); // expenses block узнаем текущее состояние блока
     while (incomeItems.length >= 2) {
         incomeItems[0].remove();
         incomeItems = document.querySelectorAll('.income-items');
@@ -396,9 +396,9 @@ AppData.prototype.reset = function () {
     periodSelect.value = 1;
     periodAmount.textContent = '1';
     
-    start.style.display = 'block'; //* показываем кнопку Расчитать
-    start.disabled = true; // * деактивируем кнопку Расчитать
     cancel.style.display = 'none'; //* прячем кнопку Сбросить
+    start.style.display = 'block'; //* показываем кнопку Расчитать
+    // start.disabled = true; // * деактивируем кнопку Расчитать
     
     // * ресет для чекбокса
     depositCheck.disabled = false;
@@ -452,14 +452,6 @@ let appData = new AppData();
 const eventAddExpensesBlock = appData.addExpensesBlock.bind(appData);
 const eventAddIncomeBlock = appData.addIncomeBlock.bind(appData);
 
-
-
-
-
-appData.setListeners();
-
+appData.setListeners(); //*
 appData.checkStart();
-
-start.disabled = false;
-
 console.log('НАША ОБЪЕКТ appData: ', appData);
