@@ -92,11 +92,11 @@ AppData.prototype.start = function () {
     this.budget = +salaryAmount.value;
     this.getExpenses(); // *
     this.getIncome(); // *
-    this.getExpensesMonth(); //расчет обязательных расходов
-    this.getAddExpenses(); //расчет дополнительных расходов
-    this.getAddIncome(); //расчет дополнительных доходов
+    this.getExpensesMonth(); // *расчет обязательных расходов
+    this.getAddExpenses(); // * расчет дополнительных расходов
+    this.getAddIncome(); // * расчет дополнительных доходов
 
-    this.getBudget(); // по смыслу считаем бюджет на месяц и на день
+    this.getBudget(); // * по смыслу считаем бюджет на месяц и на день
 
     // *Блокировать все input[type=text] деактивируем все инпуты
     let inputText = document.querySelectorAll('.data input[type="text"]');
@@ -106,34 +106,35 @@ AppData.prototype.start = function () {
     
     this.showResult(); // заполняем все поля с результатами справа
 
-    start.style.display = 'none'; // * скрываем кнопку Рассчитать 
-    cancel.style.display = 'block'; // * появляется кнопка Сбросить
+    start.style.display = 'none'; // * скрываем кнопку РАССЧИТАТЬ
+    cancel.style.display = 'block'; // * отображаем кнопка СБРОСИТЬ
 
-    // * УДАЛЯЕМ слушатели с кнопок expensesPlus и incomePlus
-    expensesPlus.removeEventListener('click', eventAddExpensesBlock);
-    incomePlus.removeEventListener('click', eventAddIncomeBlock);    
-    // * деактивируем кнопки или одно или другое
+    // УДАЛЯЕМ слушатели с кнопок expensesPlus и incomePlus
+    // expensesPlus.removeEventListener('click', eventAddExpensesBlock);
+    // incomePlus.removeEventListener('click', eventAddIncomeBlock);    
+    
+    // * деактивируем кнопки + 
     expensesPlus.disabled = true;
     incomePlus.disabled = true;
+    
     // * отключим чекбокс
     depositCheck.disabled = true;
 
-    // ? отключим ползунок range
+    // отключение ползунока input range
     // periodSelect.disabled = true;
 };
 
 
 AppData.prototype.checkStart = function () {
-    console.log('checkStart this', this);
-    let salaryAmount = document.querySelector('.salary-amount');
-    let start = document.getElementById('start');
+    console.log('ПРОВЕРЯЕМ нужно активировать кнопку РАССЧИТАТЬ checkStart this', this);
+    // let salaryAmount = document.querySelector('.salary-amount');
+    // let start = document.getElementById('start');
 
-    if (salaryAmount.value.trim() === '') {
-        start.disabled = true;
-    } else {
-        start.disabled = false;
-        // start.removeAttribute('disabled');
-    }
+    // if (salaryAmount.value.trim() === '') {
+    //     start.disabled = true;
+    // } else {
+    //     start.disabled = false;  // start.removeAttribute('disabled');
+    // }
 };
 
 
@@ -175,7 +176,7 @@ AppData.prototype.addExpensesBlock = function () {
     }
     //console.log("добавить новый блок расходов");
     // * в конце еще раз вешаем слушатели на наши поля
-    this.setListeners();
+    // this.setListeners();
 };
 
 
@@ -192,8 +193,7 @@ AppData.prototype.addIncomeBlock = function () {
     }
     // console.log("добавить новый блок доходов");
     // * в конце еще раз вешаем слушатели на новые поля
-    console.log('addincomeblock:', this)
-    this.setListeners();
+    // this.setListeners();
 };
 
 
@@ -341,19 +341,19 @@ AppData.prototype.changePeriodAmount = function () {
 
 
 AppData.prototype.reset = function () {
-    // * сбрасываем значения переменных
-    this.budget = 0;
+    // * сбрасываем значения переменных свойств объекта
     this.income = {};
+    this.incomeMonth = 0;
     this.addIncome = [];
     this.expenses = {};
+    this.expensesMonth = 0;
     this.addExpenses = [];
     this.deposit = false;
     this.percentDeposit = 0;
     this.moneyDeposit = 0;
+    this.budget = 0;
     this.budgetDay = 0;
     this.budgetMonth = 0;
-    this.expensesMonth = 0;
-    this.incomeMonth = 0;
 
     // * удаляем лишние блоки расходов
     expensesItems = document.querySelectorAll('.expenses-items'); // expenses block узнаем текущее состояние блока
@@ -373,8 +373,9 @@ AppData.prototype.reset = function () {
     incomePlus.style.display = 'block';
 
     // * вешаем обратно слушатели на кнопки
-    expensesPlus.addEventListener('click', eventAddExpensesBlock);
-    incomePlus.addEventListener('click', eventAddIncomeBlock);
+    // expensesPlus.addEventListener('click', eventAddExpensesBlock);
+    // incomePlus.addEventListener('click', eventAddIncomeBlock);
+    // * ПРОСТО активируем кнопки
     expensesPlus.disabled = false;
     incomePlus.disabled = false;
 
@@ -398,7 +399,7 @@ AppData.prototype.reset = function () {
     
     cancel.style.display = 'none'; //* прячем кнопку Сбросить
     start.style.display = 'block'; //* показываем кнопку Расчитать
-    // start.disabled = true; // * деактивируем кнопку Расчитать
+    start.disabled = true; // * деактивируем кнопку Расчитать
     
     // * ресет для чекбокса
     depositCheck.disabled = false;
@@ -406,35 +407,54 @@ AppData.prototype.reset = function () {
 };
 
 AppData.prototype.setListeners = function () {
-    //! привязываем слушатели событий !//
     // * навешивает все слушатели
-
     console.log('setListeners :', this)
-    const _this = this;
+
     // * вешаем клик на кнопку start Расчитать
     // * Привязать контекст вызова функции start к appData 
-    start.addEventListener('click', _this.start.bind(_this));
+    start.addEventListener('click', this.start.bind(this));
+    // start.disabled = true; // * деактивируем или активируем кнопку Рассчитать
+    start.disabled = (salaryAmount.value.trim() === '');
+    
+    // * start button зависит от состояния поля salaryAmount
+    // ! в данном случае Я СЧИТАЮ событие change более уместно!
+    salaryAmount.addEventListener('change', function(event) {
+        console.log('salaryAmount.value', salaryAmount.value);
+        // if (salaryAmount.value.trim() === '') {
+        //     start.disabled = true;
+        // } else {
+        //     start.disabled = false;
+        // }
+        start.disabled = (salaryAmount.value.trim() === '');
+    })
 
     // * ...появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset()
-    cancel.addEventListener('click', _this.reset.bind(_this));
+    cancel.addEventListener('click', this.reset.bind(this));
 
     // * клик на кнопку плюс expensesPlus и incomePlus
     // expensesPlus.addEventListener('click', appData.addExpensesBlock.bind(appData));
     // incomePlus.addEventListener('click', appData.addIncomeBlock.bind(appData));
-    expensesPlus.addEventListener('click', eventAddExpensesBlock);
-    incomePlus.addEventListener('click', eventAddIncomeBlock);
+    // expensesPlus.addEventListener('click', eventAddExpensesBlock);
+    // incomePlus.addEventListener('click', eventAddIncomeBlock);
+    // ! ПОЧЕМУ ВОТ ЗДЕСЬ СЛУШАТЕЛЬ НЕ УДАЛЯЕТСЯ !!!
+    expensesPlus.removeEventListener('click', this.addExpensesBlock.bind(this));
+    incomePlus.removeEventListener('click', this.addIncomeBlock.bind(this));
+    
+    expensesPlus.addEventListener('click', this.addExpensesBlock.bind(this));
+    incomePlus.addEventListener('click', this.addIncomeBlock.bind(this));
 
     // * Число под полоской (input type range) должно меняться в зависимости от позиции range, 
-    periodSelect.addEventListener('input', _this.changePeriodAmount.bind(_this)); //с привязкой контекста
+    periodSelect.addEventListener('input', this.changePeriodAmount.bind(this)); //с привязкой контекста
 
 
     // * изменения ввода в поле salaryAmount слушатель на input (или на change)
-    salaryAmount.addEventListener('input', _this.checkStart.bind(_this));
+    // salaryAmount.addEventListener('input', _this.checkStart.bind(_this)); // активирует кнопку Расчитать почле ввода
+    salaryAmount.addEventListener('input', this.checkStart); // активирует кнопку Расчитать почле ввода
 
     // * находим поля для заполнения по значению placeholder
     const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
     const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
-    // * цепляем соответствующие слушатели на соответствующие элементы
+    // * цепляем соответствующие слушатели на соответствующие элементы input
     inputString.forEach(function (item) {
         item.addEventListener('input', handleCyrChars);
     });
@@ -448,10 +468,8 @@ AppData.prototype.setListeners = function () {
 // * НАШ ОБЪЕКТ ПРИЛОЖЕНИЯ
 let appData = new AppData();
 
-// * функции явно привязанные к объекту appData
-const eventAddExpensesBlock = appData.addExpensesBlock.bind(appData);
-const eventAddIncomeBlock = appData.addIncomeBlock.bind(appData);
+// * ссылки на частрые функции явно привязанные к объекту appData
+// const eventAddExpensesBlock = appData.addExpensesBlock.bind(appData);
+// const eventAddIncomeBlock = appData.addIncomeBlock.bind(appData);
 
 appData.setListeners(); //*
-appData.checkStart();
-console.log('НАША ОБЪЕКТ appData: ', appData);
