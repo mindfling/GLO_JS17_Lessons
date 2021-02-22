@@ -4,26 +4,28 @@
  */
 
 
-//функция проверки ввода числа на цисле
-const isNumber = function name(number) {
-    return !isNaN(parseInt(number)) && isFinite(number);
-};
+// ? функция проверки ввода числа на цисле
+// const isNumber = function name(number) {
+//     return !isNaN(parseInt(number)) && isFinite(number);
+// };
 
 
-// * проверка на ввод символов кириллицы ?!,. а-я А-Я ёЁ
-const handleCyrChars = function (event) {
-    // срабатывает на ввод всех символов кроме кириллицы
-    // event.target.value = event.target.value.replace(/[^\?\!,\.а-яА-ЯёЁ\s]/g, '');
-    event.target.value = event.target.value.replace(/[^\?\!,\.а-яё\s]/ig, '');
-}
+// * проверка на ввод символов кириллицы ?!,. а-я А-Я ёЁ 
+// TODO ПЕРЕНЕСЛИ В КЛАСС
+// const handleCyrChars = function (event) {
+//     // срабатывает на ввод всех символов кроме кириллицы
+//     // event.target.value = event.target.value.replace(/[^\?\!,\.а-яА-ЯёЁ\s]/g, '');
+//     event.target.value = event.target.value.replace(/[^\?\!,\.а-яё\s]/ig, '');
+// }
 
-// * проверка на ввод цифр 0123456789 и точка .
-const handleNubmers = function (event) {
-    let value = event.target.value;
-    //срабатывает на замену всех символов которые не подходят под шаблон
-    value = value.replace(/[^0-9.]/g, '');
-    event.target.value = value;
-};
+// * проверка на ввод цифр 0123456789 и точка . 
+// TODO ПЕРЕНЕСЛИ В КЛАСС
+// const handleNubmers = function (event) {
+//     let value = event.target.value;
+//     //срабатывает на замену всех символов которые не подходят под шаблон
+//     value = value.replace(/[^0-9.]/g, '');
+//     event.target.value = value;
+// };
 
 
  //! buttons
@@ -33,12 +35,12 @@ const btnPlus = document.getElementsByTagName('button'); //NodeList buttons 0, 1
 
 //! data весь блок с input слева
 const salaryAmount = document.querySelector('.salary-amount'); //Месячный доход salary
-let incomeItems = document.querySelectorAll('.income-items'); // *
+let incomeItems = document.querySelectorAll('.income-items'); // Блок Дополнительный доход
 const incomePlus = btnPlus[0]; //? incomePlus КНОПКА + добавить поле ввода поля дополнительных доходов
 const additionalIncomeItem = document.querySelectorAll('.additional_income-item'); //? Возможный доход через запятую
 const expensesTitle = document.querySelector('input.expenses-title'); // Обязательные расходы наименование
 const expensesAmount = document.querySelector('input.expenses-amount'); // Обязательные расходы размер
-let expensesItems = document.querySelectorAll('.expenses-items'); // * block
+let expensesItems = document.querySelectorAll('.expenses-items'); // Блок Обязательные расходы
 const expensesPlus = btnPlus[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
 const additionalExpenses = document.querySelector('additional_expenses');
 const additionalExpensesItem = document.querySelector('input.additional_expenses-item'); // Возможные расходы <span>(перечислите через запятую)</span>
@@ -62,27 +64,40 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 
 
 
-
 // ! ДЗ 14 КЛАСС ПРОТОТИПНЫЙ ООП
 
 const AppData = function () {
-    //? fields Поля свойства внутри конструктора
-
-    this.budget = 0;
-    this.budgetDay = 0;
-    this.budgetMonth = 0;
+//? fields Поля свойства внутри конструктора
     this.income = {};
-    this.addIncome = [];
     this.incomeMonth = 0;
+    this.addIncome = [];
     this.expenses = {};
-    this.addExpenses = [];
     this.expensesMonth = 0;
+    this.addExpenses = [];
     this.deposit = false;
     this.percentDeposit = 0;
     this.moneyDeposit = 0;
+    this.budget = 0;
+    this.budgetDay = 0;
+    this.budgetMonth = 0;
 };
 
-    //? methodes методы класса в прототипах
+
+//? methodes методы класса в прототипах:
+
+AppData.prototype.handleCyrChars = function (event) {
+    // регулярка заменяет все символы кириллицы не зависимо от регистра
+    event.target.value = event.target.value.replace(/[^\?\!,\.а-яё\s]/ig, '');  // тоже что и .replace(/[^\?\!,\.а-яА-ЯёЁ\s]/g, '')
+};
+
+
+AppData.prototype.handleNubmers = function (event) {
+    let value = event.target.value;
+    //срабатывает на замену всех символов цифр которые не подходят под шаблон
+    value = value.replace(/[^\d.]/g, ''); // тоже что и .replace(/[^0-9.]/g, '')
+    event.target.value = value;
+};
+
 
 AppData.prototype.start = function () {
     // console.log('start this', this);
@@ -100,25 +115,21 @@ AppData.prototype.start = function () {
     let inputText = document.querySelectorAll('.data input[type="text"]');
     inputText.forEach(function (inputItem) {
         inputItem.disabled = true;
-    }, this);
+    }, this); // * здесь передаем , this как контекст вызова :)
     
     this.showResult(); // заполняем все поля с результатами справа
 
     start.style.display = 'none'; // * скрываем кнопку РАССЧИТАТЬ
     cancel.style.display = 'block'; // * отображаем кнопка СБРОСИТЬ
 
-    // УДАЛЯЕМ слушатели с кнопок expensesPlus и incomePlus
-    // expensesPlus.removeEventListener('click', eventAddExpensesBlock);
-    // incomePlus.removeEventListener('click', eventAddIncomeBlock);    
-    
-    // * деактивируем кнопки + 
+    // * деактивируем кнопки +
     expensesPlus.disabled = true;
     incomePlus.disabled = true;
     
-    // * отключим чекбокс
+    // * деактивируем чекбокс
     depositCheck.disabled = true;
 
-    // отключение ползунока input range
+    // отключение ползунока input range // * НЕ ОТКЛЮЧАЕМ
     // periodSelect.disabled = true;
 };
 
@@ -160,8 +171,7 @@ AppData.prototype.showResult = function () {
 
 AppData.prototype.addExpensesBlock = function () {
     // console.log('addExpensesBlock this: ',  this);
-
-    // * добавление новых полей дополнительных расходов плюсику // expensesPlus
+    // * добавить новый блок Обязательные расходы
     let cloneExpensesItems = expensesItems[0].cloneNode(true); // * клонируем блок делаем глубокую копию true
     cloneExpensesItems.querySelector('.expenses-title').value = '';
     cloneExpensesItems.querySelector('.expenses-amount').value = '';
@@ -171,13 +181,20 @@ AppData.prototype.addExpensesBlock = function () {
     if (expensesItems.length >= 3) {
         expensesPlus.style.display = 'none'; // * прячим кнопку после 3го раза
     }
-    //console.log("добавить новый блок расходов");
     // * в конце еще раз вешаем слушатели на наши поля
     // this.setListeners();
+    //? повторный поиск и навешивание событий этих полей
+    document.querySelectorAll('input[placeholder="Наименование"]').forEach(function (item) {
+        item.addEventListener('input', this.handleCyrChars);
+    }, this);
+    document.querySelectorAll('input[placeholder="Сумма"]').forEach(function (item) {
+        item.addEventListener('input', this.handleNubmers);
+    }, this);
 };
 
 
 AppData.prototype.addIncomeBlock = function () {
+    // * добавить новый блок доходов
     let cloneIncomeBlock = incomeItems[0].cloneNode(true); //? глубоко кловнируем блок
     cloneIncomeBlock.querySelector('.income-title').value = ''; //? очищаем наименование
     cloneIncomeBlock.querySelector('.income-amount').value = ''; //? очищаем доход
@@ -186,11 +203,16 @@ AppData.prototype.addIncomeBlock = function () {
     incomeItems = document.querySelectorAll('.income-items');
     if (incomeItems.length >= 3) {
         incomePlus.style.display = 'none'; //прячим кнопку после 3го раза
-        // console.log("прячем кнопку");
     }
-    // console.log("добавить новый блок доходов");
     // * в конце еще раз вешаем слушатели на новые поля
     // this.setListeners();
+    //? НЕБОЛЬШОЙ КОСТЫЛЬ повторный поиск и навешивание событий этих полей
+    document.querySelectorAll('input[placeholder="Наименование"]').forEach(function (item) {
+        item.addEventListener('input', this.handleCyrChars);
+    }, this);
+    document.querySelectorAll('input[placeholder="Сумма"]').forEach(function (item) {
+        item.addEventListener('input', this.handleNubmers);
+    }, this);
 };
 
 
@@ -280,42 +302,21 @@ AppData.prototype.getTargetMonth = function () {
 };
 
 
-AppData.prototype.getStatusIncome = function () {
-    //возвращает результат вычислений уровня средних доходов на день
-    if (this.budgetDay >= 1200) {
-        return 'Поздравляем!\nУ вас высокий уровень дохода';
-    } else if (this.budgetDay >= 600) {
-        return 'У вас средний уровень дохода';
-    } else if (this.budgetDay > 0) {
-        return 'К сожалению у вас уровень дохода ниже среднего';
-    } else {
-        return 'Что-то пошло не так';
-    }
-};
+// AppData.prototype.getStatusIncome = function () {
+//     //возвращает результат вычислений уровня средних доходов на день
+//     if (this.budgetDay >= 1200) {
+//         return 'Поздравляем!\nУ вас высокий уровень дохода';
+//     } else if (this.budgetDay >= 600) {
+//         return 'У вас средний уровень дохода';
+//     } else if (this.budgetDay > 0) {
+//         return 'К сожалению у вас уровень дохода ниже среднего';
+//     } else {
+//         return 'Что-то пошло не так';
+//     }
+// };
 
 
-AppData.prototype.getInfoDeposit = function () {
-    //спрашиваем и вычисляем информацию о депозите
-    if (this.deposit) {
-        //проверка ввода процента депозита
-        do {
-            this.percentDeposit = prompt(
-                'Какой годовой процент? Введите число',
-                '10'
-            );
-        } while (!isNumber(this.percentDeposit));
-        this.percentDeposit = +this.percentDeposit;
-
-        //проверка ввода суммы депозита
-        do {
-            this.moneyDeposit = prompt(
-                'Какая сумма заложена в депосит? Введите число',
-                10000
-            );
-        } while (!isNumber(this.moneyDeposit));
-        this.moneyDeposit = +this.moneyDeposit;
-    }
-};
+// AppData.prototype.getInfoDeposit = ...
 
 
 AppData.prototype.calcIncomePeriodValue = function () { ///*calcPeriod()
@@ -389,7 +390,7 @@ AppData.prototype.reset = function () {
     // * ресет ползунок в начальное положение
     periodSelect.disabled = false;
     periodSelect.value = 1;
-    periodAmount.textContent = '1';
+    periodAmount.textContent = periodSelect.value;
     
     cancel.style.display = 'none'; //* прячем кнопку Сбросить
     start.style.display = 'block'; //* показываем кнопку Расчитать
@@ -420,7 +421,7 @@ AppData.prototype.setListeners = function () {
         //     start.disabled = false;
         // }
         start.disabled = (salaryAmount.value.trim() === '');
-    })
+    });
 
     // * ...появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset()
     cancel.addEventListener('click', this.reset.bind(this));
@@ -444,20 +445,22 @@ AppData.prototype.setListeners = function () {
     // * находим поля для заполнения по значению placeholder
     const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
     const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
+    
     // * цепляем соответствующие слушатели на соответствующие элементы input
     inputString.forEach(function (item) {
-        item.addEventListener('input', handleCyrChars);
-    });
+        item.addEventListener('input', this.handleCyrChars);
+    }, this);
     inputNumber.forEach(function (item) {
-        item.addEventListener('input', handleNubmers);
-    });
+        item.addEventListener('input', this.handleNubmers);
+    }, this);
 };
 
 
+let appData = new AppData(); // * НАШ ОБЪЕКТ ПРИЛОЖЕНИЯ
+appData.setListeners(); // * Цепляем слушатели на основные события
 
-// * НАШ ОБЪЕКТ ПРИЛОЖЕНИЯ
-let appData = new AppData(); //*
-appData.setListeners(); //*
+
+
 
 // * ссылки на частрые функции явно привязанные к объекту appData
 // const eventAddExpensesBlock = appData.addExpensesBlock.bind(appData);
