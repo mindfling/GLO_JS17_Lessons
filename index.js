@@ -1,14 +1,12 @@
 'use strict';
 /**
- * * Lesson14
+ * * Lesson15
  */
-
 
 // ? функция проверки ввода числа на цисле
 // const isNumber = function name(number) {
 //     return !isNaN(parseInt(number)) && isFinite(number);
 // };
-
 
 // * проверка на ввод символов кириллицы ?!,. а-я А-Я ёЁ 
 // TODO ПЕРЕНЕСЛИ В КЛАСС

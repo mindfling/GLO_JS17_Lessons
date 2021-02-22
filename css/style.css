@@ -117,7 +117,7 @@ span.grey {
 	height: 30px;
 	text-align: center;
 	line-height: 30px;
-	background-color: #ff7f63;
+	background-color: lightgreen;
 	color: #353a43;
 	outline: 0;
 	border: none;
@@ -168,7 +168,7 @@ span.grey {
 	left: 0;
 	height: 23px;
 	width: 23px;
-	background-color: #ff7f63;
+    background-color: lightgreen;
 }
 
 .data .deposit-label .deposit-checkmark:after {
@@ -186,11 +186,15 @@ span.grey {
 }
 
 .data .deposit-label:hover input~.deposit-checkmark {
-	background-color: #ff7f63;
+	/* background-color: #ff7f63; */
 	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 }
 
+.data .deposit-label input:checked~.deposit-checkmark {
+	display: block;
+	background-color: orange;
+}
 .data .deposit-label input:checked~.deposit-checkmark:after {
 	display: block;
 }
@@ -294,7 +298,7 @@ span.grey {
 	height: 26px;
 	width: 26px;
 	border-radius: 50px;
-	background: #ff7f63;
+	background: orange;
 	cursor: pointer;
 	-webkit-appearance: none;
 	margin-top: -9px;
@@ -383,37 +387,38 @@ span.grey {
 	border: none;
 	outline: 0;
 	border-bottom: 1px solid #ff7f63;
-	color: #ff7f63;
+	/* color: #ff7f63; */
+	color: darkslategrey;
 	font-family: Roboto;
-	font-size: 14px;
+	font-size: 19px;
 	font-weight: 700;
 	background-color: transparent;
 }
 
 .result div input::-webkit-input-placeholder {
 	color: #ff7f63;
-	font-size: 14px;
+	font-size: 17px;
 	font-weight: 700;
 	line-height: 24px;
 }
 
 .result div input:-moz-placeholder {
 	color: #ff7f63;
-	font-size: 14px;
+	font-size: 17px;
 	font-weight: 700;
 	line-height: 24px;
 }
 
 .result div input::-moz-placeholder {
 	color: #ff7f63;
-	font-size: 14px;
+	font-size: 17px;
 	font-weight: 700;
 	line-height: 24px;
 }
 
 .result div input:-ms-input-placeholder {
 	color: #ff7f63;
-	font-size: 14px;
+	font-size: 17px;
 	font-weight: 700;
 	line-height: 24px;
 }
@@ -445,7 +450,8 @@ span.grey {
 	height: 67px;
 	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
-	background-color: #353a43;
+	/* background-color: #353a43; */
+	background-color: darkslategrey;
 	color: #fff;
 	font-size: 20px;
 	font-family: Roboto;
@@ -456,18 +462,30 @@ span.grey {
 	outline: transparent;
 }
 
-.result #cancel:hover,
+.result #start:hover,
+.result #cancel:hover {
+	/* opacity: .7; */
+}
 .result #start:hover {
-	opacity: .7;
+	background-color: lightgreen;
+	color: darkslategrey;
 }
 
-.result #cancel:disabled,
-.result #start:disabled {
+.result #cancel:hover {
+	background-color: coral;
+	color: darkslategrey;
+}
+
+.result #start:disabled, 
+.result #cancel:disabled {
+	background-color: darkslategrey;
+	color: white;
 	opacity: .5;
 }
 
-.result #cancel:active,.result #start:active {
-	background-color: #ff7f63;
+.result #cancel:active,
+.result #start:active {
+	background-color: orange;
 	color: #fff;
 	opacity: 1;
 }
