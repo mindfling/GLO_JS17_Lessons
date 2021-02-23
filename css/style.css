@@ -117,7 +117,7 @@ span.grey {
 	height: 30px;
 	text-align: center;
 	line-height: 30px;
-	background-color: lightgreen;
+	background-color: orange;
 	color: #353a43;
 	outline: 0;
 	border: none;
@@ -168,15 +168,16 @@ span.grey {
 	left: 0;
 	height: 23px;
 	width: 23px;
-    background-color: lightgreen;
+    background-color: orange;
+	border: 1px solid coral;
 }
 
 .data .deposit-label .deposit-checkmark:after {
 	content: "";
 	position: absolute;
 	display: none;
-	left: 9px;
-	top: 5px;
+    left: 8px;
+    top: 3px;
 	width: 5px;
 	height: 10px;
 	border: solid #353a43;
@@ -193,7 +194,7 @@ span.grey {
 
 .data .deposit-label input:checked~.deposit-checkmark {
 	display: block;
-	background-color: orange;
+	background-color: darkorange;
 }
 .data .deposit-label input:checked~.deposit-checkmark:after {
 	display: block;
@@ -288,7 +289,7 @@ span.grey {
 	width: 100%;
 	height: 8px;
 	cursor: pointer;
-	background: #ff7f63;
+	background: orange;
 	border-radius: 25px;
 	border: 0 solid #000001;
 }
@@ -298,7 +299,7 @@ span.grey {
 	height: 26px;
 	width: 26px;
 	border-radius: 50px;
-	background: orange;
+	background: darkorange;
 	cursor: pointer;
 	-webkit-appearance: none;
 	margin-top: -9px;
@@ -451,7 +452,7 @@ span.grey {
 	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 	box-shadow: 2px 3px 7px rgba(0,0,0,.35);
 	/* background-color: #353a43; */
-	background-color: darkslategrey;
+	background-color: coral;
 	color: #fff;
 	font-size: 20px;
 	font-family: Roboto;
@@ -465,28 +466,37 @@ span.grey {
 .result #start:hover,
 .result #cancel:hover {
 	/* opacity: .7; */
+
 }
 .result #start:hover {
-	background-color: lightgreen;
-	color: darkslategrey;
+	background-color: orange;
+	color: white;
+	border: 1px solid coral;
+	box-shadow: 2px 3px 7px rgb(0 0 0 / 55%);
 }
 
 .result #cancel:hover {
 	background-color: coral;
-	color: darkslategrey;
+	color: white;
+	border: 1px solid coral;
+	box-shadow: 2px 3px 7px rgb(0 0 0 / 55%);
 }
 
 .result #start:disabled, 
 .result #cancel:disabled {
-	background-color: darkslategrey;
+	background-color: orangered;
 	color: white;
 	opacity: .5;
 }
 
-.result #cancel:active,
+.result #cancel:active {
+	background-color: coral;
+	color: darkslategrey;
+	opacity: 1;
+}
 .result #start:active {
 	background-color: orange;
-	color: #fff;
+	color: darkslategrey;
 	opacity: 1;
 }
 
