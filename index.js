@@ -3,7 +3,7 @@
  * * Lesson15
  */
 
-// ? функция проверки ввода числа на цисле
+// ? функция проверки ввода числа на цисле нужна ли
 // const isNumber = function name(number) {
 //     return !isNaN(parseInt(number)) && isFinite(number);
 // };
@@ -76,7 +76,6 @@ class AppData {
         event.target.value = event.target.value.replace(/[^\d.]/g, ''); // тоже что и .replace(/[^0-9.]/g, '')
     }
     start() {
-        // console.log('start this', this);
         // * при нажатии на кнопку Рассчитать
         this.budget = +salaryAmount.value;
         this.getExpenses(); // *
@@ -87,13 +86,20 @@ class AppData {
 
         this.getBudget(); // * по смыслу считаем бюджет на месяц и на день
 
-        // *Блокировать все input[type=text] деактивируем все инпуты
+        // * деактивируем все инпуты input[type=text] 
         let inputText = document.querySelectorAll('.data input[type="text"]');
-        inputText.forEach(function (inputItem) {
+
+        // inputText.forEach(function (inputItem) {
+        //     inputItem.disabled = true;
+        // }, this); // здесь передаем , this как контекст вызова :)
+
+        inputText.forEach( (inputItem) => {
             inputItem.disabled = true;
-        }, this); // * здесь передаем , this как контекст вызова :)
+        });
+        // * здесь когда используем стрелочные функции передавать this контекст вызова НЕ НУЖНО
 
         this.showResult(); // заполняем все поля с результатами справа
+
 
         startBtn.style.display = 'none'; // * скрываем кнопку РАССЧИТАТЬ
         cancelBtn.style.display = 'block'; // * отображаем кнопка СБРОСИТЬ
@@ -140,14 +146,16 @@ class AppData {
             expensesPlus.style.display = 'none'; // * прячим кнопку после 3го раза
         }
         // * в конце еще раз вешаем слушатели на наши поля
-        // this.setListeners();
         //? повторный поиск и навешивание событий этих полей
-        document.querySelectorAll('input[placeholder="Наименование"]').forEach(function (item) {
+
+        document.querySelectorAll('input[placeholder="Наименование"]').forEach( (item) => {
             item.addEventListener('input', this.handleCyrChars);
-        }, this); // * передаем this контекст вызова
-        document.querySelectorAll('input[placeholder="Сумма"]').forEach(function (item) {
+        }); // * 
+        
+        document.querySelectorAll('input[placeholder="Сумма"]').forEach( (item) => {
             item.addEventListener('input', this.handleNubmers);
-        }, this); // * передаем this контекст вызова
+        }); // * 
+        
     }
     addIncomeBlock() {
         // * добавить новый блок доходов
@@ -161,34 +169,35 @@ class AppData {
             incomePlus.style.display = 'none'; //прячим кнопку после 3го раза
         }
         // * в конце еще раз вешаем слушатели на новые поля
-        // this.setListeners();
+        
         //? НЕБОЛЬШОЙ КОСТЫЛЬ повторный поиск и навешивание событий этих полей
-        document.querySelectorAll('input[placeholder="Наименование"]').forEach(function (item) {
+        document.querySelectorAll('input[placeholder="Наименование"]').forEach( (item) => {
             item.addEventListener('input', this.handleCyrChars);
-        }, this);  // * передаем this контекст вызова как второй параметр forEach()
-        document.querySelectorAll('input[placeholder="Сумма"]').forEach(function (item) {
+        });  // *
+
+        document.querySelectorAll('input[placeholder="Сумма"]').forEach( (item) => {
             item.addEventListener('input', this.handleNubmers);
-        }, this);  // * передаем this контекст вызова как второй параметр forEach()
+        });  // *
+
     }
     getExpenses() {
         // *
         // проходимся по ключ-значению полей подсчет расходов
-        expensesItems.forEach(function (item) {
+        expensesItems.forEach( (item) => {
             let itemExpenses = item.querySelector('.expenses-title').value.trim();
             let cashExpenses = item.querySelector('.expenses-amount').value.trim();
             // проверка на пустые поля
             if (itemExpenses !== '' && cashExpenses !== '') {
-
                 this.expenses[itemExpenses] = parseFloat(cashExpenses);
             } else {
                 return; //? Заполнены не все поля расходов
             }
-        }, this);
+        });
     }
     getIncome() {
         // *
         //подсчет дополнительных доходов
-        incomeItems.forEach(function (item) {
+        incomeItems.forEach( (item) => {
             let itemIncome = item.querySelector('.income-title').value.trim();
             let cashIncome = item.querySelector('.income-amount').value.trim();
             if (itemIncome !== '' && cashIncome !== '') {
@@ -196,7 +205,8 @@ class AppData {
             } else {
                 return; //? Заполнены не все поля дополнительных доходов
             }
-        }, this);
+        });
+
         //* обнуляем доходы в самом начале и суммируем доп доходы за месяц заново
         this.incomeMonth = 0;
         for (let key in this.income) {
@@ -205,22 +215,22 @@ class AppData {
     }
     getAddExpenses() {
         let addExpenses = additionalExpensesItem.value.split(', '); //разбираем строку на массив
-        this.addExpenses = []; //обнуляем переменную
-        addExpenses.forEach(function (item) {
+        this.addExpenses = []; //обнуляем переменную для суммирования
+        addExpenses.forEach( item => {
             item = item.trim();
             if (item !== '') {
                 this.addExpenses.push(item);
             }
-        }, this); //forEach context this
+        }); // *
     }
     getAddIncome() {
         this.addIncome = [];
-        additionalIncomeItem.forEach(function (item) {
+        additionalIncomeItem.forEach( item => {
             let itemValue = item.value.trim();
             if (itemValue !== '') {
                 this.addIncome.push(itemValue);
             }
-        }, this); //forEach context this
+        }); // *
     }
     getExpensesMonth() {
         let sum = 0;
@@ -252,12 +262,11 @@ class AppData {
         return this.budgetMonth * periodSelect.value;
     }
     changePeriodAmount() {
-        // console.log('changePeriodAmount', this);
         // * изменяет значение поля periodAmount под ползунком range periodSelect
         let value = periodSelect.value;
         
         value += ''; // убедимся что это строка
-        if (value == 1) {
+        if (value === '1') {
             value += ' Месяц';
         } else if (/^[234]$/.test(value)) {
             value += ' Месяца';
@@ -310,15 +319,15 @@ class AppData {
 
         // * очищаем и активируем поля слева
         let inputText = document.querySelectorAll('.data input[type="text"]');
-        inputText.forEach(function (inputItem) {
+        inputText.forEach( (inputItem) => {
             inputItem.disabled = false; // * активируем поля
             inputItem.value = ''; // * очищаем поля
-        }, this);
+        });
         // * очищаем поля справа
         let resultInputs = document.querySelectorAll('.result input');
-        resultInputs.forEach(function (inputItem) {
+        resultInputs.forEach( (inputItem) => {
             inputItem.value = ''; // * очищаем поля
-        }, this);
+        });
 
         // * ресет ползунок в начальное положение
         periodSelect.disabled = false;
@@ -368,16 +377,17 @@ class AppData {
         const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
 
         // * цепляем соответствующие слушатели на соответствующие элементы input
-        inputString.forEach(function (item) {
+        inputString.forEach( (item) => {
             item.addEventListener('input', this.handleCyrChars);
-        }, this);
-        inputNumber.forEach(function (item) {
+        });
+        inputNumber.forEach( (item) => {
             item.addEventListener('input', this.handleNubmers);
-        }, this);
+        });
     }
 }
 
 
-let appData = new AppData(); // * НАШ ОБЪЕКТ ПРИЛОЖЕНИЯ
-appData.setListeners(); // * Цепляем слушатели на основные события
+// * НАШ ОБЪЕКТ ПРИЛОЖЕНИЯ
+let appData = new AppData();
+appData.setListeners();
 
