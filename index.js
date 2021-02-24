@@ -3,10 +3,8 @@
  * * Lesson15
  */
 
-// ? функция проверки ввода числа на цисле нужна ли
-// const isNumber = function name(number) {
-//     return !isNaN(parseInt(number)) && isFinite(number);
-// };
+// ? функция проверки ввода числа нужна ли?
+// const isNumber = number => !isNaN(parseInt(number)) && isFinite(number);
 
 
  //! buttons
@@ -310,9 +308,6 @@ class AppData {
         expensesPlus.style.display = 'block';
         incomePlus.style.display = 'block';
 
-        // * вешаем обратно слушатели на кнопки
-        // expensesPlus.addEventListener('click', eventAddExpensesBlock);
-        // incomePlus.addEventListener('click', eventAddIncomeBlock);
         // * ПРОСТО активируем кнопки
         expensesPlus.disabled = false;
         incomePlus.disabled = false;
@@ -332,8 +327,6 @@ class AppData {
         // * ресет ползунок в начальное положение
         periodSelect.disabled = false;
         periodSelect.value = 1;
-        // periodAmount.textContent = periodSelect.value;
-        // periodAmount.textContent = '&nbsp;'; // * обновляем в пустое поле
         periodAmount.innerHTML = '&nbsp;'; // * обновляем в пустое поле внутреннее html содержимое*
 
         cancelBtn.style.display = 'none'; // * прячем кнопку Сбросить
@@ -354,7 +347,7 @@ class AppData {
         startBtn.disabled = (salaryAmount.value.trim() === '');
 
         // * start button зависит от состояния поля salaryAmount
-        salaryAmount.addEventListener('change', function () {
+        salaryAmount.addEventListener('change', () => {
             startBtn.disabled = (salaryAmount.value.trim() === '');
         });
 
@@ -388,6 +381,6 @@ class AppData {
 
 
 // * НАШ ОБЪЕКТ ПРИЛОЖЕНИЯ
-let appData = new AppData();
-appData.setListeners();
+const appData = new AppData();
+appData.setEventListeners();
 
