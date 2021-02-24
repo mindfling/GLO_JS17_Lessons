@@ -255,7 +255,17 @@ class AppData {
         // console.log('changePeriodAmount', this);
         // * изменяет значение поля periodAmount под ползунком range periodSelect
         let value = periodSelect.value;
+        
+        value += ''; // убедимся что это строка
+        if (value == 1) {
+            value += ' Месяц';
+        } else if (/^[234]$/.test(value)) {
+            value += ' Месяца';
+        } else if (value.match(/^[56789]|1[012]$/)) {
+            value += ' Месяцев';
+        }
         periodAmount.textContent = value;
+
         // * изменяет значение поля накопления за период при движении ползунка
         incomePeriodValue.value = this.calcIncomePeriodValue();
     }
@@ -313,10 +323,12 @@ class AppData {
         // * ресет ползунок в начальное положение
         periodSelect.disabled = false;
         periodSelect.value = 1;
-        periodAmount.textContent = periodSelect.value;
+        // periodAmount.textContent = periodSelect.value;
+        // periodAmount.textContent = '&nbsp;'; // * обновляем в пустое поле
+        periodAmount.innerHTML = '&nbsp;'; // * обновляем в пустое поле внутреннее html содержимое*
 
-        cancelBtn.style.display = 'none'; //* прячем кнопку Сбросить
-        startBtn.style.display = 'block'; //* показываем кнопку Расчитать
+        cancelBtn.style.display = 'none'; // * прячем кнопку Сбросить
+        startBtn.style.display = 'block'; // * показываем кнопку Расчитать
         startBtn.disabled = true; // * деактивируем кнопку Расчитать
 
         // * чекбокс возвращаем в начальное состояние
@@ -342,8 +354,8 @@ class AppData {
 
         // * клик на кнопку плюс expensesPlus и incomePlus
         // ! ПОЧЕМУ ВОТ ЗДЕСЬ СЛУШАТЕЛЬ НЕ УДАЛЯЕТСЯ !!!
-        expensesPlus.removeEventListener('click', this.addExpensesBlock.bind(this));
-        incomePlus.removeEventListener('click', this.addIncomeBlock.bind(this));
+        // expensesPlus.removeEventListener('click', this.addExpensesBlock.bind(this));
+        // incomePlus.removeEventListener('click', this.addIncomeBlock.bind(this));
 
         expensesPlus.addEventListener('click', this.addExpensesBlock.bind(this));
         incomePlus.addEventListener('click', this.addIncomeBlock.bind(this));
