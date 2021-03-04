@@ -1,6 +1,6 @@
 'use strict';
 /**
- * * Lesson15
+ * * Lesson16
  */
 
 // ? функция проверки ввода числа нужна ли?
@@ -23,10 +23,17 @@ let expensesItems = document.querySelectorAll('.expenses-items'); // Блок О
 const expensesPlus = btnPlus[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
 const additionalExpenses = document.querySelector('additional_expenses');
 const additionalExpensesItem = document.querySelector('input.additional_expenses-item');//Возможные расходы через , ,
-const depositCheck = document.querySelector('#deposit-check'); //? check галочка наличие депозита
-const selectDepositBank = document.querySelector('.deposit-bank'); // выбор банка скрыто
-const depositAmount = document.querySelector('.input.deposit-amount'); //сумма депозита .deposit-calc скрыто
-const depositPercent = document.querySelector('.input.deposit-percent'); //процент депозита .deposit-calc скрыто
+
+const depositCheck = document.querySelector('#deposit-check'); //! check галочка наличие депозита
+const selectDepositBank = document.querySelector('select.deposit-bank'); // выбор банка скрыто
+const depositAmount = document.querySelector('input.deposit-amount'); //сумма депозита .deposit-calc скрыто
+const depositPercent = document.querySelector('input.deposit-percent'); //процент депозита .deposit-calc скрыто
+
+console.log('depositCheck: ', depositCheck);
+console.log('selectDepositBank: ', selectDepositBank);
+console.log('depositAmount: ', depositAmount);
+console.log('depositPercent: ', depositPercent);
+
 const targetAmount = document.querySelector('.target-amount'); // цель сумма
 const periodSelect = document.querySelector('input.period-select'); //Выбор Периода расчета //? LET
 const periodAmount = document.querySelector('.period-amount'); //Период расчета отображение
@@ -43,9 +50,8 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 
 
 
-// ! ДЗ 15 КЛАСС AppData перепишем в новом формате ES6
+// ! ДЗ 16 КЛАСС AppData  
 //* fields Поля свойства внутри конструктора (можно инициировать как простые переменные)
-
 class AppData {
     constructor() {
         this.income = {};
@@ -54,16 +60,21 @@ class AppData {
         this.expenses = {};
         this.expensesMonth = 0;
         this.addExpenses = [];
-        this.deposit = false;
+        this.deposit = false; // * наличие депозита
         this.percentDeposit = 0;
         this.moneyDeposit = 0;
         this.budget = 0;
         this.budgetDay = 0;
         this.budgetMonth = 0;
+
+        // ! ??????
+        this.myhandler = (event) => {
+            event.target.value = event.target.value.replace(/[^\d.]/g, '');
+            console.log('my handler');
+        };
     }
 
 // * методы класса в ES6
-
     handleCyrChars(event) {
         // * регулярка заменяет все символы кириллицы не зависимо от регистра
         // ТОЖЕ САМОЕ .replace(/[^\?\!,\.а-яА-ЯёЁ\s]/g, '')
@@ -82,22 +93,17 @@ class AppData {
         this.getAddExpenses(); // * расчет дополнительных расходов
         this.getAddIncome(); // * расчет дополнительных доходов
 
+        this.getInfoDeposit(); // * расчет депозита
+
         this.getBudget(); // * по смыслу считаем бюджет на месяц и на день
 
-        // * деактивируем все инпуты input[type=text] 
+        // * деактивируем все инпуты input[type=text] слева
         let inputText = document.querySelectorAll('.data input[type="text"]');
-
-        // inputText.forEach(function (inputItem) {
-        //     inputItem.disabled = true;
-        // }, this); // здесь передаем , this как контекст вызова :)
-
         inputText.forEach( (inputItem) => {
             inputItem.disabled = true;
         });
-        // * здесь когда используем стрелочные функции передавать this контекст вызова НЕ НУЖНО
 
         this.showResult(); // заполняем все поля с результатами справа
-
 
         startBtn.style.display = 'none'; // * скрываем кнопку РАССЧИТАТЬ
         cancelBtn.style.display = 'block'; // * отображаем кнопка СБРОСИТЬ
@@ -109,11 +115,84 @@ class AppData {
         // * деактивируем чекбокс
         depositCheck.disabled = true;
 
-        // отключение ползунока input range // * НЕ ОТКЛЮЧАЕМ
+        // ? ползунок отключать не нужно ? input range
         // periodSelect.disabled = true;
     }
+    reset() {
+        // * сбрасываем значения переменных свойств объекта ЗАНОВО ИНИЦИАЛИЗИРУЕМ возвращаем к начальному состоянию
+        this.income = {};
+        this.incomeMonth = 0;
+        this.addIncome = [];
+        this.expenses = {};
+        this.expensesMonth = 0;
+        this.addExpenses = [];
+        this.deposit = false;
+        this.percentDeposit = 0;
+        this.moneyDeposit = 0;
+        this.budget = 0;
+        this.budgetDay = 0;
+        this.budgetMonth = 0;
+
+        // * удаляем лишние блоки расходов
+        expensesItems = document.querySelectorAll('.expenses-items'); // expenses block узнаем текущее состояние блока
+        while (expensesItems.length >= 2) {
+            expensesItems[0].remove();
+            expensesItems = document.querySelectorAll('.expenses-items'); // снова обновляем так безопасней
+        }
+        // * удаляем лишние блоки доходов
+        incomeItems = document.querySelectorAll('.income-items'); // expenses block узнаем текущее состояние блока
+        while (incomeItems.length >= 2) {
+            incomeItems[0].remove();
+            incomeItems = document.querySelectorAll('.income-items');
+        }
+
+        // * возвращаем на страницу кнопки incomePlus и expensesPlus
+        expensesPlus.style.display = 'block';
+        incomePlus.style.display = 'block';
+
+        // * ПРОСТО активируем кнопки
+        expensesPlus.disabled = false;
+        incomePlus.disabled = false;
+
+        // * очищаем и активируем поля слева
+        let inputText = document.querySelectorAll('.data input[type="text"]');
+        inputText.forEach( (inputItem) => {
+            inputItem.disabled = false; // * активируем поля
+            inputItem.value = ''; // * очищаем поля
+        });
+        // * очищаем поля справа
+        let resultInputs = document.querySelectorAll('.result input');
+        resultInputs.forEach( (inputItem) => {
+            inputItem.value = ''; // * очищаем поля
+        });
+
+        // * ресет ползунок в начальное положение
+        periodSelect.disabled = false;
+        periodSelect.value = 1;
+        periodAmount.innerHTML = '&nbsp;'; // * обновляем в пустое поле внутреннее html содержимое*
+
+        startBtn.style.display = 'block'; // * показываем кнопку Расчитать
+        startBtn.disabled = true; // * и сразу деактивируем кнопку Расчитать
+        cancelBtn.style.display = 'none'; // * прячем кнопку Сбросить
+
+        // * чекбокс возвращаем в начальное состояние
+        depositCheck.disabled = false;
+        depositCheck.checked = false;
+        this.deposit = false;
+
+        selectDepositBank.style.display = 'none';
+        selectDepositBank.value = '';
+
+        depositAmount.style.display = 'none';
+        depositAmount.value = '';
+
+        depositPercent.style.display = 'none';
+        depositPercent.value = '';
+
+
+        selectDepositBank.removeEventListener('change', this.changePensent); 
+    }
     showResult() {
-        // console.log('showResult this: ', this);
         // * showResult выводит результаты вычисления в правый блок data
         budgetMonthValue.value = Math.floor(this.budgetMonth); // * Округлить
         budgetDayValue.value = Math.floor(this.budgetDay); // * Округлить вывод дневного бюджета
@@ -132,7 +211,6 @@ class AppData {
         periodSelect.addEventListener('input', this.changePeriodAmount.bind(this));
     }
     addExpensesBlock() {
-        // console.log('addExpensesBlock this: ',  this);
         // * добавить новый блок Обязательные расходы
         let cloneExpensesItems = expensesItems[0].cloneNode(true); // * клонируем блок делаем глубокую копию true
         cloneExpensesItems.querySelector('.expenses-title').value = '';
@@ -168,7 +246,7 @@ class AppData {
         }
         // * в конце еще раз вешаем слушатели на новые поля
         
-        //? НЕБОЛЬШОЙ КОСТЫЛЬ повторный поиск и навешивание событий этих полей
+        //?  повторный поиск и навешивание событий этих полей
         document.querySelectorAll('input[placeholder="Наименование"]').forEach( (item) => {
             item.addEventListener('input', this.handleCyrChars);
         });  // *
@@ -231,19 +309,21 @@ class AppData {
         }); // *
     }
     getExpensesMonth() {
-        let sum = 0;
+        let sum = 0; // ? где мы должны сбрасывать сумму здесь или в reset()
         // расчет обязательныз расходов суммируем по полям expenses
         for (let key in this.expenses) {
-            //проверка на собственное свойство
-            if (this.expenses.hasOwnProperty(key)) {
+            if (this.expenses.hasOwnProperty(key)) { //проверка на собственное свойство
                 sum += +this.expenses[key];
             }
         }
         this.expensesMonth = sum;
     }
     getBudget() {
+        //! расчет депозита вычисляется годовой процент
+        const monthDeposit = this.moneyDeposit * this.percentDeposit / 100; //! зачем Максим здесь поставил (скобки)??
+        console.log('monthDeposit: ', monthDeposit);
         //расчет бюджетов
-        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+        this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + monthDeposit;
         this.budgetDay = this.budgetMonth / 30; //? округляем
     }
     getTargetMonth() {
@@ -251,9 +331,7 @@ class AppData {
         return targetAmount.value / this.budgetMonth;
     }
 
-    // AppData.prototype.getStatusIncome = ...
-
-    // AppData.prototype.getInfoDeposit = ...
+    // ? getStatusIncome() { ... }
 
     calcIncomePeriodValue() {
         // * возвращает накопления за период расчета
@@ -261,9 +339,8 @@ class AppData {
     }
     changePeriodAmount() {
         // * изменяет значение поля periodAmount под ползунком range periodSelect
-        let value = periodSelect.value;
-        
-        value += ''; // убедимся что это строка
+        let value = '' + periodSelect.value;
+        //? value += ''; // убедимся что это строка
         if (value === '1') {
             value += ' Месяц';
         } else if (/^[234]$/.test(value)) {
@@ -276,72 +353,95 @@ class AppData {
         // * изменяет значение поля накопления за период при движении ползунка
         incomePeriodValue.value = this.calcIncomePeriodValue();
     }
-    reset() {
-        // * сбрасываем значения переменных свойств объекта ЗАНОВО ИНИЦИАЛИЗИРУЕМ возвращаем к начальному состоянию
-        this.income = {};
-        this.incomeMonth = 0;
-        this.addIncome = [];
-        this.expenses = {};
-        this.expensesMonth = 0;
-        this.addExpenses = [];
-        this.deposit = false;
-        this.percentDeposit = 0;
-        this.moneyDeposit = 0;
-        this.budget = 0;
-        this.budgetDay = 0;
-        this.budgetMonth = 0;
+    
+    // ? AppData.prototype.getInfoDeposit = ...
 
-        // * удаляем лишние блоки расходов
-        expensesItems = document.querySelectorAll('.expenses-items'); // expenses block узнаем текущее состояние блока
-        while (expensesItems.length >= 2) {
-            expensesItems[0].remove();
-            expensesItems = document.querySelectorAll('.expenses-items'); // снова обновляем так безопасней
+    getInfoDeposit() {
+        if (this.deposit) {
+            //скрытые блоки все равно хранятся в памяти //! В этих полях можно хранить значения
+            this.percentDeposit = depositPercent.value;
+            this.moneyDeposit = depositAmount.value;
         }
-        // * удаляем лишние блоки доходов
-        incomeItems = document.querySelectorAll('.income-items'); // expenses block узнаем текущее состояние блока
-        while (incomeItems.length >= 2) {
-            incomeItems[0].remove();
-            incomeItems = document.querySelectorAll('.income-items');
-        }
-
-        // * возвращаем на страницу кнопки incomePlus и expensesPlus
-        expensesPlus.style.display = 'block';
-        incomePlus.style.display = 'block';
-
-        // * ПРОСТО активируем кнопки
-        expensesPlus.disabled = false;
-        incomePlus.disabled = false;
-
-        // * очищаем и активируем поля слева
-        let inputText = document.querySelectorAll('.data input[type="text"]');
-        inputText.forEach( (inputItem) => {
-            inputItem.disabled = false; // * активируем поля
-            inputItem.value = ''; // * очищаем поля
-        });
-        // * очищаем поля справа
-        let resultInputs = document.querySelectorAll('.result input');
-        resultInputs.forEach( (inputItem) => {
-            inputItem.value = ''; // * очищаем поля
-        });
-
-        // * ресет ползунок в начальное положение
-        periodSelect.disabled = false;
-        periodSelect.value = 1;
-        periodAmount.innerHTML = '&nbsp;'; // * обновляем в пустое поле внутреннее html содержимое*
-
-        cancelBtn.style.display = 'none'; // * прячем кнопку Сбросить
-        startBtn.style.display = 'block'; // * показываем кнопку Расчитать
-        startBtn.disabled = true; // * деактивируем кнопку Расчитать
-
-        // * чекбокс возвращаем в начальное состояние
-        depositCheck.disabled = false;
-        depositCheck.checked = false;
     }
-    setListeners() {
-        // * навешивает все слушатели
-        // console.log('setListeners :', this);
+    changePensent() { //! selectBankPercentage
+        //! here this = selectDepositBank срабатывает при выборе селект банка
+        const valueSelect = this.value;
+        // console.log('selectIndex: ', valueSelect);  
+        // depositPercent.style.display = 'inline-block'; ///!! УБРАТЬ
+       
+        //! обработать поле проценты
+        //? const myPercentNumberHandler = (event) => {};
+        // const myPercentNumberHandler = function(event) {
+        function myPercentNumberHandler(event) {
+            let value = event.target.value;
+            console.log(value);
+            //проверка на ввод цифр и точки
+            event.target.value = event.target.value.replace(/[^\d.]/g, '');
+            //проверка на процент в пределах 0..100
+            if (event.target.value < 0 || event.target.value > 100) {
+                alert('Введите процент в пределах от 0% до 100%');
+                event.target.value = '';
+            }
+        }
+
+        if (valueSelect === 'other') {
+            console.log('мы выбрали проценты other');
+            //! ДЗ 16
+            depositPercent.style.display = 'inline-block'; //! отобразить блок процентов other 
+            depositPercent.addEventListener('input', myPercentNumberHandler); //! привязать к полю обработчик
+            // depositPercent.addEventListener('input', this.myhandler);
+            // depositPercent.addEventListener('input', (event) => {
+            //     console.log('вы ввели значение процента', event.target.value);
+            // });
+            depositPercent.value = '';
+            console.log('depositPercent.value: ', depositPercent.value);
+
+        } else {
+            //! когда выбираем другие банки
+            //!!!! ПОЧЕМУ СЛУШАТЕЛЬ НЕ УДАЛЯЕТСЯ ???
+            depositPercent.removeEventListener('input', myPercentNumberHandler);
+
+            depositPercent.style.display = 'none';
+            console.log('вы выбрали депозит под ' + valueSelect + '% процентов');
+            depositPercent.value = valueSelect;
+            console.log('depositPercent.value: ', depositPercent.value);
+
+        }
+    }
+
+    depositHandler() { // ! depositCheckBoxHandler
+        //  была поставлена галочка на чекбокс
+        // this.deposit = depositCheck.checked;
+        console.log('depositCheck.checked: ', depositCheck.checked);
+
+        if (depositCheck.checked) {
+
+            // * true отобразить блоки
+            selectDepositBank.style.display = 'inline-block';
+            depositAmount.style.display = 'inline-block';
+            this.deposit = true; //? изменить состояние объкта
+
+            // * событие выбора другого % депозита 
+            //! привязываем обработчик процентов
+            selectDepositBank.addEventListener('change', this.changePensent); 
+
+        } else {
+
+            selectDepositBank.style.display = 'none';
+            depositAmount.style.display = 'none';
+            depositPercent.style.display = 'none';
+            selectDepositBank.value = '';
+            depositAmount.value = '';
+            depositPercent.value = '';
+            this.deposit = false;
+            // ! событие убрать % депозита
+            // ! убрать обработчик процентов
+            selectDepositBank.removeEventListener('change', this.changePensent); 
+        }
+    }
+
+    setEventListeners() {
         // * вешаем клик на кнопку start Расчитать
-        // * Привязать контекст вызова функции start к appData 
         startBtn.addEventListener('click', this.start.bind(this));
         // * деактивируем или активируем кнопку Рассчитать
         startBtn.disabled = (salaryAmount.value.trim() === '');
@@ -351,21 +451,17 @@ class AppData {
             startBtn.disabled = (salaryAmount.value.trim() === '');
         });
 
-        // * ...появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset()
+        // * появляется кнопка Сбросить, на которую навешиваем событие и выполнение метода reset()
         cancelBtn.addEventListener('click', this.reset.bind(this));
 
         // * клик на кнопку плюс expensesPlus и incomePlus
-        // ! ПОЧЕМУ ВОТ ЗДЕСЬ СЛУШАТЕЛЬ НЕ УДАЛЯЕТСЯ !!!
-        // expensesPlus.removeEventListener('click', this.addExpensesBlock.bind(this));
-        // incomePlus.removeEventListener('click', this.addIncomeBlock.bind(this));
-
         expensesPlus.addEventListener('click', this.addExpensesBlock.bind(this));
         incomePlus.addEventListener('click', this.addIncomeBlock.bind(this));
 
         // * Число под полоской (input type range) должно меняться в зависимости от позиции range, 
         periodSelect.addEventListener('input', this.changePeriodAmount.bind(this)); //с привязкой контекста
 
-        // * находим поля для заполнения по значению placeholder
+        // * по значению placeholder находим поля для заполнения 
         const inputString = document.querySelectorAll('input[placeholder="Наименование"]');
         const inputNumber = document.querySelectorAll('input[placeholder="Сумма"]');
 
@@ -376,6 +472,14 @@ class AppData {
         inputNumber.forEach( (item) => {
             item.addEventListener('input', this.handleNubmers);
         });
+
+
+        
+        //! привязываем обработчик депозита когда изменилось значение чекбокса
+        // depositCheck.removeEventListener('change', this.depositHandler.bind(this));
+        depositCheck.addEventListener('change', this.depositHandler.bind(this));
+
+        // selectDepositBank.addEventListener('change', this.changePensent.bind(this));
     }
 }
 

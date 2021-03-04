@@ -9,7 +9,7 @@
     <!-- <link rel="stylesheet" href="./css/style.min.css"> -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <title>GLO JS17 Lesson 15 Budget calculator</title>
+    <title>GLO JS17 Lesson 16 Budget calculator</title>
 </head>
 <body>
 <h1>Калькулятор личного бюджета</h1>
@@ -55,11 +55,13 @@
             </div>
 
             <div class="deposit">
+
                 <label class="deposit-label title">Депозит
-                    <input id="deposit-check" type="checkbox">
+                    <input id="deposit-check" type="checkbox"><!--! depositCheck -->
                     <span class="deposit-checkmark"></span>
                 </label>
-                <select class="deposit-bank">
+
+                <select class="deposit-bank"><!--! selectDepositBank -->
                     <option value="">Процент</option>
                     <option value="4">Сбербанк</option>
                     <option value="5">Газпромбанк</option>
@@ -68,9 +70,10 @@
                     <option value="8">АбсолютБанк</option>
                     <option value="other">Другой</option>
                 </select>
+
                 <div class="deposit-calc">
                     <input type="text" class="deposit-amount" placeholder="Сумма">
-                    <input type="text" class="deposit-percent" placeholder="Процент">
+                    <input type="text" class="deposit-percent" placeholder="Процент"><!-- depositPercent -->
                 </div>
             </div>
 
