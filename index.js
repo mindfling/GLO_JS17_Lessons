@@ -1,6 +1,6 @@
 'use strict';
 /**
- * * Lesson16
+ * *  Lesson16
  */
 
  //! buttons
@@ -18,7 +18,7 @@ const expensesAmount = document.querySelector('input.expenses-amount'); // Об�
 let expensesItems = document.querySelectorAll('.expenses-items'); // Блок Обязательные расходы //? ОБНОВЛЯЕТСЯ
 const expensesPlus = btnPlus[1]; //? expensesPlus КНОПКА + добавить поле ввода поля дополнительных расходов
 const additionalExpenses = document.querySelector('additional_expenses');
-const additionalExpensesItem = document.querySelector('input.additional_expenses-item');//Возможные расходы через , ,
+const additionalExpensesItem = document.querySelector('input.additional_expenses-item');//Возможные расходы через , , запятую
 
 
 const depositCheck = document.querySelector('#deposit-check'); //! check галочка наличие депозита
@@ -53,7 +53,7 @@ class AppData {
         this.expenses = {};
         this.expensesMonth = 0;
         this.addExpenses = [];
-        this.deposit = false; // * наличие депозита
+        this.deposit = false; // * изначально нет депозита
         this.percentDeposit = 0;
         this.moneyDeposit = 0;
         this.budget = 0;
